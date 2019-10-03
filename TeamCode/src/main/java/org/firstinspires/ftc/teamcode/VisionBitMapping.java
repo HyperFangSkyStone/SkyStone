@@ -24,7 +24,7 @@ public class VisionBitMapping {
 
     private VuforiaLocalizer vuforia;
     private Parameters parameters;
-    private CameraDirection CAMERA_CHOICE = CameraDirection.BACK;
+    private CameraDirection CAMERA_CHOICE = CameraDirection.BACK; // This is the camera opposite the screen.
     private static final String VUFORIA_KEY = "AcELeNr/////AAABmeg7NUNcDkPigDGNImdu5slLREdKn/q+qfajHBypycR0JUZYbfU0q2yZeSud79LJ2DS9uhr7Gu0xDM0DQZ36GRQDgMRwB8lf9TGZFQcoHq4kVAjAoEByEorXCzQ54ITCextAucpL2njKT/1IJxgREr6/axNEL2evyKSpOKoNOISKR6tkP6H3Ygd+FHm2tF/rsUCJHN5bTXrbRbwt5t65O7oJ6Wm8Foz1npbFI0bsD60cug4CpC/Ovovt2usxIRG8cpoQX49eA2jPRRLGXN8y1Nhh9Flr0poOkYoCExWo2iVunAGOwuCdB/rp/+2rkLBfWPvzQzrN9yBBP0JVJZ4biNQ41qqiuVvlc31O9xEvbKHt";
 
     public static String skystonePosition = "notFound";
@@ -37,6 +37,7 @@ public class VisionBitMapping {
 
         this.opMode = opMode;
 
+        // Configures Vuforia with the wanted camera
         int cameraMonitorViewId = this.opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", this.opMode.hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -44,7 +45,7 @@ public class VisionBitMapping {
         params.cameraDirection = CAMERA_CHOICE;
         vuforia = ClassFactory.getInstance().createVuforia(params);
 
-        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
+        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true); // Format returns 2 bytes per pixel in GGGBBBBB RRRRRGGG format (little-endian)
         vuforia.setFrameQueueCapacity(4);
         vuforia.enableConvertFrameToBitmap();
 
