@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
+@TeleOp(name="Module Test", group="Pushbot")
+//@Disabled
 public class ModuleTeleOp extends LinearOpMode {
 
     ModuleHarware dsModule = new ModuleHarware();
@@ -26,7 +29,13 @@ public class ModuleTeleOp extends LinearOpMode {
 
         while(opModeIsActive())
         {
-            linearMovement(0.8);
+            if (Math.abs(joystickAngle()) < 10) {
+                linearMovement(0.8);
+            }
+            else {
+                dsModule.M0.setPower(0);
+                dsModule.M1.setPower(0);
+            }
 
             telemetry.addData("M0", dsModule.M0.getCurrentPosition());
             telemetry.addData("M1", dsModule.M1.getCurrentPosition());
@@ -37,6 +46,8 @@ public class ModuleTeleOp extends LinearOpMode {
             else
                 telemetry.addData("", "equal");
         }
+
+        telemetry.update();
 
     }
 
@@ -54,17 +65,17 @@ public class ModuleTeleOp extends LinearOpMode {
             if(dsModule.M0.getCurrentPosition() > encoderAvg())
             {
                 dsModule.M0.setPower(inputPower * decay);
-                dsModule.M1.setPower(inputPower);
+                dsModule.M1.setPower(-inputPower);
             }
             else if (dsModule.M1.getCurrentPosition() > encoderAvg())
             {
-                dsModule.M1.setPower(inputPower * decay);
                 dsModule.M0.setPower(inputPower);
+                dsModule.M1.setPower(-inputPower * decay);
             }
             else
             {
                 dsModule.M0.setPower(inputPower);
-                dsModule.M1.setPower(inputPower);
+                dsModule.M1.setPower(-inputPower);
             }
         }
 

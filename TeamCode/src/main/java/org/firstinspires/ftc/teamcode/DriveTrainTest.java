@@ -1,15 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import java.util.ArrayList;
 
-
-@TeleOp(name="DSDrive TeleOp", group="Pushbot")
+@TeleOp(name="DriveTrainTestNoPID", group="Pushbot")
 //@Disabled
-public class DriveTrainTeleOp extends LinearOpMode {
+public class DriveTrainTest extends LinearOpMode {
 
     DriveTrainHardware dsDrive = new DriveTrainHardware();
     ElapsedTime time = new ElapsedTime();
@@ -29,7 +29,44 @@ public class DriveTrainTeleOp extends LinearOpMode {
 
         while(opModeIsActive())
         {
-            linearMovement(0.8, 'l');
+            if(joystickAngle('l') < -85 && joystickAngle('l') > -95)
+            {
+                motor('l', 1).setPower(1);
+                motor('l', 1).setPower(1);
+            }
+            if(joystickAngle('r') < -85 && joystickAngle('l') > -95)
+            {
+                motor('r', 1).setPower(1);
+                motor('r', 1).setPower(1);
+            }
+
+            if(gamepad1.dpad_up) {
+                dsDrive.LeftM1.setPower(1);
+                dsDrive.LeftM2.setPower(-1);
+                dsDrive.RightM1.setPower(1);
+                dsDrive.RightM2.setPower(-1);
+            }
+            else
+            {
+                dsDrive.LeftM1.setPower(0);
+                dsDrive.LeftM2.setPower(0);
+                dsDrive.RightM1.setPower(0);
+                dsDrive.RightM2.setPower(0);
+            }
+
+            if(gamepad1.dpad_down) {
+                dsDrive.LeftM1.setPower(-1);
+                dsDrive.LeftM2.setPower(1);
+                dsDrive.RightM1.setPower(-1);
+                dsDrive.RightM2.setPower(1);
+            }
+            else
+            {
+                dsDrive.LeftM1.setPower(0);
+                dsDrive.LeftM2.setPower(0);
+                dsDrive.RightM1.setPower(0);
+                dsDrive.RightM2.setPower(0);
+            }
         }
 
     }
@@ -38,7 +75,7 @@ public class DriveTrainTeleOp extends LinearOpMode {
 
     //  ++++++ Helper Methods ++++++
 
-    public void linearMovement(double inputPower, char m)
+    /*public void linearMovement(double inputPower, char m)
     {
         double decay = 0.99;
 
@@ -47,17 +84,17 @@ public class DriveTrainTeleOp extends LinearOpMode {
             if(motor(m,1).getCurrentPosition() > encoderAvg(m))
             {
                 motor(m, 1).setPower(inputPower * decay);
-                motor(m, 2).setPower(inputPower);
+                motor(m, 2).setPower(-inputPower);
             }
             else if (motor(m,2).getCurrentPosition() > encoderAvg(m))
             {
-                motor(m, 2).setPower(inputPower * decay);
+                motor(m, 2).setPower(-inputPower * decay);
                 motor(m, 1).setPower(inputPower);
             }
             else
             {
                 motor(m, 1).setPower(inputPower);
-                motor(m, 2).setPower(inputPower);
+                motor(m, 2).setPower(-inputPower);
             }
         }
         else
@@ -67,18 +104,25 @@ public class DriveTrainTeleOp extends LinearOpMode {
         }
 
 
-    }
+    }*/
 
     public void turnWheel(double angle)
     {
     }
 
 
-    public double joystickAngle()
+    public double joystickAngle(char lr)
     {
-        double angle;
-        double x = gamepad1.right_stick_x;
-        double y = -gamepad1.right_stick_y;
+        double angle, x, y;
+        if (lr == 'l') {
+            x = gamepad1.left_stick_x;
+            y = -gamepad1.left_stick_y;
+        }
+        else
+        {
+            x = gamepad1.right_stick_x;
+            y = -gamepad1.right_stick_y;
+        }
 
         if ((y == 1 && x == 0) || (x == 0 && y == 0))
             angle = 0;
