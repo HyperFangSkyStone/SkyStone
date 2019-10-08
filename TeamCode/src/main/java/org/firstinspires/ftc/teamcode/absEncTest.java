@@ -7,65 +7,26 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="DriveTrainTestNoPID", group="Pushbot")
+@TeleOp(name="absEncTest", group="Pushbot")
 //@Disabled
-public class DriveTrainTest extends LinearOpMode {
+public class absEncTest extends LinearOpMode {
 
-    DriveTrainHardware dsDrive = new DriveTrainHardware();
-    ElapsedTime time = new ElapsedTime();
-    ArrayList<Double> timeRecord = new ArrayList<>();
-
-
-    PIDController PID = new PIDController(0, 0, 0);
-
+    absEncHW r = new absEncHW();
 
     @Override
     public void runOpMode() throws InterruptedException
     {
-        dsDrive.init(hardwareMap);
+        r.init(hardwareMap);
 
         waitForStart();
 
 
         while(opModeIsActive())
         {
-            if(joystickAngle('l') < -85 && joystickAngle('l') > -95)
+            if(gamepad1.a)
             {
-                motor('l', 1).setPower(1);
-                motor('l', 1).setPower(1);
-            }
-            if(joystickAngle('r') < -85 && joystickAngle('l') > -95)
-            {
-                motor('r', 1).setPower(1);
-                motor('r', 1).setPower(1);
-            }
-
-            if(gamepad1.dpad_up) {
-                dsDrive.LeftM1.setPower(1);
-                dsDrive.LeftM2.setPower(-1);
-                dsDrive.RightM1.setPower(1);
-                dsDrive.RightM2.setPower(-1);
-            }
-            else
-            {
-                dsDrive.LeftM1.setPower(0);
-                dsDrive.LeftM2.setPower(0);
-                dsDrive.RightM1.setPower(0);
-                dsDrive.RightM2.setPower(0);
-            }
-
-            if(gamepad1.dpad_down) {
-                dsDrive.LeftM1.setPower(-1);
-                dsDrive.LeftM2.setPower(1);
-                dsDrive.RightM1.setPower(-1);
-                dsDrive.RightM2.setPower(1);
-            }
-            else
-            {
-                dsDrive.LeftM1.setPower(0);
-                dsDrive.LeftM2.setPower(0);
-                dsDrive.RightM1.setPower(0);
-                dsDrive.RightM2.setPower(0);
+                telemetry.addData("Encoder Voltage", r.encoder.getVoltage());
+                telemetry.update();
             }
         }
 
@@ -105,7 +66,7 @@ public class DriveTrainTest extends LinearOpMode {
         }
 
 
-    }*/
+    }
 
     public void turnWheel(double angle)
     {
@@ -146,23 +107,23 @@ public class DriveTrainTest extends LinearOpMode {
 
     public double encoderAvg(char module)
     {
-        /*
+
             parameter:
             'l' - calculate leftModule
             'r' - calculate rightModule
 
-         */
+
 
         return (Math.abs(motor(module, 1).getCurrentPosition()) + Math.abs(motor(module, 2).getCurrentPosition())) / 2;
     }
 
     public DcMotor motor(char module, int motor)
     {
-        /*
+
             parameter:
             l/r - left/right
             1/2 - motor 1/2
-         */
+
 
         if (module == 'l')
         {
@@ -178,5 +139,5 @@ public class DriveTrainTest extends LinearOpMode {
             else
                 return dsDrive.RightM2;
         }
-    }
+    }*/
 }

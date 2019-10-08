@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -21,7 +22,6 @@ public class DriveTrainHardware
 
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
-
         LeftM1 = hwMap.get(DcMotor.class, "LeftM1");
         LeftM2 = hwMap.get(DcMotor.class, "LeftM2");
         RightM1 = hwMap.get(DcMotor.class, "RightM1");

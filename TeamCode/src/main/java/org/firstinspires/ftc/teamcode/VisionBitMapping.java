@@ -18,7 +18,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.Para
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
-
 public class VisionBitMapping {
     private LinearOpMode opMode;
 
