@@ -12,7 +12,7 @@ public class absEncHW {
     public absEncHW()
     {
 
-    }
+    };
 
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;

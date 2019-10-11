@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -9,7 +10,7 @@ public class ModuleHarware
 
     public DcMotor  M0  = null;
     public DcMotor  M1  = null;
-
+    public AnalogInput encoder = null;
 
     HardwareMap hwMap =  null;
 
@@ -21,6 +22,9 @@ public class ModuleHarware
 
         M0 = hwMap.get(DcMotor.class, "M0");
         M1 = hwMap.get(DcMotor.class, "M1");
+        encoder = hwMap.get(AnalogInput.class, "encoder");
+
+
         M0.setDirection(DcMotor.Direction.FORWARD);
         M1.setDirection(DcMotor.Direction.FORWARD);
 

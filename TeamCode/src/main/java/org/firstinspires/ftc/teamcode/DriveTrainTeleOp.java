@@ -14,6 +14,7 @@ public class DriveTrainTeleOp extends LinearOpMode {
     DriveTrainHardware dsDrive = new DriveTrainHardware();
     ElapsedTime time = new ElapsedTime();
     ArrayList<Double> timeRecord = new ArrayList<>();
+    //target angle =
 
 
     PIDController PID = new PIDController(0, 0, 0);
@@ -134,4 +135,11 @@ public class DriveTrainTeleOp extends LinearOpMode {
                 return dsDrive.RightM2;
         }
     }
+
+    /*public double getWheelHeading(char module)
+    {
+        if (module == 'l')
+            return (dsDrive.LeftEncoder.getVoltage() /5 * 360);
+    }*/
+
 }

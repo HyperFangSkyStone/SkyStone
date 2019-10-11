@@ -40,7 +40,6 @@ public class absEncTest extends LinearOpMode {
     /*public void linearMovement(double inputPower, char m)
     {
         double decay = 0.99;
-
         if (joystickAngle() > -10 && joystickAngle() < 10)
         {
             if(motor(m,1).getCurrentPosition() > encoderAvg(m))
@@ -64,15 +63,10 @@ public class absEncTest extends LinearOpMode {
             motor(m, 1).setPower(0);
             motor(m, 2).setPower(0);
         }
-
-
     }
-
     public void turnWheel(double angle)
     {
     }
-
-
     public double joystickAngle(char lr)
     {
         double angle, x, y;
@@ -85,7 +79,6 @@ public class absEncTest extends LinearOpMode {
             x = gamepad1.right_stick_x;
             y = -gamepad1.right_stick_y;
         }
-
         if ((y == 1 && x == 0) || (x == 0 && y == 0))
             angle = 0;
         else if (y == -1 && x == 0)
@@ -104,27 +97,18 @@ public class absEncTest extends LinearOpMode {
             angle = Math.atan(x/y) * 180 / Math.PI + 180;
         return angle;
     }
-
     public double encoderAvg(char module)
     {
-
             parameter:
             'l' - calculate leftModule
             'r' - calculate rightModule
-
-
-
         return (Math.abs(motor(module, 1).getCurrentPosition()) + Math.abs(motor(module, 2).getCurrentPosition())) / 2;
     }
-
     public DcMotor motor(char module, int motor)
     {
-
             parameter:
             l/r - left/right
             1/2 - motor 1/2
-
-
         if (module == 'l')
         {
             if (motor == 1)
