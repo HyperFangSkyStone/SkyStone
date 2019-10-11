@@ -42,6 +42,10 @@ public class ModuleTest extends LinearOpMode {
             {
                 turnWheel();
             }
+            else if (gamepad1.right_bumper)
+            {
+                runWheel();
+            }
             else
             {
                 dsModule.M0.setPower(0);
@@ -65,7 +69,39 @@ public class ModuleTest extends LinearOpMode {
 
     }
 
+    private void runWheel() {
+        double targetAngle = joystickAngle();
+        double error = targetAngle - currentAngle();
+        double forwardIndex = gamepad1.right_stick_y * .5;
+        if (error > 180)
+            error = error - 360;
+        if (error < -180)
+            error = error + 360;
+        double turnpower = 0.7 * (Math.abs(error / 180));
 
+        telemetry.addData("error", error);
+        telemetry.addData("target angle", targetAngle);
+        telemetry.addData("current angle", currentAngle());
+        telemetry.update();
+
+        if (turnpower < 0.2)
+            turnpower = 0.2;
+        if (Math.abs(error) > 2)
+        {
+            if(error > 0)
+            {
+                turnpower *= -1;
+            }
+        }
+        else
+        {
+            turnpower = 0;
+        }
+
+        dsModule.M0.setPower(turnpower + forwardIndex);
+        dsModule.M1.setPower(turnpower - forwardIndex);
+
+    }
 
 
     //  ++++++ Helper Methods ++++++
@@ -132,21 +168,26 @@ public class ModuleTest extends LinearOpMode {
             error = error - 360;
         if (error < -180)
             error = error + 360;
-        double power = 0.2 * (Math.abs(error / 180));
+        double power = 0.7 * (Math.abs(error / 180));
 
-        if (power < 0.15)
-            power = 0.15;
-        if (Math.abs(error) > 5)
+        telemetry.addData("error", error);
+        telemetry.addData("target angle", targetAngle);
+        telemetry.addData("current angle", currentAngle());
+        telemetry.update();
+
+        if (power < 0.2)
+            power = 0.2;
+        if (Math.abs(error) > 2)
         {
             if(error > 0)
             {
-                dsModule.M0.setPower(power);
-                dsModule.M1.setPower(power);
+                dsModule.M0.setPower(-power);
+                dsModule.M1.setPower(-power);
             }
             else
             {
-                dsModule.M0.setPower(-power);
-                dsModule.M1.setPower(-power);
+                dsModule.M0.setPower(power);
+                dsModule.M1.setPower(power);
             }
 
 
@@ -161,7 +202,7 @@ public class ModuleTest extends LinearOpMode {
 
     public void turnToAngle(double TargetAngle)
     {
-        
+
     }
 
 
@@ -209,7 +250,6 @@ public class ModuleTest extends LinearOpMode {
             parameter:
             'l' - calculate leftModule
             'r' - calculate rightModule
-
          */
 
         return (Math.abs(dsModule.M0.getCurrentPosition()) + Math.abs(dsModule.M1.getCurrentPosition())) / 2;
