@@ -8,7 +8,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PWMOutput;
 import com.qualcomm.robotcore.hardware.PWMOutputController;
 import com.qualcomm.robotcore.hardware.PWMOutputEx;
+import com.qualcomm.robotcore.hardware.PWMOutputImpl;
+import com.qualcomm.robotcore.hardware.PWMOutputImplEx;
 import com.qualcomm.robotcore.hardware.PwmControl;
+import com.qualcomm.robotcore.hardware.ServoController;
 
 
 public class DriveTrainHardware
@@ -18,7 +21,8 @@ public class DriveTrainHardware
     public DcMotor  LeftM2  = null;
     public DcMotor  RightM1  = null;
     public DcMotor  RightM2  = null;
-    public DigitalChannelImpl LeftEncoder = null;
+    public AnalogInput LeftEncoder = null;
+    public AnalogInput RightEncoder = null;
     //public PWMOutput
 
 

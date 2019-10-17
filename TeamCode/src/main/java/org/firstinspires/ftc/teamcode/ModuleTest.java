@@ -74,7 +74,7 @@ public class ModuleTest extends LinearOpMode {
         if (error < -180)
             error = error + 360;
         double turnpower = 0.7 * (Math.abs(error / 180));
-
+    }
 
 
     //  ++++++ Helper Methods ++++++
