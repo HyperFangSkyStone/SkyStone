@@ -2,10 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PWMOutput;
 
 public class absEncHW {
 
-    public AnalogInput encoder = null;
+    public PWMOutput encoder = null;
     HardwareMap hwMap           =  null;
 
 
@@ -16,6 +17,6 @@ public class absEncHW {
 
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
-        encoder = hwMap.get(AnalogInput.class, "encoder");
+        encoder = hwMap.get(PWMOutput.class , "encoder");
     }
 }

@@ -25,7 +25,8 @@ public class absEncTest extends LinearOpMode {
         {
             if(gamepad1.a)
             {
-                telemetry.addData("Encoder Voltage", r.encoder.getVoltage());
+                telemetry.addData("getPulseWidthOutputTime", r.encoder.getPulseWidthOutputTime());
+                telemetry.addData("getPulseWidthPeriod", r.encoder.getPulseWidthPeriod());
                 telemetry.update();
             }
         }

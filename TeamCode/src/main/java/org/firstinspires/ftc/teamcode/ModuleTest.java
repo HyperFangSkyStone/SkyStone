@@ -31,7 +31,7 @@ public class ModuleTest extends LinearOpMode {
             //targetAngle = joystickAngle();
             //telemetry.addData("encoderAngle", currentAngle());
             //telemetry.addData("targetAngle", targetAngle);
-            double jsaCache = joystickAngle();
+            //double jsaCache = joystickAngle();
 
             if (gamepad1.a)
             {
@@ -65,6 +65,15 @@ public class ModuleTest extends LinearOpMode {
 
     }
 
+    private void runWheel() {
+        double targetAngle = joystickAngle();
+        double error = targetAngle - currentAngle();
+        double forwardIndex = gamepad1.left_stick_y * .5;
+        if (error > 180)
+            error = error - 360;
+        if (error < -180)
+            error = error + 360;
+        double turnpower = 0.7 * (Math.abs(error / 180));
 
 
 
@@ -169,8 +178,8 @@ public class ModuleTest extends LinearOpMode {
     public double joystickAngle()
     {
         double angle;
-        double x = gamepad1.left_stick_x;
-        double y = -gamepad1.left_stick_y;
+        double x = gamepad1.right_stick_x;
+        double y = -gamepad1.right_stick_y;
 
         if ((y == 1 && x == 0) || (x == 0 && y == 0))
             angle = 0;
@@ -193,7 +202,7 @@ public class ModuleTest extends LinearOpMode {
 
     public double currentAngle()
     {
-        double rawAngle = (dsModule.encoder.getVoltage() - 0.047) * 72; //angle from 0 to 360
+        double rawAngle = (dsModule.encoder.getVoltage()) * 72  - 16.2; //angle from 0 to 360
         double outputAngle;
 
         if (rawAngle < 180)

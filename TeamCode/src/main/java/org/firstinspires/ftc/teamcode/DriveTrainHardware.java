@@ -2,8 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.DigitalChannelImpl;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.PWMOutput;
+import com.qualcomm.robotcore.hardware.PWMOutputController;
+import com.qualcomm.robotcore.hardware.PWMOutputEx;
+import com.qualcomm.robotcore.hardware.PwmControl;
 
 
 public class DriveTrainHardware
@@ -13,6 +18,8 @@ public class DriveTrainHardware
     public DcMotor  LeftM2  = null;
     public DcMotor  RightM1  = null;
     public DcMotor  RightM2  = null;
+    public DigitalChannelImpl LeftEncoder = null;
+    //public PWMOutput
 
 
     HardwareMap hwMap           =  null;
@@ -26,6 +33,10 @@ public class DriveTrainHardware
         LeftM2 = hwMap.get(DcMotor.class, "LeftM2");
         RightM1 = hwMap.get(DcMotor.class, "RightM1");
         RightM2 = hwMap.get(DcMotor.class, "RightM2");
+        //LeftEncoder = hwMap.get(DigitalInput.class, "LeftEncoder");
+        //RightEncoder = hwMap.get(AnalogInput.class, "RightEncoder");
+
+
         LeftM1.setDirection(DcMotor.Direction.FORWARD);
         LeftM2.setDirection(DcMotor.Direction.FORWARD);
         RightM1.setDirection(DcMotor.Direction.FORWARD);

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="Module Test", group="Pushbot")
+@TeleOp(name="Separate Control Test", group="Monkey")
 //@Disabled
 public class ModuleTeleOp extends LinearOpMode {
 
@@ -29,25 +29,28 @@ public class ModuleTeleOp extends LinearOpMode {
 
         while(opModeIsActive())
         {
-            if (Math.abs(joystickAngle()) < 10) {
-                linearMovement(0.8);
+            if (gamepad1.dpad_up)
+                turnWheel(0);
+            else if (gamepad1.dpad_down)
+                turnWheel(180);
+            else if (gamepad1.dpad_left)
+                turnWheel(-90);
+            else if (gamepad1.dpad_right)
+                turnWheel(90);
+            else if (gamepad1.right_bumper)
+                linearMovement(1, 0.5);
+            //else if (gamepad1.left_bumper)
+                //linearMovement(-1, 1);
+            else if(gamepad1.y)
+            {
+                telemetry.addData("current angle", currentAngle());
+                telemetry.update();
             }
             else {
                 dsModule.M0.setPower(0);
                 dsModule.M1.setPower(0);
             }
-
-            telemetry.addData("M0", dsModule.M0.getCurrentPosition());
-            telemetry.addData("M1", dsModule.M1.getCurrentPosition());
-            if (dsModule.M0.getCurrentPosition() > dsModule.M1.getCurrentPosition())
-                telemetry.addData("", "M0");
-            else if (dsModule.M0.getCurrentPosition() < dsModule.M1.getCurrentPosition())
-                telemetry.addData("", "M1");
-            else
-                telemetry.addData("", "equal");
         }
-
-        telemetry.update();
 
     }
 
@@ -56,71 +59,96 @@ public class ModuleTeleOp extends LinearOpMode {
 
     //  ++++++ Helper Methods ++++++
 
-    public void linearMovement(double inputPower)
+    public void linearMovement(double inputPower, double t)
     {
-        double decay = 0.99;
+        double p = 0.99;
 
-        if (joystickAngle() > -10 && joystickAngle() < 10)
+        time.reset();
+        double targetAngle = currentAngle();
+        double error;
+
+        while (time.seconds() < t)
         {
-            if(dsModule.M0.getCurrentPosition() > encoderAvg())
+            error = targetAngle - currentAngle();
+            if (error > 180)
+                error = error - 360;
+            if (error < -180)
+                error = error + 360;
+            p = 1 - (0.05 * Math.abs(error));
+            if (p < 0.8)
+                p = 0.8;
+
+            telemetry.addData("error", error);
+            telemetry.addData("target angle", targetAngle);
+            telemetry.addData("current angle", currentAngle());
+            telemetry.addData("correction index", p);
+
+
+            if(Math.abs(error) < 1) //if error is within 1 degree
             {
-                dsModule.M0.setPower(inputPower * decay);
+                dsModule.M0.setPower(inputPower); //no proportion
                 dsModule.M1.setPower(-inputPower);
+                telemetry.addData("correct", inputPower);
             }
-            else if (dsModule.M1.getCurrentPosition() > encoderAvg())
+            else //if error is greater than 1 degree
             {
-                dsModule.M0.setPower(inputPower);
-                dsModule.M1.setPower(-inputPower * decay);
+                if (error < 0)
+                {
+                    dsModule.M0.setPower(inputPower);
+                    dsModule.M1.setPower(-inputPower * p);
+                    telemetry.addData("M0", inputPower);
+                    telemetry.addData("M1", inputPower * p);
+                }
+                else
+                {
+                    dsModule.M0.setPower(inputPower * p);
+                    dsModule.M1.setPower(-inputPower);
+                    telemetry.addData("M0", inputPower * p);
+                    telemetry.addData("M1", inputPower);
+                }
             }
-            else
-            {
-                dsModule.M0.setPower(inputPower);
-                dsModule.M1.setPower(-inputPower);
+            telemetry.update();
+        }
+        dsModule.M0.setPower(0);
+        dsModule.M1.setPower(0);
+    }
+
+    public void turnWheel(double targetAngle) {
+        double error = targetAngle - currentAngle();
+        if (error > 180)
+            error = error - 360;
+        if (error < -180)
+            error = error + 360;
+        double power = 0.7 * (Math.abs(error / 180));
+
+        telemetry.addData("error", error);
+        telemetry.addData("target angle", targetAngle);
+        telemetry.addData("current angle", currentAngle());
+        telemetry.update();
+
+        if (power < 0.15)
+            power = 0.15;
+        if (Math.abs(error) > 2) {
+            if (error > 0) {
+                dsModule.M0.setPower(-power);
+                dsModule.M1.setPower(-power);
+            } else {
+                dsModule.M0.setPower(power);
+                dsModule.M1.setPower(power);
             }
         }
-
     }
 
-    public void turnWheel(double angle)
+    public double currentAngle()
     {
+        double rawAngle = (dsModule.encoder.getVoltage()) * 72  - 32; //angle from 0 to 360
+
+        return rawAngle;
     }
 
 
-    public double joystickAngle()
-    {
-        double angle;
-        double x = gamepad1.right_stick_x;
-        double y = -gamepad1.right_stick_y;
 
-        if ((y == 1 && x == 0) || (x == 0 && y == 0))
-            angle = 0;
-        else if (y == -1 && x == 0)
-            angle = 180;
-        else if (y == 0 && x == 1)
-            angle = 90;
-        else if (y == 0 && x == -1)
-            angle = -90;
-        else if (x > 0 && y > 0)
-            angle = Math.atan(x/y) * 180 / Math.PI;
-        else if (x < 0 && y > 0)
-            angle = Math.atan(x/y) * 180 / Math.PI;
-        else if (x < 0 && y < 0)
-            angle = Math.atan(x/y) * 180 / Math.PI - 180;
-        else
-            angle = Math.atan(x/y) * 180 / Math.PI + 180;
-        return angle;
-    }
 
-    public double encoderAvg()
-    {
-        /*
-            parameter:
-            'l' - calculate leftModule
-            'r' - calculate rightModule
 
-         */
-
-        return (Math.abs(dsModule.M0.getCurrentPosition()) + Math.abs(dsModule.M1.getCurrentPosition())) / 2;
-    }
 
 }

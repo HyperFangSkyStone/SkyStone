@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="DriveTrainTestNoPID", group="Pushbot")
+@TeleOp(name="DriveTrainTestSEP", group="Pushbot")
 //@Disabled
 public class DriveTrainTest extends LinearOpMode {
 
@@ -15,6 +16,9 @@ public class DriveTrainTest extends LinearOpMode {
     ElapsedTime time = new ElapsedTime();
     ArrayList<Double> timeRecord = new ArrayList<>();
 
+
+    double leftEncOffset = 0;
+    double rightEncOffset = 0;
 
     PIDController PID = new PIDController(0, 0, 0);
 
@@ -26,46 +30,26 @@ public class DriveTrainTest extends LinearOpMode {
 
         waitForStart();
 
-
+        //tuneEncoders();
         while(opModeIsActive())
         {
-            if(joystickAngle('l') < -85 && joystickAngle('l') > -95)
+            if (gamepad1.dpad_up)
             {
-                motor('l', 1).setPower(1);
-                motor('l', 1).setPower(1);
+                telemetry.addData("Left Angle", currentAngle('l'));
+                telemetry.addData("Right Angle", currentAngle('r'));
+                telemetry.update();
             }
-            if(joystickAngle('r') < -85 && joystickAngle('l') > -95)
-            {
-                motor('r', 1).setPower(1);
-                motor('r', 1).setPower(1);
+            else if (gamepad1.right_bumper) {
+                doubleLinearMovement(0.75);
             }
-
-            if(gamepad1.dpad_up) {
-                dsDrive.LeftM1.setPower(1);
-                dsDrive.LeftM2.setPower(-1);
-                dsDrive.RightM1.setPower(1);
-                dsDrive.RightM2.setPower(-1);
+            else if (gamepad1.left_bumper) {
+                doubleLinearMovement(1);
             }
-            else
-            {
-                dsDrive.LeftM1.setPower(0);
-                dsDrive.LeftM2.setPower(0);
-                dsDrive.RightM1.setPower(0);
-                dsDrive.RightM2.setPower(0);
-            }
-
-            if(gamepad1.dpad_down) {
-                dsDrive.LeftM1.setPower(-1);
-                dsDrive.LeftM2.setPower(1);
-                dsDrive.RightM1.setPower(-1);
-                dsDrive.RightM2.setPower(1);
-            }
-            else
-            {
-                dsDrive.LeftM1.setPower(0);
-                dsDrive.LeftM2.setPower(0);
-                dsDrive.RightM1.setPower(0);
-                dsDrive.RightM2.setPower(0);
+            else {
+                motor('l', 1).setPower(0);
+                motor('l', 2).setPower(0);
+                motor('r', 1).setPower(0);
+                motor('r', 2).setPower(0);
             }
         }
 
@@ -76,39 +60,31 @@ public class DriveTrainTest extends LinearOpMode {
 
     //  ++++++ Helper Methods ++++++
 
-    /*public void linearMovement(double inputPower, char m)
-    {
-        double decay = 0.99;
 
-        if (joystickAngle() > -10 && joystickAngle() < 10)
-        {
-            if(motor(m,1).getCurrentPosition() > encoderAvg(m))
-            {
-                motor(m, 1).setPower(inputPower * decay);
-                motor(m, 2).setPower(-inputPower);
-            }
-            else if (motor(m,2).getCurrentPosition() > encoderAvg(m))
-            {
-                motor(m, 2).setPower(-inputPower * decay);
-                motor(m, 1).setPower(inputPower);
-            }
-            else
-            {
-                motor(m, 1).setPower(inputPower);
-                motor(m, 2).setPower(-inputPower);
+    public void correctToAngle(double targetAngle)
+    {
+
+    }
+
+    public void turnWheel(double targetAngle, char module) {
+        double error = targetAngle - currentAngle(module);
+        if (error > 180)
+            error = error - 360;
+        if (error < -180)
+            error = error + 360;
+        double power = 0.7 * (Math.abs(error / 180));
+
+        if (power < 0.15)
+            power = 0.15;
+        if (Math.abs(error) > 2) {
+            if (error > 0) {
+                motor(module, 1).setPower(-power);
+                motor(module, 2).setPower(-power);
+            } else {
+                motor(module, 1).setPower(power);
+                motor(module, 2).setPower(power);
             }
         }
-        else
-        {
-            motor(m, 1).setPower(0);
-            motor(m, 2).setPower(0);
-        }
-
-
-    }*/
-
-    public void turnWheel(double angle)
-    {
     }
 
 
@@ -144,17 +120,75 @@ public class DriveTrainTest extends LinearOpMode {
         return angle;
     }
 
-    public double encoderAvg(char module)
+    public void linearMovement(double inputPower, double t, char module)
     {
-        /*
-            parameter:
-            'l' - calculate leftModule
-            'r' - calculate rightModule
+        double p = 0.99;
 
-         */
+        time.reset();
+        double targetAngle = currentAngle(module);
+        double error;
 
-        return (Math.abs(motor(module, 1).getCurrentPosition()) + Math.abs(motor(module, 2).getCurrentPosition())) / 2;
+        while (time.seconds() < t)
+        {
+            error = targetAngle - currentAngle(module);
+            if (error > 180)
+                error = error - 360;
+            if (error < -180)
+                error = error + 360;
+            p = 1 - (0.05 * Math.abs(error));
+            if (p < 0.8)
+                p = 0.8;
+
+            telemetry.addData("error", error);
+            telemetry.addData("target angle", targetAngle);
+            telemetry.addData("current angle", currentAngle(module));
+            telemetry.addData("correction index", p);
+
+
+            if(Math.abs(error) < 1) //if error is within 1 degree
+            {
+                motor(module, 1).setPower(inputPower); //no proportion
+                motor(module, 2).setPower(-inputPower);
+                telemetry.addData("correct", inputPower);
+            }
+            else //if error is greater than 1 degree
+            {
+                if (error < 0)
+                {
+                    motor(module, 1).setPower(inputPower);
+                    motor(module, 2).setPower(-inputPower * p);
+                    telemetry.addData("M0", inputPower);
+                    telemetry.addData("M1", inputPower * p);
+                }
+                else
+                {
+                    motor(module, 1).setPower(inputPower * p);
+                    motor(module, 2).setPower(-inputPower);
+                    telemetry.addData("M0", inputPower * p);
+                    telemetry.addData("M1", inputPower);
+                }
+            }
+            telemetry.update();
+        }
+        motor(module, 1).setPower(0);
+        motor(module, 2).setPower(0);
     }
+
+
+    public double currentAngle(char lr)
+    {
+        double rawAngle = 69;
+        if (lr == 'l')
+            rawAngle = (dsDrive.LeftEncoder.getVoltage()) * 72;// - leftEncOffset; //angle from 0 to 360
+        if (lr == 'r')
+            rawAngle = (dsDrive.RightEncoder.getVoltage()) * 72;// - rightEncOffset;
+
+
+        return rawAngle;
+    }
+
+
+
 
     public DcMotor motor(char module, int motor)
     {
@@ -179,4 +213,94 @@ public class DriveTrainTest extends LinearOpMode {
                 return dsDrive.RightM2;
         }
     }
+
+    public void tuneEncoders() //allows the encoders to be tuned upon startup
+    {
+        if(Math.abs(0 - (currentAngle('l') + currentAngle('r'))/2) < 20 ) //if resetting to 0 degrees
+        {
+            leftEncOffset = currentAngle('l');
+            rightEncOffset = currentAngle('r');
+        }
+        else
+        {
+            leftEncOffset = currentAngle('l') - 180;
+            rightEncOffset = currentAngle('r') - 180;
+        }
+    }
+
+
+    public void doubleLinearMovement(double inputPower)
+    {
+        double pl, pr;
+
+        time.reset();
+        double targetAngle = 0;
+        double errorLeft, errorRight;
+        errorLeft = targetAngle - currentAngle('l');
+        errorRight = targetAngle - currentAngle('r');
+
+        if (errorLeft > 180)
+            errorLeft -= 360;
+        if (errorLeft < -180)
+            errorLeft += 360;
+        if (errorRight > 180)
+            errorRight -= 360;
+        if (errorRight < -180)
+            errorRight += 360;
+
+        pl = 1 - (0.05 * Math.abs(errorLeft));
+        pr = 1 - (0.05 * Math.abs(errorRight));
+
+        if (pl < 0.8)
+            pl = 0.8;
+        if (pr < 0.8)
+            pr = 0.8;
+
+        telemetry.addData("current left", currentAngle('l'));
+        telemetry.addData("left error", errorLeft);
+        telemetry.addData("current right", currentAngle('r'));
+        telemetry.addData("right error", errorRight);
+        telemetry.update();
+
+        if(Math.abs(errorLeft) < 1)
+        {
+            motor('l', 1).setPower(inputPower); //no proportion
+            motor('l', 2).setPower(-inputPower);
+        }
+        else //if error is greater than 1 degree
+        {
+            if (errorLeft < 0)
+            {
+                motor('l', 1).setPower(inputPower);
+                motor('l', 2).setPower(-inputPower * pl);
+            }
+            else
+            {
+                motor('l', 1).setPower(inputPower * pl);
+                motor('l', 2).setPower(-inputPower);
+            }
+        }
+
+
+        if(Math.abs(errorRight) < 1)
+        {
+            motor('r', 1).setPower(inputPower); //no proportion
+            motor('r', 2).setPower(-inputPower);
+        }
+        else //if error is greater than 1 degree
+        {
+            if (errorRight < 0)
+            {
+                motor('r', 1).setPower(inputPower);
+                motor('r', 2).setPower(-inputPower * pr);
+            }
+            else
+            {
+                motor('r', 1).setPower(inputPower * pr);
+                motor('r', 2).setPower(-inputPower);
+            }
+        }
+
+    }
+
 }
