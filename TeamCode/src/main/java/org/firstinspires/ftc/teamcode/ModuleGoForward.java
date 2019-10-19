@@ -38,25 +38,24 @@ public class ModuleGoForward extends LinearOpMode {
             //targetAngle = joystickAngle();
             //telemetry.addData("encoderAngle", currentAngle());
             //telemetry.addData("targetAngle", targetAngle);
-            double jsaCache = joystickAngle();
 
-            if (gamepad1.a) {
-                //linearMovement(1, 3);
-                idle();
-            } else if (gamepad1.b) {
-                moveOneModule(1);
+            if (gamepad1.b) {
+                moveOneModule(5);
             } else {
                 telemetry.addData("Stop, ", "da** it!!");
                 telemetry.update();
                 dsModule.M0.setPower(0);
                 dsModule.M1.setPower(0);
             }
+            dsModule.M0.setPower(0);
+            dsModule.M1.setPower(0);
 
 
 
 
         }
-
+        dsModule.M0.setPower(0);
+        dsModule.M1.setPower(0);
         telemetry.update();
 
     }
@@ -65,10 +64,10 @@ public class ModuleGoForward extends LinearOpMode {
     {
         resetEncoders();
         double encoderTicks = inches / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION; // target number of encoder ticks
-        double kp = 0.5 / 300;
-        double errorMargin = 5; //Amount of error we are willing to accept in encoder ticks
-        double powerFloor = 0.2;
-        double powerCeiling = 0.4;
+        double kp = 1 / 300;
+        double errorMargin = 20; //Amount of error we are willing to accept in encoder ticks
+        double powerFloor = 0.7;
+        double powerCeiling = 1;
         telemetry.addData("Code is ", "running");
         telemetry.addData("encoderAvg", encoderAvg());
         telemetry.addData("encoderTicks", encoderTicks);
@@ -90,6 +89,7 @@ public class ModuleGoForward extends LinearOpMode {
             if (headingError < -180)
                 headingError = headingError + 360;
             double turnpower = 0.7 * (Math.abs(headingError / 180));
+            //double turnpower = (0.00 * Math.abs(headingError));
 
             telemetry.addData("Current position (in)", encoderAvg() * MOTOR_TO_INCHES / NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION);
             telemetry.addData("heading error", headingError);
@@ -99,8 +99,8 @@ public class ModuleGoForward extends LinearOpMode {
             telemetry.addData("encoderTicks", encoderTicks);
             telemetry.addData("forwardPower", forwardpower);
 
-            if (turnpower < 0.2)
-                turnpower = 0.2;
+            if (turnpower < 0.01)
+                turnpower = 0.01;
             if (Math.abs(headingError) > 2)
             {
                 if(headingError > 0)
@@ -113,13 +113,17 @@ public class ModuleGoForward extends LinearOpMode {
                 turnpower = 0;
             }
 
-            telemetry.addData("M0 Power: ",turnpower + forwardIndex);
-            telemetry.addData("M1 Power: ",turnpower - forwardIndex);
+            telemetry.addData("M0 Power: ",(turnpower + forwardIndex) * 0.75);
+            telemetry.addData("M1 Power: ",(turnpower - forwardIndex) * 0.75);
             telemetry.update();
 
-            dsModule.M0.setPower(turnpower + forwardIndex);
-            dsModule.M1.setPower(turnpower - forwardIndex);
+            dsModule.M0.setPower((turnpower + forwardIndex) * 0.75);
+            dsModule.M1.setPower((turnpower - forwardIndex) * 0.75);
         }
+        telemetry.addData("The code stopped ", "for some reason.");
+        telemetry.update();
+        dsModule.M0.setPower(0);
+        dsModule.M1.setPower(0);
     }
 
     /*
@@ -349,6 +353,8 @@ public class ModuleGoForward extends LinearOpMode {
     {
         dsModule.M0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dsModule.M1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dsModule.M0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        dsModule.M1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
 }

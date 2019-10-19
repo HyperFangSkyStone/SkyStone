@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
@@ -29,18 +30,26 @@ public class DriveTrainTest extends LinearOpMode {
         dsDrive.init(hardwareMap);
 
         waitForStart();
-
-        //tuneEncoders();
+        leftEncOffset = 0;
+        rightEncOffset = 0;
+        tuneEncoders();
         while(opModeIsActive())
         {
-            if (gamepad1.dpad_up)
+            if (gamepad1.y)
             {
                 telemetry.addData("Left Angle", currentAngle('l'));
                 telemetry.addData("Right Angle", currentAngle('r'));
                 telemetry.update();
             }
+            /*else if (gamepad1.b)
+            {
+                motor('l', 1).setDirection(DcMotor.Direction.REVERSE);
+                motor('l', 2).setDirection(DcMotor.Direction.REVERSE);
+                motor('r', 1).setDirection(DcMotor.Direction.REVERSE);
+                motor('r', 1).setDirection(DcMotor.Direction.REVERSE);
+            }*/
             else if (gamepad1.right_bumper) {
-                doubleLinearMovement(0.75);
+                doubleLinearMovement(0.5);
             }
             else if (gamepad1.left_bumper) {
                 doubleLinearMovement(1);
@@ -177,11 +186,11 @@ public class DriveTrainTest extends LinearOpMode {
 
     public double currentAngle(char lr)
     {
-        double rawAngle = 69;
+        double rawAngle = 420;
         if (lr == 'l')
-            rawAngle = (dsDrive.LeftEncoder.getVoltage()) * 72;// - leftEncOffset; //angle from 0 to 360
+            rawAngle = (dsDrive.LeftEncoder.getVoltage()) * 72 - leftEncOffset; //angle from 0 to 360
         if (lr == 'r')
-            rawAngle = (dsDrive.RightEncoder.getVoltage()) * 72;// - rightEncOffset;
+            rawAngle = (dsDrive.RightEncoder.getVoltage()) * 72 - rightEncOffset;
 
 
         return rawAngle;
@@ -216,7 +225,7 @@ public class DriveTrainTest extends LinearOpMode {
 
     public void tuneEncoders() //allows the encoders to be tuned upon startup
     {
-        if(Math.abs(0 - (currentAngle('l') + currentAngle('r'))/2) < 20 ) //if resetting to 0 degrees
+        if(Math.abs(0 - (currentAngle('l') + currentAngle('r'))/2) < 90 ) //if resetting to 0 degrees
         {
             leftEncOffset = currentAngle('l');
             rightEncOffset = currentAngle('r');
