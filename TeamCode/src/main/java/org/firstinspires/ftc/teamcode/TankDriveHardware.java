@@ -16,31 +16,42 @@ public class TankDriveHardware
 
     HardwareMap hwMap =  null;
 
-    public ModuleHarware(){
+    public TankDriveHardware(){
     }
 
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
 
-        M0 = hwMap.get(DcMotor.class, "M0");
-        M1 = hwMap.get(DcMotor.class, "M1");
+        LM0 = hwMap.get(DcMotor.class, "LM0");
+        LM1 = hwMap.get(DcMotor.class, "LM1");
+        RM0 = hwMap.get(DcMotor.class, "RM0");
+        RM1 = hwMap.get(DcMotor.class, "RM1");
 
 
-        M0.setDirection(DcMotor.Direction.FORWARD);
-        M1.setDirection(DcMotor.Direction.FORWARD);
+        LM0.setDirection(DcMotor.Direction.FORWARD);
+        LM1.setDirection(DcMotor.Direction.FORWARD);
+        RM0.setDirection(DcMotor.Direction.FORWARD);
+        RM1.setDirection(DcMotor.Direction.FORWARD);
 
 
-        M0.setPower(0);
-        M1.setPower(0);
+        LM0.setPower(0);
+        LM1.setPower(0);
+        RM0.setPower(0);
+        RM1.setPower(0);
 
 
-        M0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        M1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LM0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RM0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
-        M0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        M1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LM0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RM0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
     }
 }
