@@ -10,7 +10,9 @@ import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
 import com.vuforia.Vuforia;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.Parameters;
@@ -25,6 +27,7 @@ public class    VisionBitMapping {
     private VuforiaLocalizer vuforia;
     private Parameters parameters;
     private CameraDirection CAMERA_CHOICE = CameraDirection.BACK; // This is the camera opposite the screen.
+    private static final boolean PHONE_IS_PORTRAIT = false;
     private static final String VUFORIA_KEY = "AcELeNr/////AAABmeg7NUNcDkPigDGNImdu5slLREdKn/q+qfajHBypycR0JUZYbfU0q2yZeSud79LJ2DS9uhr7Gu0xDM0DQZ36GRQDgMRwB8lf9TGZFQcoHq4kVAjAoEByEorXCzQ54ITCextAucpL2njKT/1IJxgREr6/axNEL2evyKSpOKoNOISKR6tkP6H3Ygd+FHm2tF/rsUCJHN5bTXrbRbwt5t65O7oJ6Wm8Foz1npbFI0bsD60cug4CpC/Ovovt2usxIRG8cpoQX49eA2jPRRLGXN8y1Nhh9Flr0poOkYoCExWo2iVunAGOwuCdB/rp/+2rkLBfWPvzQzrN9yBBP0JVJZ4biNQ41qqiuVvlc31O9xEvbKHt";
 
     public static String skystonePosition = "notFound";
@@ -32,6 +35,9 @@ public class    VisionBitMapping {
     private final int RED_THRESHOLD = 35;
     private final int GREEN_THRESHOLD = 35;
     private final int BLUE_THRESHOLD = 35;
+    private final int YELRED_THRESHOLD = 160;
+    private final int YELGREEN_THRESHOLD = 130;
+    private final int YELBLUE_THRESHOLD = 30;
 
     public VisionBitMapping(LinearOpMode opMode) {
 
@@ -42,7 +48,11 @@ public class    VisionBitMapping {
         VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         params.vuforiaLicenseKey = VUFORIA_KEY;
-        params.cameraDirection = CAMERA_CHOICE;
+        params.cameraName = opMode.hardwareMap.get(WebcamName.class, "monkey");
+        //params.cameraDirection = CameraDirection.DEFAULT;
+        //params.cameraDirection = ;
+        //Orientation
+        //phone
         vuforia = ClassFactory.getInstance().createVuforia(params);
 
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true); // Format returns 2 bytes per pixel in GGGBBBBB RRRRRGGG format (little-endian)
@@ -59,8 +69,8 @@ public class    VisionBitMapping {
 
         long numImages = picture.getNumImages();
 
-        opMode.telemetry.addData("Num images", numImages);
-        opMode.telemetry.update();
+        //opMode.telemetry.addData("Num images", numImages);
+        //opMode.telemetry.update();
 
         for (int i = 0; i < numImages; i++) {
 
@@ -69,8 +79,8 @@ public class    VisionBitMapping {
                 rgb = picture.getImage(i);
                 break;
             } else {
-                opMode.telemetry.addLine("Didn't find correct RGB format");
-                opMode.telemetry.update();
+                //opMode.telemetry.addLine("Didn't find correct RGB format");
+                //  opMode.telemetry.update();
 
 
             }
@@ -79,10 +89,10 @@ public class    VisionBitMapping {
         Bitmap imageBitmap = Bitmap.createBitmap(rgb.getWidth(), rgb.getHeight(), Bitmap.Config.RGB_565);
         imageBitmap.copyPixelsFromBuffer(rgb.getPixels());
 
-        opMode.telemetry.addData("Image width", imageBitmap.getWidth());
-        opMode.telemetry.addData("Image height", imageBitmap.getHeight());
-        opMode.telemetry.update();
-        opMode.sleep(500);
+        //opMode.telemetry.addData("Image width", imageBitmap.getWidth());
+        //opMode.telemetry.addData("Image height", imageBitmap.getHeight());
+        //opMode.telemetry.update();
+        //opMode.sleep(500);
 
         picture.close();
 
@@ -109,12 +119,27 @@ public class    VisionBitMapping {
         ArrayList<Integer> xValues = new ArrayList<>();
         ArrayList<Integer> yValues = new ArrayList<>();
 
+        boolean[] yellowYVals = new boolean[bitmap.getHeight()];
+
+        // Finds all heights with yellow pixels
         for (int y = 0; y < bitmap.getHeight(); y++) {
-            for (int x = 0; x < bitmap.getWidth() / 2; x++) {
+            for (int x = 0; x < bitmap.getWidth(); x++) {
                 int pixel = bitmap.getPixel(x, y);
-                if (red(pixel) <= RED_THRESHOLD && blue(pixel) <= BLUE_THRESHOLD && green(pixel) <= GREEN_THRESHOLD) {
-                    xValues.add(x);
-                    yValues.add(y);
+                if (red(pixel) >= YELRED_THRESHOLD && blue(pixel) <= YELBLUE_THRESHOLD && green(pixel) <= YELGREEN_THRESHOLD) {
+                    yellowYVals[y] = true;
+                    break;
+                }
+            }
+        }
+
+        for (int y = 0; y < bitmap.getHeight(); y++) {
+            if (yellowYVals[y]) {
+                for (int x = 0; x < bitmap.getWidth(); x++) {
+                    int pixel = bitmap.getPixel(x, y);
+                    if (red(pixel) <= RED_THRESHOLD && blue(pixel) <= BLUE_THRESHOLD && green(pixel) <= GREEN_THRESHOLD) {
+                        xValues.add(x);
+                        yValues.add(y);
+                    }
                 }
             }
         }
@@ -128,16 +153,25 @@ public class    VisionBitMapping {
         avgX /= xValues.size();
         avgY /= yValues.size();
 
-        if (avgX > 300 && avgX < 450) {
-            skystonePosition = "1 & 4";
-            opMode.telemetry.addData("skystonePosition: ", skystonePosition);
-        } else if (avgX < 300 && avgX > 263) {
+        if (avgX >= 220 && avgX <= 400) {
             skystonePosition = "2 & 5";
             opMode.telemetry.addData("skystonePosition: ", skystonePosition);
+            opMode.telemetry.addData("avgX", avgX);
+        } else if (avgX < 220) {
+            skystonePosition = "1 & 4";
+            opMode.telemetry.addData("skystonePosition: ", skystonePosition);
+            opMode.telemetry.addData("avgX", avgX);
         } else {
             skystonePosition = "3 & 6";
             opMode.telemetry.addData("skystonePosition: ", skystonePosition);
+            opMode.telemetry.addData("avgX", avgX);
         }
+        //opMode.telemetry.update();
+        //opMode.telemetry.addData("avgX", avgX);
+        //opMode.telemetry.addData("avgY", avgY);
+        /*opMode.telemetry.addData("R", red(bitmap.getPixel(320,240)));
+        opMode.telemetry.addData("G", green(bitmap.getPixel(320,240)));
+        opMode.telemetry.addData("B", blue(bitmap.getPixel(320,240)));*/
         opMode.telemetry.update();
         opMode.sleep(1000);
         return avgX;
