@@ -30,8 +30,8 @@ public class TankDriveHardware
 
         LM0.setDirection(DcMotor.Direction.FORWARD);
         LM1.setDirection(DcMotor.Direction.FORWARD);
-        RM0.setDirection(DcMotor.Direction.FORWARD);
-        RM1.setDirection(DcMotor.Direction.FORWARD);
+        RM0.setDirection(DcMotor.Direction.REVERSE);
+        RM1.setDirection(DcMotor.Direction.REVERSE);
 
 
         LM0.setPower(0);
