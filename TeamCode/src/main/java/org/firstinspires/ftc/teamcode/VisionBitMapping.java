@@ -30,7 +30,7 @@ public class    VisionBitMapping {
     private static final boolean PHONE_IS_PORTRAIT = false;
     private static final String VUFORIA_KEY = "AcELeNr/////AAABmeg7NUNcDkPigDGNImdu5slLREdKn/q+qfajHBypycR0JUZYbfU0q2yZeSud79LJ2DS9uhr7Gu0xDM0DQZ36GRQDgMRwB8lf9TGZFQcoHq4kVAjAoEByEorXCzQ54ITCextAucpL2njKT/1IJxgREr6/axNEL2evyKSpOKoNOISKR6tkP6H3Ygd+FHm2tF/rsUCJHN5bTXrbRbwt5t65O7oJ6Wm8Foz1npbFI0bsD60cug4CpC/Ovovt2usxIRG8cpoQX49eA2jPRRLGXN8y1Nhh9Flr0poOkYoCExWo2iVunAGOwuCdB/rp/+2rkLBfWPvzQzrN9yBBP0JVJZ4biNQ41qqiuVvlc31O9xEvbKHt";
 
-    public static String skystonePosition = "notFound";
+    public static int skystonePosition = 0;
 
     private final int RED_THRESHOLD = 35;
     private final int GREEN_THRESHOLD = 35;
@@ -111,10 +111,16 @@ public class    VisionBitMapping {
     }
 
 
-    public double avgX() throws InterruptedException {
+    public double avgX(){
         double avgX = 0;
         double avgY = 0;
-        Bitmap bitmap = getBitmap();
+        Bitmap bitmap = null;
+        try {
+            bitmap = getBitmap();
+        } catch (InterruptedException e) {
+            opMode.telemetry.addData("ERROR", "Flaming jesus with fiery fibroids");
+            opMode.telemetry.update();
+        }
         int skystonePixelCount = 0;
         ArrayList<Integer> xValues = new ArrayList<>();
         ArrayList<Integer> yValues = new ArrayList<>();
@@ -153,28 +159,19 @@ public class    VisionBitMapping {
         avgX /= xValues.size();
         avgY /= yValues.size();
 
-        if (avgX >= 220 && avgX <= 400) {
-            skystonePosition = "2 & 5";
-            opMode.telemetry.addData("skystonePosition: ", skystonePosition);
-            opMode.telemetry.addData("avgX", avgX);
-        } else if (avgX < 220) {
-            skystonePosition = "1 & 4";
-            opMode.telemetry.addData("skystonePosition: ", skystonePosition);
-            opMode.telemetry.addData("avgX", avgX);
-        } else {
-            skystonePosition = "3 & 6";
-            opMode.telemetry.addData("skystonePosition: ", skystonePosition);
-            opMode.telemetry.addData("avgX", avgX);
-        }
-        //opMode.telemetry.update();
-        //opMode.telemetry.addData("avgX", avgX);
-        //opMode.telemetry.addData("avgY", avgY);
-        /*opMode.telemetry.addData("R", red(bitmap.getPixel(320,240)));
-        opMode.telemetry.addData("G", green(bitmap.getPixel(320,240)));
-        opMode.telemetry.addData("B", blue(bitmap.getPixel(320,240)));*/
-        opMode.telemetry.update();
-        opMode.sleep(1000);
         return avgX;
+    }
+
+    public int skyStonePos()
+    {
+
+        if (avgX() < 220)
+            skystonePosition = 1;
+        else if (avgX() >= 220 && avgX() <= 400)
+            skystonePosition = 2;
+        else
+            skystonePosition = 3;
+        return skystonePosition;
     }
 }
 

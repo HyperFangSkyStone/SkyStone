@@ -7,11 +7,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="TankDriveTest", group="Sans Sans")
+@TeleOp(name="MonkDrive TeleOp", group="Bonobo")
 //@Disabled
 public class TankDriveTeleop extends LinearOpMode {
 
-    TankDriveHardware dsModule = new TankDriveHardware();
+    TankDriveHardware tankDrive = new TankDriveHardware();
     ElapsedTime time = new ElapsedTime();
     ArrayList<Double> timeRecord = new ArrayList<>();
 
@@ -22,34 +22,54 @@ public class TankDriveTeleop extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException
     {
-        dsModule.init(hardwareMap);
+        tankDrive.init(hardwareMap);
 
         waitForStart();
 
 
         while(opModeIsActive())
         {
-            if (gamepad1.left_bumper)
+            /*if (gamepad1.left_bumper)
             {
-                double forwardPower = -gamepad.left_stick_y;
-                double turnPower = gamepad.left_stick_x;
-                dsModule.LM0.setPower(left_stick_y + left_stick_x);
-                dsModule.LM1.setPower(left_stick_y + left_stick_x);
-                dsModule.RM0.setPower(left_stick_y - left_stick_x);
-                dsModule.RM1.setPower(left_stick_y - left_stick_x);
+                double forwardPower = -gamepad1.left_stick_y;
+                double turnPower = gamepad1.left_stick_x;
+                tankDrive.LM0.setPower(forwardPower + turnPower);
+                tankDrive.LM1.setPower(forwardPower + turnPower);
+                tankDrive.RM0.setPower(forwardPower - turnPower);
+                tankDrive.RM1.setPower(forwardPower - turnPower);
+            }*/
+            if (Math.abs(gamepad1.left_stick_y) > 0.2)
+            {
+                tankDrive.LM0.setPower(-gamepad1.left_stick_y);
+                tankDrive.LM1.setPower(-gamepad1.left_stick_y);
             }
-            else if (gamepad1.dpad_right)
-                linearMovement(0.5, 0.5);
-            else if (gamepad1.right_bumper)
-                linearMovement(1, 0.5);
-                //else if (gamepad1.left_bumper)
-                //linearMovement(-1, 1);
-            else {
-                dsModule.LM0.setPower(0);
-                dsModule.LM1.setPower(0);
-                dsModule.RM0.setPower(0);
-                dsModule.RM1.setPower(0);
+            else
+            {
+                tankDrive.LM0.setPower(0);
+                tankDrive.LM1.setPower(0);
             }
+
+            if (Math.abs(gamepad1.right_stick_y) > 0.2)
+            {
+                tankDrive.RM0.setPower(-gamepad1.right_stick_y);
+                tankDrive.RM1.setPower(-gamepad1.right_stick_y);
+            }
+            else
+            {
+                tankDrive.RM0.setPower(0);
+                tankDrive.RM1.setPower(0);
+            }
+
+            if (gamepad1.dpad_up)
+                linearMovement(0.5, 1);
+            else if (gamepad1.dpad_down)
+                linearMovement(1, 1);
+            /*else {
+                tankDrive.LM0.setPower(0);
+                tankDrive.LM1.setPower(0);
+                tankDrive.RM0.setPower(0);
+                tankDrive.RM1.setPower(0);
+            }*/
         }
 
     }
@@ -66,14 +86,16 @@ public class TankDriveTeleop extends LinearOpMode {
 
         while (time.seconds() < t)
         {
-            dsModule.LM0.setPower(inputPower);
-            dsModule.LM1.setPower(inputPower);
-            dsModule.RM0.setPower(inputPower);
-            dsModule.RM1.setPower(inputPower);
+            tankDrive.LM0.setPower(inputPower);
+            tankDrive.LM1.setPower(inputPower);
+            tankDrive.RM0.setPower(inputPower);
+            tankDrive.RM1.setPower(inputPower);
             telemetry.update();
         }
-        dsModule.M0.setPower(0);
-        dsModule.M1.setPower(0);
+        tankDrive.LM0.setPower(0);
+        tankDrive.LM1.setPower(0);
+        tankDrive.RM0.setPower(0);
+        tankDrive.RM1.setPower(0);
     }
 
     public double joystickAngle()

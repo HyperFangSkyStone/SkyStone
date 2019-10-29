@@ -87,12 +87,7 @@ public class VisionBitMappingTestOpMode extends LinearOpMode {
         while(!isStarted()) {
             // Step through each leg of the path,
             //if (gamepad1.a) {
-
-                try {
-                    vbm.avgX();
-                } catch (InterruptedException e) {
-                    telemetry.addData("Flaming jesus with", " fiery fibroids");
-                }
+            vbm.skyStonePos();
 
 
 
