@@ -21,6 +21,8 @@ public class TankDriveTeleop extends LinearOpMode {
     TankDriveHardware dsModule = new TankDriveHardware();
     ElapsedTime time = new ElapsedTime();
     ArrayList<Double> timeRecord = new ArrayList<>();
+    BNO055IMU imu;
+    double globalAngle;
 
 
     PIDController PID = new PIDController(0, 0, 0);
@@ -29,6 +31,34 @@ public class TankDriveTeleop extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         dsModule.init(hardwareMap);
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameters);
+
+        telemetry.addData("Mode", "calibrating...");
+        telemetry.update();
+
+        // make sure the imu gyro is calibrated before continuing.
+        while (!isStopRequested() && !imu.isGyroCalibrated())
+        {
+            sleep(50);
+            idle();
+        }
+
+        telemetry.addData("Mode", "waiting for start");
+        telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
+        telemetry.update();
 
         waitForStart();
 
@@ -48,6 +78,10 @@ public class TankDriveTeleop extends LinearOpMode {
                 dsModule.RM0.setPower(0);
                 dsModule.RM1.setPower(0);
             }
+
+            telemetry.addData("1 imu heading", lastAngles.firstAngle);
+            telemetry.addData("2 global heading", globalAngle);
+            telemetry.update();
         }
 
     }
@@ -108,5 +142,104 @@ public class TankDriveTeleop extends LinearOpMode {
                 dsModule.RM1.setPower(0);
             }
         }
+    }
+
+    /**
+     * Rotate left or right the number of degrees. Does not support turning more than 180 degrees.
+     * @param degrees Degrees to turn, + is left - is right
+     */
+    private void turnethDirection(int degrees, double power) //NOT FUNCTIONAL; helper methods require testing
+    {
+        double  leftPower, rightPower;
+
+        // restart imu movement tracking.
+        resetAngle();
+
+        // getAngle() returns + when rotating counter clockwise (left) and - when rotating
+        // clockwise (right).
+
+        if (degrees < 0)
+        {   // turn right.
+            leftPower = power;
+            rightPower = -power;
+        }
+        else if (degrees > 0)
+        {   // turn left.
+            leftPower = -power;
+            rightPower = power;
+        }
+        else return;
+
+        // set power to rotate.
+        dsModule.LM0.setPower(leftPower);
+        dsModule.LM1.setPower(leftPower);
+        dsModule.RM0.setPower(rightPower);
+        dsModule.RM1.setPower(rightPower);
+
+        // rotate until turn is completed.
+        if (degrees < 0)
+        {
+            // On right turn we have to get off zero first.
+            while (opModeIsActive() && getAngle() == 0) {}
+
+            while (opModeIsActive() && getAngle() > degrees) {}
+        }
+        else    // left turn.
+            while (opModeIsActive() && getAngle() < degrees) {}
+
+        // turn the motors off.
+        dsModule.LM0.setPower(0);
+        dsModule.LM1.setPower(0);
+        dsModule.RM0.setPower(0);
+        dsModule.RM1.setPower(0);
+
+        // wait for rotation to stop.
+        sleep(1000);
+
+        // reset angle tracking on new heading.
+        resetAngle();
+    }
+
+
+    // THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!!
+    private double getAngle()
+    {
+        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+        // We have to process the angle because the imu works in euler angles so the Z axis is
+        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+
+
+        // THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!!
+        // THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!!
+        // THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!!
+        // THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!!
+        // THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!!
+        // THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!!
+        // THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!!
+        // THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!!
+        // THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!! THIS NEEDS TO BE DETERMINED EXPERIMENTALLY!!!!!!!!!!!
+
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = angles;
+
+        return globalAngle;
+    }
+
+    private void resetAngle()
+    {
+        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        globalAngle = 0;
     }
 }
