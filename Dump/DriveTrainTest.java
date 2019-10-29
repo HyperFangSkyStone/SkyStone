@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+/*package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -22,6 +22,10 @@ public class DriveTrainTest extends LinearOpMode {
 
     PIDController PID = new PIDController(0, 0, 0);
 
+    //Swerve drive is monkey
+    //Shaan is a m0nk
+    //Pierce is a god
+
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -29,27 +33,37 @@ public class DriveTrainTest extends LinearOpMode {
         dsDrive.init(hardwareMap);
 
         waitForStart();
-
+        //leftEncOffset = 74.52;
+        //rightEncOffset = 162.36;
         //tuneEncoders();
-        while(opModeIsActive())
-        {
-            if (gamepad1.dpad_up)
-            {
+        while(opModeIsActive()) {
+            if (gamepad1.dpad_up) {
                 telemetry.addData("Left Angle", currentAngle('l'));
                 telemetry.addData("Right Angle", currentAngle('r'));
                 telemetry.update();
             }
-            else if (gamepad1.right_bumper) {
+            if (gamepad1.x) {
+                reverseDirection();
+            }
+
+
+            if (gamepad1.dpad_up) {
+                dsDrive.Intake1.setPower(-1);
+                dsDrive.Intake2.setPower(-1);
+            } else if (gamepad1.right_bumper) {
                 doubleLinearMovement(0.75);
+            } else if (gamepad1.dpad_down) {
+                dsDrive.Intake1.setPower(1);
+                dsDrive.Intake2.setPower(1);
+            } else {
+                dsDrive.Intake1.setPower(0);
+                dsDrive.Intake2.setPower(0);
             }
-            else if (gamepad1.left_bumper) {
-                doubleLinearMovement(1);
-            }
-            else {
-                motor('l', 1).setPower(0);
-                motor('l', 2).setPower(0);
-                motor('r', 1).setPower(0);
-                motor('r', 2).setPower(0);
+
+            if (gamepad1.left_stick_y < -0.2) {
+                doubleLinearMovement(gamepad1.left_stick_y);
+            } else {
+                freeze();
             }
         }
 
@@ -87,38 +101,6 @@ public class DriveTrainTest extends LinearOpMode {
         }
     }
 
-
-    public double joystickAngle(char lr)
-    {
-        double angle, x, y;
-        if (lr == 'l') {
-            x = gamepad1.left_stick_x;
-            y = -gamepad1.left_stick_y;
-        }
-        else
-        {
-            x = gamepad1.right_stick_x;
-            y = -gamepad1.right_stick_y;
-        }
-
-        if ((y == 1 && x == 0) || (x == 0 && y == 0))
-            angle = 0;
-        else if (y == -1 && x == 0)
-            angle = 180;
-        else if (y == 0 && x == 1)
-            angle = 90;
-        else if (y == 0 && x == -1)
-            angle = -90;
-        else if (x > 0 && y > 0)
-            angle = Math.atan(x/y) * 180 / Math.PI;
-        else if (x < 0 && y > 0)
-            angle = Math.atan(x/y) * 180 / Math.PI;
-        else if (x < 0 && y < 0)
-            angle = Math.atan(x/y) * 180 / Math.PI - 180;
-        else
-            angle = Math.atan(x/y) * 180 / Math.PI + 180;
-        return angle;
-    }
 
     public void linearMovement(double inputPower, double t, char module)
     {
@@ -174,6 +156,8 @@ public class DriveTrainTest extends LinearOpMode {
         motor(module, 2).setPower(0);
     }
 
+    /*public void tuneEncoders() //allows the encoders to be tuned upon startup
+=======
 
     public double currentAngle(char lr)
     {
@@ -192,11 +176,11 @@ public class DriveTrainTest extends LinearOpMode {
 
     public DcMotor motor(char module, int motor)
     {
-        /*
+
             parameter:
             l/r - left/right
             1/2 - motor 1/2
-         */
+
 
         if (module == 'l')
         {
@@ -220,7 +204,7 @@ public class DriveTrainTest extends LinearOpMode {
         {
             leftEncOffset = currentAngle('l');
             rightEncOffset = currentAngle('r');
-        }
+        //}
         else
         {
             leftEncOffset = currentAngle('l') - 180;
@@ -248,8 +232,8 @@ public class DriveTrainTest extends LinearOpMode {
         if (errorRight < -180)
             errorRight += 360;
 
-        pl = 1 - (0.05 * Math.abs(errorLeft));
-        pr = 1 - (0.05 * Math.abs(errorRight));
+        pl = 1 - (0.02 * Math.abs(errorLeft));
+        pr = 1 - (0.02 * Math.abs(errorRight));
 
         if (pl < 0.8)
             pl = 0.8;
@@ -303,4 +287,106 @@ public class DriveTrainTest extends LinearOpMode {
 
     }
 
+
+    // +++++ +++++ Utility Methods +++++ +++++
+
+    public void freeze()
+    {
+        motor('l', 1).setPower(0);
+        motor('l', 2).setPower(0);
+        motor('r', 1).setPower(0);
+        motor('r', 2).setPower(0);
+    }
+
+    public void reverseDirection()
+    {
+        if (motor('l', 1).getDirection().equals(DcMotor.Direction.FORWARD))
+        {
+            telemetry.addLine("Current Direction switched from FORWARD to REVERSE");
+            telemetry.update();
+            motor('l',1).setDirection(DcMotor.Direction.REVERSE);
+            motor('l',2).setDirection(DcMotor.Direction.REVERSE);
+            motor('r',1).setDirection(DcMotor.Direction.REVERSE);
+            motor('r',2).setDirection(DcMotor.Direction.REVERSE);
+        }
+        else
+        {
+            telemetry.addLine("Current Direction switched from REVERSE to FORWARD");
+            telemetry.update();
+            motor('l', 1).setDirection(DcMotor.Direction.FORWARD);
+            motor('l', 2).setDirection(DcMotor.Direction.FORWARD);
+            motor('r', 1).setDirection(DcMotor.Direction.FORWARD);
+            motor('r', 2).setDirection(DcMotor.Direction.FORWARD);
+        }
+    }
+
+    public double joystickAngle(char lr)
+    {
+        double angle, x, y;
+        if (lr == 'l') {
+            x = gamepad1.left_stick_x;
+            y = -gamepad1.left_stick_y;
+        }
+        else
+        {
+            x = gamepad1.right_stick_x;
+            y = -gamepad1.right_stick_y;
+        }
+
+        if ((y == 1 && x == 0) || (x == 0 && y == 0))
+            angle = 0;
+        else if (y == -1 && x == 0)
+            angle = 180;
+        else if (y == 0 && x == 1)
+            angle = 90;
+        else if (y == 0 && x == -1)
+            angle = -90;
+        else if (x > 0 && y > 0)
+            angle = Math.atan(x/y) * 180 / Math.PI;
+        else if (x < 0 && y > 0)
+            angle = Math.atan(x/y) * 180 / Math.PI;
+        else if (x < 0 && y < 0)
+            angle = Math.atan(x/y) * 180 / Math.PI - 180;
+        else
+            angle = Math.atan(x/y) * 180 / Math.PI + 180;
+        return angle;
+    }
+
+    public DcMotor motor(char module, int motor)
+    {
+
+            parameter:
+            l/r - left/right
+            1/2 - motor 1/2
+
+
+        if (module == 'l)
+        {
+            if (motor == 1)
+                return dsDrive.LeftM1;
+            else
+                return dsDrive.LeftM2;
+        }
+        else
+        {
+            if (motor == 1)
+                return dsDrive.RightM1;
+            else
+                return dsDrive.RightM2;
+        }
+    }
+
+    public double currentAngle(char lr)
+    {
+        double rawAngle = 420;
+        if (lr == 'l')
+            rawAngle = (dsDrive.LeftEncoder.getVoltage()) * 72 - leftEncOffset; //angle from 0 to 360
+        if (lr == 'r')
+            rawAngle = (dsDrive.RightEncoder.getVoltage()) * 72 - rightEncOffset;
+
+
+        return rawAngle;
+    }
+
 }
+*/

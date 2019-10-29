@@ -30,9 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+//import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+//import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -65,34 +66,34 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
+@Autonomous(name="VisionMonkey", group="Pushbot")
 //@Disabled
 public class VisionBitMappingTestOpMode extends LinearOpMode {
 
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException{
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Activating Final Chaos");    //
         telemetry.update();
 
+
+       // VuforiaBitMap sample = new VuforiaBitMap(this);
         // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+        //waitForStart();
 
         VisionBitMapping vbm = new VisionBitMapping(this);
-        while(opModeIsActive()) {
+        while(!isStarted()) {
             // Step through each leg of the path,
             //if (gamepad1.a) {
-                try {
-                    telemetry.addData("avgX", vbm.avgX());
-                } catch (InterruptedException e) {
-                    telemetry.addData("Flaming jesus with", " fiery fibroids");
-                }
+            vbm.skyStonePos();
 
 
-                telemetry.addData("Path", "Complete");
-                telemetry.update();
+
+                //telemetry.addData("avgX: ", vbm.avgX());
+                //telemetry.update();
+                //sleep(1000);
            // }
         }
     }

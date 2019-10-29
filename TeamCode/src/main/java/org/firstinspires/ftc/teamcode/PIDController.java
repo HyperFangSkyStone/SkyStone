@@ -4,20 +4,27 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class PIDController {
 
-    private static double kP, kI, kD;
+    private double kP, kI, kD;
+    private double errorPrev, timePrev;
 
     public PIDController(double kP)
     {
         this.kP = kP;
-        kI = 0;
-        kD = 0;
+        this.kI = 0;
+        this.kD = 0;
+
+        errorPrev = 0;
+        timePrev = 0;
     }
 
     public PIDController(double kP, double kD)
     {
         this.kP = kP;
-        kI = 0;
+        this.kI = 0;
         this.kD = kD;
+
+        errorPrev = 0;
+        timePrev = 0;
     }
 
     public PIDController(double kP, double kI, double kD)
@@ -25,13 +32,23 @@ public class PIDController {
         this.kP = kP;
         this.kI = kI;
         this.kD = kD;
+
+        errorPrev = 0;
+        timePrev = 0;
     }
 
-    public static double PIDOutput(double targetTick, double error, double prevError, double time, double prevTime, double floor)
+    public void reset()
     {
-        double p = error / targetTick * kP;
-        double d = ((error - prevError) / (time - prevTime)) /targetTick * kD;
-        double i = error * (time - prevTime) * kI;
+        errorPrev = 0;
+        timePrev = 0;
+    }
+
+    public double PIDOutput(double target, double current, double time, double floor)
+    {
+        double error = target - current;
+        double p = error / target * kP;
+        double d = ((error - errorPrev) / (time - timePrev)) /target * kD;
+        double i = error * (time - timePrev) * kI;
 
         double output = p + i + d;
 
@@ -40,7 +57,12 @@ public class PIDController {
         if (output > 0 && output < floor)
             output = floor;
 
+
+        errorPrev = error;
+        timePrev = time;
+
+
         return output;
     }
-
 }
+
