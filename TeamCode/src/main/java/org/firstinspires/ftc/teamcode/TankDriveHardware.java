@@ -53,5 +53,27 @@ public class TankDriveHardware
 
 
     }
+
+    public double getAverageEncoder(char c) {
+        switch (c)
+        {
+            case 'l': return (Math.abs(LM0.getCurrentPosition()) + Math.abs(LM1.getCurrentPosition())) / 2.0;
+            case 'r': return (Math.abs(RM0.getCurrentPosition()) + Math.abs(RM1.getCurrentPosition())) / 2.0;
+        }
+        return Double.NaN;
+    }
+
+    public void resetEncoders() {
+
+        LM0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RM0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        LM0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RM0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
 }
 
