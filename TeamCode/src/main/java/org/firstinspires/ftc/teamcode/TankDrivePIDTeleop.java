@@ -23,7 +23,7 @@ public class TankDrivePIDTeleop extends LinearOpMode {
     public final double GEAR_RATIO = (MOTOR_GEAR_TEETH + 0.0) / WHEEL_GEAR_TEETH; //For every full turn of the motor, the wheel turns this many rotations.
     public final double MM_TO_INCHES =  25.4;
     public final double MOTOR_TO_INCHES = GEAR_RATIO * WHEEL_DIAMETER * Math.PI / MM_TO_INCHES; //For every full turn of both motors, the wheel moves forward this many inches
-    public final int NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 1440;
+    public final int NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 500;
 
     TankDriveHardware dsModule = new TankDriveHardware();
     ElapsedTime time = new ElapsedTime();
@@ -58,11 +58,11 @@ public class TankDrivePIDTeleop extends LinearOpMode {
         telemetry.update();
 
         // make sure the imu gyro is calibrated before continuing.
-        while (!isStopRequested() && !imu.isGyroCalibrated())
+        /*while (!isStopRequested() && !imu.isGyroCalibrated())
         {
             sleep(50);
             idle();
-        }
+        }*/
 
         telemetry.addData("Mode", "waiting for start");
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
@@ -87,6 +87,21 @@ public class TankDrivePIDTeleop extends LinearOpMode {
                 dsModule.RM0.setPower(0);
                 dsModule.RM1.setPower(0);
             }
+
+            if (gamepad1.a)
+                goethEncoderTicks(1440, 5);
+            else if (gamepad1.b)
+                goethEncoderTicks(1000, 5);
+            else if (gamepad1.x)
+                goethEncoderTicks(360, 5);
+            /*if(gamepad1.y) {
+                telemetry.addData("Right Encoder Average", dsModule.getAverageEncoder('r'));
+                telemetry.update();
+            }
+            dsModule.LM0.setPower(0);
+            dsModule.LM1.setPower(0);
+            dsModule.RM0.setPower(0);
+            dsModule.RM1.setPower(0);*/
         }
 
     }
@@ -123,7 +138,54 @@ public class TankDrivePIDTeleop extends LinearOpMode {
 
         telemetry.addData("Moveth Forward is moving forward at ", inches + " inches and ");
         telemetry.update();
-        while ((dsModule.getAverageEncoder('l') < encoderTicks || dsModule.getAverageEncoder('r') < encoderTicks) && time.seconds() < t)
+        while ((dsModule.getAverageEncoder('l') + dsModule.getAverageEncoder('r') < encoderTicks * 2) && time.seconds() < t)
+        {
+            if (Math.abs(encoderTicks - dsModule.getAverageEncoder('l')) >= errorMargin)
+            {
+                double leftpower = Math.abs(encoderTicks - dsModule.getAverageEncoder('l')) * kp;
+                leftpower = Math.max(leftpower, powerFloor);
+                leftpower = Math.min(leftpower, powerCeiling);
+                if (encoderTicks - dsModule.getAverageEncoder('l') < 0) leftpower *= -1;
+                dsModule.LM0.setPower(leftpower);
+                dsModule.LM1.setPower(leftpower);
+                telemetry.addData("LeftPower", leftpower);
+            }
+            else {
+                dsModule.LM0.setPower(0);
+                dsModule.LM1.setPower(0);
+            }
+
+            if (Math.abs(encoderTicks - dsModule.getAverageEncoder('r')) >= errorMargin)
+            {
+                double rightpower = Math.abs(encoderTicks - dsModule.getAverageEncoder('r')) * kp;
+                rightpower = Math.max(rightpower, powerFloor);
+                rightpower = Math.min(rightpower, powerCeiling);
+                if (encoderTicks - dsModule.getAverageEncoder('r') < 0) rightpower *= -1;
+                dsModule.RM0.setPower(rightpower);
+                dsModule.RM1.setPower(rightpower);
+                telemetry.addData("RightPower", rightpower);
+            }
+            else {
+                dsModule.RM0.setPower(0);
+                dsModule.RM1.setPower(0);
+            }
+            telemetry.addData("Left Encoder", dsModule.getAverageEncoder('l'));
+            telemetry.addData("Right Encoder", dsModule.getAverageEncoder('r'));
+            telemetry.update();
+
+        }
+    }
+
+    public void goethEncoderTicks(double encoderTicks, double t)
+    {
+        dsModule.resetEncoders();
+        time.reset();
+        double kp = 0.002;
+        int errorMargin = 20; //Amount of error in ticks we are willing to accept
+        double powerFloor = 0.2; //Minimum power
+        double powerCeiling = 0.8; //Maximum power
+
+        while ((dsModule.getAverageEncoder('l') + dsModule.getAverageEncoder('r') < encoderTicks * 2) && time.seconds() < t)
         {
             if (Math.abs(encoderTicks - dsModule.getAverageEncoder('l')) >= errorMargin)
             {
