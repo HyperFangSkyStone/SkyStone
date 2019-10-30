@@ -66,6 +66,7 @@ public class TankDrivePIDTeleop extends LinearOpMode {
 
         telemetry.addData("Mode", "waiting for start");
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
+        telemetry.addData("Number of inches per motor rotation", MOTOR_TO_INCHES);
         telemetry.update();
 
         waitForStart();
@@ -86,10 +87,6 @@ public class TankDrivePIDTeleop extends LinearOpMode {
                 dsModule.RM0.setPower(0);
                 dsModule.RM1.setPower(0);
             }
-
-            telemetry.addData("1 imu heading", lastAngles.firstAngle);
-            telemetry.addData("2 global heading", globalAngle);
-            telemetry.update();
         }
 
     }
@@ -116,15 +113,19 @@ public class TankDrivePIDTeleop extends LinearOpMode {
 
     public void movethForward(double inches, double t)
     {
+        dsModule.resetEncoders();
         time.reset();
         double encoderTicks = inches / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION; // target number of encoder ticks
-        double kp = 0.005;
+        double kp = 0.002;
         int errorMargin = 20; //Amount of error in ticks we are willing to accept
-        double powerFloor = 0.3; //Minimum power
+        double powerFloor = 0.2; //Minimum power
         double powerCeiling = 0.8; //Maximum power
+
+        telemetry.addData("Moveth Forward is moving forward at ", inches + " inches and ");
+        telemetry.update();
         while ((dsModule.getAverageEncoder('l') < encoderTicks || dsModule.getAverageEncoder('r') < encoderTicks) && time.seconds() < t)
         {
-            if (Math.abs(encoderTicks - dsModule.getAverageEncoder('l')) <= errorMargin)
+            if (Math.abs(encoderTicks - dsModule.getAverageEncoder('l')) >= errorMargin)
             {
                 double leftpower = Math.abs(encoderTicks - dsModule.getAverageEncoder('l')) * kp;
                 leftpower = Math.max(leftpower, powerFloor);
@@ -132,13 +133,14 @@ public class TankDrivePIDTeleop extends LinearOpMode {
                 if (encoderTicks - dsModule.getAverageEncoder('l') < 0) leftpower *= -1;
                 dsModule.LM0.setPower(leftpower);
                 dsModule.LM1.setPower(leftpower);
+                telemetry.addData("LeftPower", leftpower);
             }
             else {
                 dsModule.LM0.setPower(0);
                 dsModule.LM1.setPower(0);
             }
 
-            if (Math.abs(encoderTicks - dsModule.getAverageEncoder('r')) <= errorMargin)
+            if (Math.abs(encoderTicks - dsModule.getAverageEncoder('r')) >= errorMargin)
             {
                 double rightpower = Math.abs(encoderTicks - dsModule.getAverageEncoder('r')) * kp;
                 rightpower = Math.max(rightpower, powerFloor);
@@ -146,11 +148,16 @@ public class TankDrivePIDTeleop extends LinearOpMode {
                 if (encoderTicks - dsModule.getAverageEncoder('r') < 0) rightpower *= -1;
                 dsModule.RM0.setPower(rightpower);
                 dsModule.RM1.setPower(rightpower);
+                telemetry.addData("RightPower", rightpower);
             }
             else {
                 dsModule.RM0.setPower(0);
                 dsModule.RM1.setPower(0);
             }
+            telemetry.addData("Left Encoder", dsModule.getAverageEncoder('l'));
+            telemetry.addData("Right Encoder", dsModule.getAverageEncoder('r'));
+            telemetry.update();
+
         }
     }
 
