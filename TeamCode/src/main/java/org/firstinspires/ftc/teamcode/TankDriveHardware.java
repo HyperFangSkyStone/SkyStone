@@ -57,8 +57,8 @@ public class TankDriveHardware
     public double getAverageEncoder(char c) {
         switch (c)
         {
-            case 'l': return (Math.abs(LM0.getEncoderValue()) + Math.abs(LM1.getEncoderValue())) / 2.0;
-            case 'r': return (Math.abs(RM0.getEncoderValue()) + Math.abs(RM1.getEncoderValue())) / 2.0;
+            case 'l': return (Math.abs(LM0.getCurrentPosition()) + Math.abs(LM1.getCurrentPosition())) / 2.0;
+            case 'r': return (Math.abs(RM0.getCurrentPosition()) + Math.abs(RM1.getCurrentPosition())) / 2.0;
         }
         return Double.NaN;
     }
