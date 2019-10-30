@@ -62,5 +62,18 @@ public class TankDriveHardware
         }
         return Double.NaN;
     }
+
+    public void resetEncoders() {
+
+        LM0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RM0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        LM0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RM0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
 }
 
