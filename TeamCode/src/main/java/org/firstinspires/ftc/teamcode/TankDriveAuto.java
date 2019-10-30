@@ -12,7 +12,7 @@ import java.util.ArrayList;
 //@Disabled
 public class TankDriveAuto extends LinearOpMode {
 
-    TankDriveHardware tankDrive = new TankDriveHardware();
+    TankDriveALPHA tankDrive = new TankDriveALPHA();
     ElapsedTime clock = new ElapsedTime();
 
 
@@ -81,19 +81,27 @@ public class TankDriveAuto extends LinearOpMode {
 
     public void linearMovement(double distance)
     {
-        double conversionIndex = 0;
-        double timeFrame = distance * distanceTimeIndex;
-        double power = 0;
+        double conversionIndex = 1120/ (26/20) / (4 * Math.PI);
+        double timeFrame = 10; //distance * distanceTimeIndex;
+        double targetTick = distance * conversionIndex + averageEncoderTick();
+        double output;
         clock.reset();
         while (clock.seconds() < timeFrame /* && distance not reached*/ )
         {
-            power = linearPID.PIDOutput(0,0,0,0);
-            runMotor(power, power);
+            output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
+            runMotor(output, -output);
         }
     }
 
     public void turnToAngle(double angle)
     {
 
+    }
+
+    public double averageEncoderTick()
+    {
+        double output = tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() + tankDrive.RM0.getCurrentPosition() +tankDrive.RM0.getCurrentPosition();
+        output /= 4.0;
+        return output;
     }
 }

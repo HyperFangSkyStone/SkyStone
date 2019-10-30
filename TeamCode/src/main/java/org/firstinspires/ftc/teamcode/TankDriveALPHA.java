@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
@@ -30,10 +31,10 @@ public class TankDriveALPHA
         Intake1 = hwMap.get(DcMotor.class, "Intake1");
         Intake2 = hwMap.get(DcMotor.class, "Intake2");
 
-        LM0.setDirection(DcMotor.Direction.FORWARD);
-        LM1.setDirection(DcMotor.Direction.FORWARD);
-        RM0.setDirection(DcMotor.Direction.REVERSE);
-        RM1.setDirection(DcMotor.Direction.REVERSE);
+        LM0.setDirection(DcMotor.Direction.REVERSE);
+        LM1.setDirection(DcMotor.Direction.REVERSE);
+        RM0.setDirection(DcMotor.Direction.FORWARD);
+        RM1.setDirection(DcMotor.Direction.FORWARD);
         Intake1.setDirection(DcMotor.Direction.REVERSE);
         Intake2.setDirection(DcMotor.Direction.FORWARD);
 

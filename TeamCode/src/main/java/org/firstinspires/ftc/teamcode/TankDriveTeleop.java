@@ -11,7 +11,7 @@ import java.util.ArrayList;
 //@Disabled
 public class TankDriveTeleop extends LinearOpMode {
 
-    TankDriveHardware tankDrive = new TankDriveHardware();
+    TankDriveALPHA tankDrive = new TankDriveALPHA();
     ElapsedTime time = new ElapsedTime();
     ArrayList<Double> timeRecord = new ArrayList<>();
 
@@ -60,16 +60,26 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.RM1.setPower(0);
             }
 
-            if (gamepad1.dpad_up)
-                linearMovement(0.5, 1);
-            else if (gamepad1.dpad_down)
+            if(gamepad1.y)
+            {
                 linearMovement(1, 1);
-            /*else {
-                tankDrive.LM0.setPower(0);
-                tankDrive.LM1.setPower(0);
-                tankDrive.RM0.setPower(0);
-                tankDrive.RM1.setPower(0);
-            }*/
+            }
+
+            if(gamepad1.right_bumper) //out
+            {
+                tankDrive.Intake1.setPower(1);
+                tankDrive.Intake2.setPower(1);
+            }
+            else if(gamepad1.left_bumper) //in
+            {
+                tankDrive.Intake1.setPower(-1);
+                tankDrive.Intake2.setPower(-1);
+            }
+            else
+            {
+                tankDrive.Intake1.setPower(0);
+                tankDrive.Intake2.setPower(0);
+            }
         }
 
     }
@@ -122,4 +132,5 @@ public class TankDriveTeleop extends LinearOpMode {
             angle = Math.atan(x/y) * 180 / Math.PI + 180;
         return -angle;
     }
+
 }

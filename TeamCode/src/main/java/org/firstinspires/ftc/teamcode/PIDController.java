@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class PIDController {
 
     private double kP, kI, kD;
-    private double errorPrev, timePrev;
+    private double errorPrev, timePrev, floor;
 
     public PIDController(double kP)
     {
@@ -15,6 +15,7 @@ public class PIDController {
 
         errorPrev = 0;
         timePrev = 0;
+        floor = 0;
     }
 
     public PIDController(double kP, double kD)
@@ -25,6 +26,7 @@ public class PIDController {
 
         errorPrev = 0;
         timePrev = 0;
+        floor = 0;
     }
 
     public PIDController(double kP, double kI, double kD)
@@ -35,6 +37,7 @@ public class PIDController {
 
         errorPrev = 0;
         timePrev = 0;
+        floor = 0;
     }
 
     public void reset()
@@ -43,7 +46,12 @@ public class PIDController {
         timePrev = 0;
     }
 
-    public double PIDOutput(double target, double current, double time, double floor)
+    public void setFloor(double f)
+    {
+        floor = f;
+    }
+
+    public double PIDOutput(double target, double current, double time)
     {
         double error = target - current;
         double p = error / target * kP;
