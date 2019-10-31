@@ -51,16 +51,31 @@ public class TankDriveHardware
         RM0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        LM0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RM0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
     }
 
     public double getAverageEncoder(char c) {
         switch (c)
         {
-            case 'l': return (Math.abs(LM0.getCurrentPosition()) + Math.abs(LM1.getCurrentPosition())) / 2.0;
-            case 'r': return (Math.abs(RM0.getCurrentPosition()) + Math.abs(RM1.getCurrentPosition())) / 2.0;
+            case 'l':
+                if (LM0.getCurrentPosition() == 0)
+                    return LM1.getCurrentPosition();
+                else if (LM1.getCurrentPosition() == 0)
+                    return LM0.getCurrentPosition();
+                else return (Math.abs(LM0.getCurrentPosition()) + Math.abs(LM1.getCurrentPosition())) / 2.0;
+            case 'r':
+                if (RM0.getCurrentPosition() == 0)
+                    return RM1.getCurrentPosition();
+                else if (RM1.getCurrentPosition() == 0)
+                    return RM0.getCurrentPosition();
+                else return (Math.abs(RM0.getCurrentPosition()) + Math.abs(RM1.getCurrentPosition())) / 2.0;
         }
-        return Double.NaN;
+        return 0 / 0;
     }
 
     public void resetEncoders() {
