@@ -133,12 +133,12 @@ public class TankDrivePIDTeleop extends LinearOpMode {
         double encoderTicks = inches / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION; // target number of encoder ticks
         double kp = 0.002;
         int errorMargin = 20; //Amount of error in ticks we are willing to accept
-        double powerFloor = 0.2; //Minimum power
-        double powerCeiling = 0.8; //Maximum power
+        double powerFloor = 0.1; //Minimum power
+        double powerCeiling = 0.15; //Maximum power
 
         telemetry.addData("Moveth Forward is moving forward at ", inches + " inches and ");
         telemetry.update();
-        while ((dsModule.getAverageEncoder('l') + dsModule.getAverageEncoder('r') < encoderTicks * 2) && time.seconds() < t)
+        while (Math.abs(dsModule.getAverageEncoder('l') + dsModule.getAverageEncoder('r') - encoderTicks) > errorMargin && time.seconds() < t)
         {
             if (Math.abs(encoderTicks - dsModule.getAverageEncoder('l')) >= errorMargin)
             {
