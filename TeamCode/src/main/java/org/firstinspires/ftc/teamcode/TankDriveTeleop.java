@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class TankDriveTeleop extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
-    ElapsedTime time = new ElapsedTime();
+    ElapsedTime clock = new ElapsedTime();
     ArrayList<Double> timeRecord = new ArrayList<>();
 
 
@@ -60,9 +60,23 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.RM1.setPower(0);
             }
 
-            if(gamepad1.y)
+            if(gamepad1.dpad_up)
             {
-                linearMovement(1, 1);
+                tankDrive.LM0.setPower(0.75);
+                tankDrive.LM1.setPower(0.75);
+                tankDrive.RM0.setPower(0.75);
+                tankDrive.RM1.setPower(0.75);
+            }
+            else if(gamepad1.dpad_down)
+            {
+                linearMovement(-1, 0.75);
+            }
+            else
+            {
+                tankDrive.LM0.setPower(0);
+                tankDrive.LM1.setPower(0);
+                tankDrive.RM0.setPower(0);
+                tankDrive.RM1.setPower(0);
             }
 
             if(gamepad1.right_bumper) //out
@@ -80,6 +94,19 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.Intake1.setPower(0);
                 tankDrive.Intake2.setPower(0);
             }
+
+            if(gamepad1.a)
+            {
+                pidLinearMovement(1);
+            }
+            else if (gamepad1.b)
+            {
+                pidLinearMovement(2);
+            }
+            else if (gamepad1.x)
+            {
+                pidLinearMovement(5);
+            }
         }
 
     }
@@ -92,9 +119,9 @@ public class TankDriveTeleop extends LinearOpMode {
     public void linearMovement(double inputPower, double t)
     {
 
-        time.reset();
+        clock.reset();
 
-        while (time.seconds() < t)
+        while (clock.seconds() < t)
         {
             tankDrive.LM0.setPower(inputPower);
             tankDrive.LM1.setPower(inputPower);
@@ -106,6 +133,42 @@ public class TankDriveTeleop extends LinearOpMode {
         tankDrive.LM1.setPower(0);
         tankDrive.RM0.setPower(0);
         tankDrive.RM1.setPower(0);
+    }
+
+    public void pidLinearMovement(double distance)
+    {
+        double conversionIndex = 537.6/14.47111;
+        double timeFrame = 5; //distance * distanceTimeIndex;
+        double errorMargin = 20;
+        double kP = 0.002;
+        double powerFloor = 0.2;
+        double powerCeiling = 0.8;
+        double targetTick = distance * conversionIndex;
+        double output;
+        clock.reset();
+        tankDrive.resetEncoders();
+        while (clock.seconds() < timeFrame && Math.abs(tankDrive.getEncoderAvg() - targetTick) > errorMargin )
+        {
+            //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
+            output = Math.abs(targetTick - tankDrive.getEncoderAvg()) * kP;
+            output = Math.max(output, powerFloor);
+            output = Math.min(output, powerCeiling);
+            if (targetTick - tankDrive.getEncoderAvg() < 0) output *= -1;
+            runMotor(output, -output);
+        }
+        runMotor(0,0);
+    }
+
+    public void turnToAngle(double angle)
+    {
+
+    }
+
+    public double averageEncoderTick()
+    {
+        double output = tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() + tankDrive.RM0.getCurrentPosition() +tankDrive.RM0.getCurrentPosition();
+        output /= 4.0;
+        return output;
     }
 
     public double joystickAngle()
@@ -133,4 +196,18 @@ public class TankDriveTeleop extends LinearOpMode {
         return -angle;
     }
 
+    public void runMotor(double leftInput, double rightInput)
+    {
+        tankDrive.LM0.setPower(leftInput);
+        tankDrive.LM1.setPower(leftInput);
+        tankDrive.RM0.setPower(rightInput);
+        tankDrive.RM1.setPower(rightInput);
+    }
+    public void freeze()
+    {
+        tankDrive.LM0.setPower(0);
+        tankDrive.LM1.setPower(0);
+        tankDrive.RM0.setPower(0);
+        tankDrive.RM1.setPower(0);
+    }
 }

@@ -23,7 +23,7 @@ public class TankDrivePIDTeleop extends LinearOpMode {
     public final double GEAR_RATIO = (MOTOR_GEAR_TEETH + 0.0) / WHEEL_GEAR_TEETH; //For every full turn of the motor, the wheel turns this many rotations.
     public final double MM_TO_INCHES =  25.4;
     public final double MOTOR_TO_INCHES = GEAR_RATIO * WHEEL_DIAMETER * Math.PI / MM_TO_INCHES; //For every full turn of both motors, the wheel moves forward this many inches
-    public final int NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 500;
+    public final double NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 537.6;
 
     TankDriveHardware dsModule = new TankDriveHardware();
     ElapsedTime time = new ElapsedTime();

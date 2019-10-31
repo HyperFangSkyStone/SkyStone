@@ -81,16 +81,26 @@ public class TankDriveAuto extends LinearOpMode {
 
     public void linearMovement(double distance)
     {
-        double conversionIndex = 1120/ (26/20) / (4 * Math.PI);
+        double conversionIndex = 537.6/14.47111;
         double timeFrame = 10; //distance * distanceTimeIndex;
-        double targetTick = distance * conversionIndex + averageEncoderTick();
+        double errorMargin = 20;
+        double kP = 0.002;
+        double powerFloor = 0.2;
+        double powerCeiling = 0.8;
+        double targetTick = distance * conversionIndex;
         double output;
         clock.reset();
-        while (clock.seconds() < timeFrame /* && distance not reached*/ )
+        tankDrive.resetEncoders();
+        while (clock.seconds() < timeFrame && Math.abs(tankDrive.getEncoderAvg() - targetTick) > errorMargin )
         {
-            output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
+            //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
+            output = Math.abs(targetTick - tankDrive.getEncoderAvg()) * kP;
+            output = Math.max(output, powerFloor);
+            output = Math.min(output, powerCeiling);
+            if (targetTick - tankDrive.getEncoderAvg() < 0) output *= -1;
             runMotor(output, -output);
         }
+        runMotor(0,0);
     }
 
     public void turnToAngle(double angle)
