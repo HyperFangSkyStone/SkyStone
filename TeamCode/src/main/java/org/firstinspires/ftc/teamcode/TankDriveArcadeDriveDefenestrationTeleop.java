@@ -68,8 +68,7 @@ public class TankDriveArcadeDriveDefenestrationTeleop extends LinearOpMode {
                 tankDrive.RM0.setPower(forwardPower - turnPower);
                 tankDrive.RM1.setPower(forwardPower - turnPower);
             }
-
-            if(gamepad1.dpad_up)
+            else if(gamepad1.dpad_up)
             {
                 tankDrive.LM0.setPower(0.75);
                 tankDrive.LM1.setPower(0.75);
