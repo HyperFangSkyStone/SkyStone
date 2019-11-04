@@ -70,14 +70,14 @@ public class TankDriveTeleop extends LinearOpMode {
             else if(gamepad1.dpad_down)
             {
                 linearMovement(-1, 0.75);
-            }
+            }/*
             else
             {
                 tankDrive.LM0.setPower(0);
                 tankDrive.LM1.setPower(0);
                 tankDrive.RM0.setPower(0);
                 tankDrive.RM1.setPower(0);
-            }
+            }*/
 
             if(gamepad1.right_bumper) //out
             {
