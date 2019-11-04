@@ -137,7 +137,7 @@ public class TankDrivePIDMonk extends LinearOpMode {
         time.reset();
         double encoderTicks = inches / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION; // target number of encoder tick
         int errorMargin = 5; //Amount of error in ticks we are willing to accept
-        double powerFloor = 0.1; //Minimum power
+        double powerFloor = 0.18; //Minimum power
         double powerCeiling = power; //Maximum power
 
         telemetry.addData("Moveth Forward is moving forward at ", inches + " inches and ");
@@ -147,7 +147,7 @@ public class TankDrivePIDMonk extends LinearOpMode {
             if (Math.abs(encoderTicks - tank.getAverageEncoder('l')) >= errorMargin)
             {
                 //double leftpower = Math.abs(encoderTicks - tank.getAverageEncoder('l')) * kp;
-                double leftpower = sigmoid(encoderTicks - tank.getAverageEncoder('l'), powerCeiling, powerFloor, 800, kp * 6);
+                double leftpower = sigmoid(encoderTicks - tank.getAverageEncoder('l'), powerCeiling, powerFloor, 800, kp * 4);
                 leftpower = Math.max(leftpower, powerFloor);
                 leftpower = Math.min(leftpower, powerCeiling);
                 if (encoderTicks - tank.getAverageEncoder('l') < 0) leftpower *= -1;
