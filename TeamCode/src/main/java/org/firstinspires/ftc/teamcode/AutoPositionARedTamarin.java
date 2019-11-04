@@ -92,7 +92,7 @@ public class AutoPositionARedTamarin extends LinearOpMode {
 
         }
         else {
-            telemetry.addData("ERROR", "SkyStone Not Found.");
+            telemetry.addData("ERROR", "SkyStone Not Found. Doing position one...");
             telemetry.update();
             sleep(3);
         }
