@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="Affe TeleOp", group="Bonobo")
+@TeleOp(name="TankTeleOp", group="Bonobo")
 //@Disabled
 public class TankDriveTeleop extends LinearOpMode {
 
@@ -81,30 +81,33 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.RM1.setPower(0);
             }*/
 
-            if(gamepad1.left_bumper) //out
+            if (Math.abs(gamepad2.left_stick_y) > 0.2)
             {
-                intakeOn = !intakeOn;
-            }
-
-            if(gamepad1.right_bumper) //out
-            {
-                if(intakeDir == 1)
-                    intakeDir = -1;
-                else
-                    intakeDir = 1;
-            }
-
-
-            if(intakeOn) //in
-            {
-                tankDrive.Intake1.setPower(intakeDir);
-                tankDrive.Intake2.setPower(intakeDir);
+                tankDrive.Intake1.setPower(-gamepad2.left_stick_y);
             }
             else
             {
                 tankDrive.Intake1.setPower(0);
+            }
+
+            if (Math.abs(gamepad2.right_stick_y) > 0.2)
+            {
+                tankDrive.Intake2.setPower(-gamepad2.right_stick_y);
+            }
+            else
+            {
                 tankDrive.Intake2.setPower(0);
             }
+
+            if(gamepad2.dpad_up)
+            {
+                claw(false);
+            }
+            else if (gamepad2.dpad_down)
+            {
+                claw(true);
+            }
+
 
             if (gamepad1.x)
             {
@@ -250,5 +253,15 @@ public class TankDriveTeleop extends LinearOpMode {
         tankDrive.LM1.setPower(0);
         tankDrive.RM0.setPower(0);
         tankDrive.RM1.setPower(0);
+    }
+
+    public void claw(boolean x) {
+        if (x) {
+            tankDrive.LServo.setPosition(1); //true = up
+            tankDrive.RServo.setPosition(0);
+        } else {
+            tankDrive.LServo.setPosition(0); //false = down
+            tankDrive.RServo.setPosition(1);
+        }
     }
 }

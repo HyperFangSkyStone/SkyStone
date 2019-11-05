@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="Arcade Drive Defenestrator", group="Corny")
+@TeleOp(name="Arcade TeleOp", group="Corny")
 //@Disabled
 public class TankDriveArcadeDriveDefenestrationTeleop extends LinearOpMode {
 
@@ -68,52 +68,33 @@ public class TankDriveArcadeDriveDefenestrationTeleop extends LinearOpMode {
                 tankDrive.RM0.setPower(forwardPower - turnPower);
                 tankDrive.RM1.setPower(forwardPower - turnPower);
             }
-            else if(gamepad1.dpad_up)
-            {
-                tankDrive.LM0.setPower(0.75);
-                tankDrive.LM1.setPower(0.75);
-                tankDrive.RM0.setPower(0.75);
-                tankDrive.RM1.setPower(0.75);
-            }
-            else if(gamepad1.dpad_down)
-            {
-                linearMovement(-1, 0.75);
-            }
-            else
-            {
-                tankDrive.LM0.setPower(0);
-                tankDrive.LM1.setPower(0);
-                tankDrive.RM0.setPower(0);
-                tankDrive.RM1.setPower(0);
-            }
 
-            if(gamepad1.right_bumper) //out
+
+            if (Math.abs(gamepad2.left_stick_y) > 0.2)
             {
-                tankDrive.Intake1.setPower(1);
-                tankDrive.Intake2.setPower(1);
-            }
-            else if(gamepad1.left_bumper) //in
-            {
-                tankDrive.Intake1.setPower(-1);
-                tankDrive.Intake2.setPower(-1);
+                tankDrive.Intake1.setPower(-gamepad2.left_stick_y);
             }
             else
             {
                 tankDrive.Intake1.setPower(0);
+            }
+
+            if (Math.abs(gamepad2.right_stick_y) > 0.2)
+            {
+                tankDrive.Intake2.setPower(-gamepad2.right_stick_y);
+            }
+            else
+            {
                 tankDrive.Intake2.setPower(0);
             }
 
-            if(gamepad1.a)
+            if(gamepad2.dpad_up)
             {
-                pidLinearMovement(1);
+                claw(false);
             }
-            else if (gamepad1.b)
+            else if (gamepad2.dpad_down)
             {
-                pidLinearMovement(2);
-            }
-            else if (gamepad1.x)
-            {
-                pidLinearMovement(5);
+                claw(true);
             }
         }
 
@@ -217,5 +198,14 @@ public class TankDriveArcadeDriveDefenestrationTeleop extends LinearOpMode {
         tankDrive.LM1.setPower(0);
         tankDrive.RM0.setPower(0);
         tankDrive.RM1.setPower(0);
+    }
+    public void claw(boolean x) {
+        if (x) {
+            tankDrive.LServo.setPosition(1); //true = up
+            tankDrive.RServo.setPosition(0);
+        } else {
+            tankDrive.LServo.setPosition(0); //false = down
+            tankDrive.RServo.setPosition(1);
+        }
     }
 }

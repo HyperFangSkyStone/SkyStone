@@ -3,17 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-import java.util.ArrayList;
-
 @SuppressWarnings("ALL")
-@Autonomous(name="Auto Red", group="Obese Chimp")
+@Autonomous(name="PARK", group="Obese Chimp")
 //@Disabled
-public class TankDriveAuto extends LinearOpMode {
+public class TankDriveAutoPark extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
 
@@ -60,99 +57,14 @@ public class TankDriveAuto extends LinearOpMode {
 
         while (!isStarted())
         {
-            skystonePosition = vbm.skyStonePos();
-
-            telemetry.addData("Skystone Pos", skystonePosition);
-            telemetry.update();
-            if (skystonePosition == 0) {
-                telemetry.addData("ERROR", "SkyStone Not Found.");
-                telemetry.update();
-            }
         }
 
         while(isStarted())
         {
-            if (skystonePosition == 1)
-            {
-                movethForward(2, 2.5, 0.001, 0.6);
-                turnethDirection(4,0.35, 0.2, 0.005, 3);
-                movethForward(24, 2.5, 0.001, 0.6);
-                freeze();
-                runIntake(-0.75);
-                movethForward(15, 2.5, 0.001, 0.6);
-                sleep(250);
-                runIntake(0);
-                movethForward(-20, 2.5, 0.001, 0.4);
-                runIntake(0.5);
-                sleep(100);
-                runIntake(0);
-                freeze();
-                turnethDirection(88,0.4, 0.2, 0.005, 3);
-            }
-            else if (skystonePosition == 2)
-            {
-                movethForward(24, 2.5, 0.001, 0.8);
-                freeze();
-                runIntake(-0.75);
-                movethForward(15, 2.5, 0.001, 0.6);
-                sleep(1000);
-                runIntake(0);
-                movethForward(-20, 2.5, 0.001, 0.4);
-                freeze();
-                turnethDirection(90,0.35, 0.2, 0.005, 3);
-            }
-            else if (skystonePosition == 3)
-            {
-                movethForward(2, 2.5, 0.001, 0.6);
-                turnethDirection(-7,0.35, 0.2, 0.005, 3);
-                movethForward(24, 2.5, 0.001, 0.6);
-                freeze();
-                runIntake(-0.75);
-                movethForward(15, 2.5, 0.001, 0.6);
-                sleep(250);
-                runIntake(0);
-                movethForward(-20, 2.5, 0.001, 0.4);
-                runIntake(0.5);
-                sleep(100);
-                runIntake(0);
-                freeze();
-                turnethDirection(98,0.35, 0.2, 0.005, 3);
-            }
-            else
-            {
-                telemetry.addData("ERROR", "SkyStone Not Found.");
-                telemetry.update();
-                freeze();
-                break;
-            }
-
-            skystonePosition = 0;
-            movethForward(-60, 5, 0.003, 0.8);
+            movethForward(-3, 2.5, 0.001, 0.4);
             freeze();
-            runIntake(-1);
-            sleep(1000);
-            runIntake(0);
-            movethForward(20, 2.5, 0.001, 0.4);
             break;
-            /*claw(true);
-            movethForward(85, 2.5, 0.001, 0.6);
-            turnethDirection(90,0.4, 0.25, 0.005, 4);
-            movethForward(30, 2.5, 0.001, 0.6);
-            sleep(500);
-            claw(false);
-            freeze();
-            sleep(2000);
-            movethForward(-10, 2.5, 0.001, 0.6);
-            turnOneWheelDirection(-90, 0.5, 0.3, 0.005, 4);
-            freeze();
-            sleep(1000);
-            claw(true);
-            movethForward(-40, 2.5, 0.005, 0.6);
-            freeze();
-
-             */
         }
-        freeze();
     }
 
 
@@ -341,10 +253,10 @@ public class TankDriveAuto extends LinearOpMode {
             else
                 rightPower *= -1;
 
-            //tankDrive.LM0.setPower(leftPower);
-            //tankDrive.LM1.setPower(leftPower);
-            tankDrive.RM0.setPower(rightPower);
-            tankDrive.RM1.setPower(rightPower);
+            tankDrive.LM0.setPower(leftPower);
+            tankDrive.LM1.setPower(leftPower);
+            //tankDrive.RM0.setPower(rightPower);
+            //tankDrive.RM1.setPower(rightPower);
         }
 
         // turn the motors off.

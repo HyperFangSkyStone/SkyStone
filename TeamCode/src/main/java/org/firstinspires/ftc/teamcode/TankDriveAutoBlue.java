@@ -3,17 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-import java.util.ArrayList;
-
 @SuppressWarnings("ALL")
-@Autonomous(name="Auto Red", group="Obese Chimp")
+@Autonomous(name="Auto Blue", group="Obese Chimp")
 //@Disabled
-public class TankDriveAuto extends LinearOpMode {
+public class TankDriveAutoBlue extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
 
@@ -78,16 +75,16 @@ public class TankDriveAuto extends LinearOpMode {
                 turnethDirection(4,0.35, 0.2, 0.005, 3);
                 movethForward(24, 2.5, 0.001, 0.6);
                 freeze();
-                runIntake(-0.75);
+                runIntake(-0.5);
                 movethForward(15, 2.5, 0.001, 0.6);
                 sleep(250);
                 runIntake(0);
                 movethForward(-20, 2.5, 0.001, 0.4);
                 runIntake(0.5);
-                sleep(100);
+                sleep(110);
                 runIntake(0);
                 freeze();
-                turnethDirection(88,0.4, 0.2, 0.005, 3);
+                turnethDirection(-97,0.4, 0.2, 0.005, 3);
             }
             else if (skystonePosition == 2)
             {
@@ -98,8 +95,11 @@ public class TankDriveAuto extends LinearOpMode {
                 sleep(1000);
                 runIntake(0);
                 movethForward(-20, 2.5, 0.001, 0.4);
+                runIntake(0.5);
+                sleep(110);
+                runIntake(0);
                 freeze();
-                turnethDirection(90,0.35, 0.2, 0.005, 3);
+                turnethDirection(-90,0.35, 0.2, 0.005, 3);
             }
             else if (skystonePosition == 3)
             {
@@ -116,7 +116,7 @@ public class TankDriveAuto extends LinearOpMode {
                 sleep(100);
                 runIntake(0);
                 freeze();
-                turnethDirection(98,0.35, 0.2, 0.005, 3);
+                turnethDirection(-86,0.35, 0.2, 0.005, 3);
             }
             else
             {
@@ -135,22 +135,20 @@ public class TankDriveAuto extends LinearOpMode {
             movethForward(20, 2.5, 0.001, 0.4);
             break;
             /*claw(true);
-            movethForward(85, 2.5, 0.001, 0.6);
-            turnethDirection(90,0.4, 0.25, 0.005, 4);
+            movethForward(80, 2.5, 0.001, 0.6);
+            turnethDirection(-90,0.4, 0.25, 0.005, 4);
             movethForward(30, 2.5, 0.001, 0.6);
             sleep(500);
             claw(false);
             freeze();
             sleep(2000);
-            movethForward(-10, 2.5, 0.001, 0.6);
-            turnOneWheelDirection(-90, 0.5, 0.3, 0.005, 4);
+            movethForward(-13, 2.5, 0.001, 0.6);
+            turnOneWheelDirection(90, 0.5, 0.3, 0.005, 4);
             freeze();
             sleep(1000);
             claw(true);
             movethForward(-40, 2.5, 0.005, 0.6);
-            freeze();
-
-             */
+            freeze();*/
         }
         freeze();
     }
