@@ -3,6 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImpl;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import java.util.Arrays;
 
 
 public class TankDriveALPHA
@@ -13,7 +19,10 @@ public class TankDriveALPHA
     public DcMotor  RM1  = null;
 
     public DcMotor  Intake1  = null;
-    public DcMotor  Intake2 = null;
+    public DcMotor  Intake2  = null;
+
+    public Servo LServo = null;
+    public Servo RServo = null;
 
     HardwareMap hwMap =  null;
 
@@ -30,6 +39,9 @@ public class TankDriveALPHA
 
         Intake1 = hwMap.get(DcMotor.class, "Intake1");
         Intake2 = hwMap.get(DcMotor.class, "Intake2");
+
+        LServo = hwMap.get(Servo.class, "LServo");
+        RServo = hwMap.get(Servo.class, "RServo");
 
         LM0.setDirection(DcMotor.Direction.REVERSE);
         LM1.setDirection(DcMotor.Direction.REVERSE);
@@ -58,6 +70,13 @@ public class TankDriveALPHA
         RM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Intake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        LM0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RM0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
     }
 
     public double getEncoderAvg(char c) {
@@ -68,10 +87,87 @@ public class TankDriveALPHA
         }
         return Double.NaN;
     }
+    public double getAverageEncoder(char c) {
+        switch (c)
+        {
+            case 'l':
+                if (LM0.getCurrentPosition() == 0)
+                    return LM1.getCurrentPosition();
+                else if (LM1.getCurrentPosition() == 0)
+                    return LM0.getCurrentPosition();
+                else return (Math.abs(LM0.getCurrentPosition()) + Math.abs(LM1.getCurrentPosition())) / 2.0;
+            case 'r':
+                if (RM0.getCurrentPosition() == 0)
+                    return RM1.getCurrentPosition();
+                else if (RM1.getCurrentPosition() == 0)
+                    return RM0.getCurrentPosition();
+                else return (Math.abs(RM0.getCurrentPosition()) + Math.abs(RM1.getCurrentPosition())) / 2.0;
+        }
+        return 0 / 0;
+    }
+
 
     public double getEncoderAvg() {
-        return (Math.abs(LM0.getCurrentPosition()) + Math.abs(LM1.getCurrentPosition()) +
-                Math.abs(RM0.getCurrentPosition()) + Math.abs(RM1.getCurrentPosition())) / 4.0;
+        double output = 0;
+        int encoderCount = 0;
+        boolean[] encoderIsNotPluggedIn = new boolean[4];
+
+        if (Math.abs(RM0.getCurrentPosition()) != 0) {
+            encoderCount++;
+            output += Math.abs(RM0.getCurrentPosition());
+        } else encoderIsNotPluggedIn[0] = true;
+
+        if (Math.abs(RM1.getCurrentPosition()) != 0) {
+            encoderCount++;
+            output += Math.abs(RM1.getCurrentPosition());
+        } else encoderIsNotPluggedIn[1] = true;
+
+        if (Math.abs(LM0.getCurrentPosition()) != 0) {
+            encoderCount++;
+            output += Math.abs(LM0.getCurrentPosition());
+        } else encoderIsNotPluggedIn[2] = true;
+
+        if (Math.abs(LM1.getCurrentPosition()) != 0) {
+            encoderCount++;
+            output += Math.abs(LM1.getCurrentPosition());
+        } else encoderIsNotPluggedIn[3] = true;
+
+        if (encoderCount == 0)
+            return 0;
+        else
+            return output/encoderCount;
+    }
+
+    public double getEncoderAvg(Telemetry telemetry) {
+        double output = 0;
+        int encoderCount = 0;
+        boolean[] encoderIsNotPluggedIn = new boolean[4];
+
+        if (Math.abs(RM0.getCurrentPosition()) != 0) {
+            encoderCount++;
+            output += Math.abs(RM0.getCurrentPosition());
+        } else encoderIsNotPluggedIn[0] = true;
+
+        if (Math.abs(RM1.getCurrentPosition()) != 0) {
+            encoderCount++;
+            output += Math.abs(RM1.getCurrentPosition());
+        } else encoderIsNotPluggedIn[1] = true;
+
+        if (Math.abs(LM0.getCurrentPosition()) != 0) {
+            encoderCount++;
+            output += Math.abs(LM0.getCurrentPosition());
+        } else encoderIsNotPluggedIn[2] = true;
+
+        if (Math.abs(LM1.getCurrentPosition()) != 0) {
+            encoderCount++;
+            output += Math.abs(LM1.getCurrentPosition());
+        } else encoderIsNotPluggedIn[3] = true;
+
+        telemetry.addData("R0, R1, L0, L1", Arrays.toString(encoderIsNotPluggedIn));
+        if (encoderCount == 0)
+            return 0;
+        else
+            return output/encoderCount;
     }
 
     public void resetEncoders() {

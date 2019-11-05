@@ -1,17 +1,21 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class PIDController {
 
     private double kP, kI, kD;
     private double errorPrev, timePrev, floor;
+    private LinearOpMode opmode;
 
-    public PIDController(double kP)
+    public PIDController(LinearOpMode op, double kP)
     {
         this.kP = kP;
         this.kI = 0;
         this.kD = 0;
+        this.opmode = op;
 
         errorPrev = 0;
         timePrev = 0;

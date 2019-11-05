@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="MonkDrive TeleOp", group="Bonobo")
+@TeleOp(name="Affe TeleOp", group="Bonobo")
 //@Disabled
 public class TankDriveTeleop extends LinearOpMode {
 
@@ -18,6 +18,18 @@ public class TankDriveTeleop extends LinearOpMode {
 
     PIDController PID = new PIDController(0, 0, 0);
 
+
+    boolean intakeOn = false;
+    int intakeDir = 1;
+
+
+    public final double WHEEL_DIAMETER = 90; //Wheel diameter in mm
+    public final int MOTOR_GEAR_TEETH = 26; //# of teeth on the motor gear
+    public final int WHEEL_GEAR_TEETH = 20; //# of teeth on the wheel gear
+    public final double GEAR_RATIO = (MOTOR_GEAR_TEETH + 0.0) / WHEEL_GEAR_TEETH; //For every full turn of the motor, the wheel turns this many rotations.
+    public final double MM_TO_INCHES =  25.4;
+    public final double MOTOR_TO_INCHES = GEAR_RATIO * WHEEL_DIAMETER * Math.PI / MM_TO_INCHES; //For every full turn of both motors, the wheel moves forward this many inches
+    public final double NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 537.6;
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -60,17 +72,7 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.RM1.setPower(0);
             }
 
-            if(gamepad1.dpad_up)
-            {
-                tankDrive.LM0.setPower(0.75);
-                tankDrive.LM1.setPower(0.75);
-                tankDrive.RM0.setPower(0.75);
-                tankDrive.RM1.setPower(0.75);
-            }
-            else if(gamepad1.dpad_down)
-            {
-                linearMovement(-1, 0.75);
-            }/*
+            /*
             else
             {
                 tankDrive.LM0.setPower(0);
@@ -79,15 +81,24 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.RM1.setPower(0);
             }*/
 
+            if(gamepad1.left_bumper) //out
+            {
+                intakeOn = !intakeOn;
+            }
+
             if(gamepad1.right_bumper) //out
             {
-                tankDrive.Intake1.setPower(1);
-                tankDrive.Intake2.setPower(1);
+                if(intakeDir == 1)
+                    intakeDir = -1;
+                else
+                    intakeDir = 1;
             }
-            else if(gamepad1.left_bumper) //in
+
+
+            if(intakeOn) //in
             {
-                tankDrive.Intake1.setPower(-1);
-                tankDrive.Intake2.setPower(-1);
+                tankDrive.Intake1.setPower(intakeDir);
+                tankDrive.Intake2.setPower(intakeDir);
             }
             else
             {
@@ -95,18 +106,11 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.Intake2.setPower(0);
             }
 
-            if(gamepad1.a)
+            if (gamepad1.x)
             {
-                pidLinearMovement(1);
+                pidLinearMovement(100,0.1);
             }
-            else if (gamepad1.b)
-            {
-                pidLinearMovement(2);
-            }
-            else if (gamepad1.x)
-            {
-                pidLinearMovement(5);
-            }
+
         }
 
     }
@@ -135,29 +139,66 @@ public class TankDriveTeleop extends LinearOpMode {
         tankDrive.RM1.setPower(0);
     }
 
-    public void pidLinearMovement(double distance)
+    public void pidLinearMovement(double distance, double kd)
     {
-        double conversionIndex = 537.6/14.47111;
+        double conversionIndex = 537.6/((26.0/20.0)*90.0* Math.PI / 25.4); // Ticks per inch
         double timeFrame = 5; //distance * distanceTimeIndex;
-        double errorMargin = 20;
-        double kP = 0.002;
+        double errorMargin = 5;
         double powerFloor = 0.2;
         double powerCeiling = 0.8;
-        double targetTick = distance * conversionIndex;
-        double output;
+
         clock.reset();
         tankDrive.resetEncoders();
-        while (clock.seconds() < timeFrame && Math.abs(tankDrive.getEncoderAvg() - targetTick) > errorMargin )
+
+        double targetTick = distance / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION *50/47;
+        telemetry.addData("ticks", targetTick);
+        telemetry.update();
+        double error = targetTick;
+        double errorPrev = 0;
+        double kP = 0.0005;
+        double kD = kd;
+        double p, d;
+        double output;
+        double time = clock.seconds();
+        double timePrev = 0;
+
+
+        while (clock.seconds() < timeFrame && Math.abs(error) > errorMargin )
         {
             //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
-            output = Math.abs(targetTick - tankDrive.getEncoderAvg()) * kP;
+
+            p = Math.abs(error) * kP;
+            d = ((error - errorPrev) / (time - timePrev)) /targetTick * kD;
+
+            output = p + d;
             output = Math.max(output, powerFloor);
             output = Math.min(output, powerCeiling);
-            if (targetTick - tankDrive.getEncoderAvg() < 0) output *= -1;
-            runMotor(output, -output);
+            if (error < 0) output *= -1;
+            runMotor(output, output);
+
+            errorPrev = error;
+            error = targetTick - tankDrive.getEncoderAvg(telemetry);
+
+            timePrev = time;
+            time = clock.seconds();
+
+            telemetry.addData("Target", targetTick);
+            telemetry.addData("Current", averageEncoderTick());
+            telemetry.addData("RM0", tankDrive.RM0.getCurrentPosition());
+            telemetry.addData("RM1", tankDrive.RM1.getCurrentPosition());
+            telemetry.addData("LM0", tankDrive.LM0.getCurrentPosition());
+            telemetry.addData("LM1", tankDrive.LM1.getCurrentPosition());
+            telemetry.addData("error", error);
+            telemetry.addData("kP", kP);
+            telemetry.addData("output", output);
+            telemetry.update();
+
+
         }
         runMotor(0,0);
     }
+
+
 
     public void turnToAngle(double angle)
     {

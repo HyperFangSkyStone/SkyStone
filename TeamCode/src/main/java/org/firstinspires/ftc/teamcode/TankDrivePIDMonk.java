@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import java.util.ArrayList;
 
 
-@TeleOp(name="TankDrive MONK PID", group="chimp")
+@TeleOp(name="AutoApe", group="chimp")
 //@Disabled
 public class TankDrivePIDMonk extends LinearOpMode {
     public final double WHEEL_DIAMETER = 90; //Wheel diameter in mm
@@ -73,13 +73,19 @@ public class TankDrivePIDMonk extends LinearOpMode {
 
         while (opModeIsActive()) {
             if (gamepad1.left_bumper) {
-                movethForward(10,10, 0.002, 0.2);
+                movethForward(50,3, 0.001, 0.8);
+                freeze();
+                turnethDirection(90, 0.45, 0.3, 0.005, 3);
+                freeze();
+                movethForward(50,3, 0.001, 1);
             } else if (gamepad1.dpad_right)
-                movethForward(50,10, 0.002, 0.8);
+                movethForward(50,3, 0.002, 0.8);
             else if (gamepad1.dpad_up)
-                movethForward(50,10, 0.001, 0.8);
+                movethForward(50,3, 0.001, 0.8);
             else if (gamepad1.dpad_left)
-                movethForward(50,10, 0.0005, 0.8);
+                movethForward(100,3, 0.0005, 0.8);
+            else if (gamepad1.dpad_down)
+                movethForward(50,3, 0.00025, 0.8);
                 //else if (gamepad1.left_bumper)
                 //linearMovement(-1, 1);
             else {
@@ -90,11 +96,11 @@ public class TankDrivePIDMonk extends LinearOpMode {
             }
 
             if (gamepad1.a)
-                turnethDirection(90, 0.4, 0.2, 0.02);
+                turnethDirection(90, 0.5, 0.25, 0.005, 3);
             else if (gamepad1.b)
-                turnethDirection(90, 0.4, 0.2, 0.015);
+                turnethDirection(90, 0.5, 0.25, 0.0025, 3);
             else if (gamepad1.x)
-                turnethDirection(90, 0.3, 0.2, 0.015);
+                turnethDirection(180, 0.5, 0.25, 0.005, 3);
             /*if(gamepad1.y) {
                 telemetry.addData("Right Encoder Average", tank.getAverageEncoder('r'));
                 telemetry.update();
@@ -137,10 +143,10 @@ public class TankDrivePIDMonk extends LinearOpMode {
         time.reset();
         double encoderTicks = inches / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION; // target number of encoder tick
         int errorMargin = 5; //Amount of error in ticks we are willing to accept
-        double powerFloor = 0.18; //Minimum power
+        double powerFloor = 0.19; //Minimum power
         double powerCeiling = power; //Maximum power
 
-        telemetry.addData("Moveth Forward is moving forward at ", inches + " inches and ");
+        telemetry.addData("ticks", encoderTicks);
         telemetry.update();
         while (Math.abs(tank.getAverageEncoder('l') + tank.getAverageEncoder('r') - encoderTicks * 2) > errorMargin && time.seconds() < t)
         {
@@ -177,6 +183,10 @@ public class TankDrivePIDMonk extends LinearOpMode {
             }
             telemetry.addData("Left Encoder", tank.getAverageEncoder('l'));
             telemetry.addData("Right Encoder", tank.getAverageEncoder('r'));
+            telemetry.addData("ticks", encoderTicks);
+            telemetry.addData("Current L", tank.getAverageEncoder('l'));
+            telemetry.addData("Current R", tank.getAverageEncoder('l'));
+            telemetry.addData("kP", kp);
             telemetry.update();
 
         }
@@ -233,10 +243,12 @@ public class TankDrivePIDMonk extends LinearOpMode {
      * Rotate left or right the number of degrees. Does not support turning more than 180 degrees.
      * param degrees Degrees to turn, + is left - is right
      */
-    private void turnethDirection(int initial, double powerCeiling, double powerFloor, double kp)
+    private void turnethDirection(int initial, double powerCeiling, double powerFloor, double kp, double t)
     {
         lastAngles = imu.getAngularOrientation();
         double currentAngle = lastAngles.firstAngle;
+        ElapsedTime clock = new ElapsedTime();
+        clock.reset();
         globalAngle += initial;
         if(globalAngle > 180)
             globalAngle -=360;
@@ -255,7 +267,7 @@ public class TankDrivePIDMonk extends LinearOpMode {
         // set power to rotate.
 
         // rotate until turn is completed.
-        while (Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3)
+        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3)
         {
             lastAngles = imu.getAngularOrientation();
             currentAngle = lastAngles.firstAngle;
@@ -305,5 +317,13 @@ public class TankDrivePIDMonk extends LinearOpMode {
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         globalAngle = 0;
+    }
+
+    public void freeze()
+    {
+        tank.LM0.setPower(0);
+        tank.LM1.setPower(0);
+        tank.RM0.setPower(0);
+        tank.RM1.setPower(0);
     }
 }
