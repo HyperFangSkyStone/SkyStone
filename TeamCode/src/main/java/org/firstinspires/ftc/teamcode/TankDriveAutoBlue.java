@@ -225,9 +225,11 @@ public class TankDriveAutoBlue extends LinearOpMode {
             telemetry.addData("Current R", tankDrive.getAverageEncoder('l'));
             telemetry.addData("kP", kp);
             telemetry.update();
-
         }
+
+        turnethDirection(0, 0.35, 0.2, 0.005, 3);
     }
+
 
     private void turnethDirection(int initial, double powerCeiling, double powerFloor, double kp, double t)
     {
