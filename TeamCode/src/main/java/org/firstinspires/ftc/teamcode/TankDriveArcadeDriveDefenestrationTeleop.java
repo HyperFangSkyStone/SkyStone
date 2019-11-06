@@ -68,11 +68,21 @@ public class TankDriveArcadeDriveDefenestrationTeleop extends LinearOpMode {
                 tankDrive.RM0.setPower(forwardPower - turnPower);
                 tankDrive.RM1.setPower(forwardPower - turnPower);
             }
+            else
+            {
+                freeze();
+            }
 
 
             if (Math.abs(gamepad2.left_stick_y) > 0.2)
             {
-                tankDrive.Intake1.setPower(-gamepad2.left_stick_y);
+                if(!gamepad2.right_bumper)
+                    tankDrive.Intake1.setPower(-gamepad2.left_stick_y);
+                else
+                {
+                    tankDrive.Intake1.setPower(-gamepad2.left_stick_y / 2);
+                    telemetry.addData("Intake1 is at", " half speed");
+                }
             }
             else
             {
@@ -81,7 +91,13 @@ public class TankDriveArcadeDriveDefenestrationTeleop extends LinearOpMode {
 
             if (Math.abs(gamepad2.right_stick_y) > 0.2)
             {
-                tankDrive.Intake2.setPower(-gamepad2.right_stick_y);
+                if(!gamepad2.right_bumper)
+                    tankDrive.Intake2.setPower(-gamepad2.right_stick_y);
+                else
+                {
+                    tankDrive.Intake2.setPower(-gamepad2.right_stick_y / 2);
+                    telemetry.addData("Intake2 is at", " half speed");
+                }
             }
             else
             {

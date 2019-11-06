@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="PARK", group="Obese Chimp")
+@Autonomous(name="Auto Foundation BLU", group="Obese Chimp")
 //@Disabled
-public class TankDriveAutoPark extends LinearOpMode {
+public class TankDriveAutoFoundationBlue extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
 
@@ -53,18 +53,29 @@ public class TankDriveAutoPark extends LinearOpMode {
         tankDrive.init(hardwareMap);
         //waitForStart();
 
-        VisionBitMapping vbm = new VisionBitMapping(this);
-
-        while (!isStarted())
-        {
-        }
-
         while(isStarted())
         {
             runIntake(0.75);
             sleep(500);
             runIntake(0);
-            movethForward(-3, 2.5, 0.001, 0.4);
+            claw(true);
+            moveOvershoot(35, 2.5, 0.001, 0.3);
+            freeze();
+            sleep(500);
+            claw(false);
+            sleep(2000);
+            freeze();
+            //movethForward(-15, 2.5, 0.005, 0.4);
+            turnOneWheelDirection(-50, 0.8, 0.6, 0.005, 4);
+            //turnOneWheelDirection(-45, 0.8, 0.6, 0.005, 4);
+            //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
+            claw(true);
+            freeze();
+            sleep(1500);
+            movethForward(30, 3, 0.005, 0.4);
+            freeze();
+            sleep(1000);
+            movethForward(-30, 2.5, 0.005, 0.4);
             freeze();
             break;
         }
@@ -108,8 +119,8 @@ public class TankDriveAutoPark extends LinearOpMode {
             {
                 //double leftpower = Math.abs(encoderTicks - tank.getAverageEncoder('l')) * kp;
                 double leftpower = sigmoid(encoderTicks - tankDrive.getAverageEncoder('l'), powerCeiling, powerFloor, 800, kp * 4);
-                leftpower = Math.max(leftpower, powerFloor);
-                leftpower = Math.min(leftpower, powerCeiling);
+                leftpower = Math.min(leftpower, powerFloor);
+                leftpower = Math.max(leftpower, powerCeiling);
                 if (encoderTicks - tankDrive.getAverageEncoder('l') < 0) leftpower *= -1;
                 tankDrive.LM0.setPower(leftpower);
                 tankDrive.LM1.setPower(leftpower);
@@ -124,8 +135,8 @@ public class TankDriveAutoPark extends LinearOpMode {
             {
                 //double rightpower = Math.abs(encoderTicks - tank.getAverageEncoder('r')) * kp;
                 double rightpower = sigmoid(encoderTicks - tankDrive.getAverageEncoder('r'), powerCeiling, powerFloor, 800, kp * 6);
-                rightpower = Math.max(rightpower, powerFloor);
-                rightpower = Math.min(rightpower, powerCeiling);
+                rightpower = Math.min(rightpower, powerFloor);
+                rightpower = Math.max(rightpower, powerCeiling);
                 if (encoderTicks - tankDrive.getAverageEncoder('r') < 0) rightpower *= -1;
                 tankDrive.RM0.setPower(rightpower);
                 tankDrive.RM1.setPower(rightpower);
@@ -143,6 +154,62 @@ public class TankDriveAutoPark extends LinearOpMode {
             telemetry.addData("kP", kp);
             telemetry.update();
 
+        }
+    }
+
+
+    public void moveOvershoot(double inches, double t, double kp, double power)
+    {
+        tankDrive.resetEncoders();
+        ElapsedTime clock = new ElapsedTime();
+        clock.reset();
+        double encoderTicks = inches / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION; // target number of encoder tick
+        int errorMargin = 5; //Amount of error in ticks we are willing to accept
+        double powerFloor = 0.19; //Minimum power
+        double powerCeiling = power; //Maximum power
+
+        telemetry.addData("ticks", encoderTicks);
+        telemetry.update();
+        while (Math.abs(tankDrive.getAverageEncoder('l')) + Math.abs(tankDrive.getAverageEncoder('r')) < (encoderTicks - errorMargin) * 2 && clock.seconds() < t)
+        {
+            if (Math.abs(encoderTicks - tankDrive.getAverageEncoder('l')) > errorMargin)
+            {
+                //double leftpower = Math.abs(encoderTicks - tank.getAverageEncoder('l')) * kp;
+                double leftpower = sigmoid(encoderTicks - tankDrive.getAverageEncoder('l'), powerCeiling, powerFloor, 800, kp * 4);
+                leftpower = Math.min(leftpower, powerFloor);
+                leftpower = Math.max(leftpower, powerCeiling);
+                if (encoderTicks - tankDrive.getAverageEncoder('l') < 0) leftpower *= -1;
+                tankDrive.LM0.setPower(leftpower);
+                tankDrive.LM1.setPower(leftpower);
+                telemetry.addData("LeftPower", leftpower);
+            }
+            else {
+                tankDrive.LM0.setPower(0);
+                tankDrive.LM1.setPower(0);
+            }
+
+            if (Math.abs(encoderTicks - tankDrive.getAverageEncoder('r')) > errorMargin)
+            {
+                //double rightpower = Math.abs(encoderTicks - tank.getAverageEncoder('r')) * kp;
+                double rightpower = sigmoid(encoderTicks - tankDrive.getAverageEncoder('r'), powerCeiling, powerFloor, 800, kp * 6);
+                rightpower = Math.min(rightpower, powerFloor);
+                rightpower = Math.max(rightpower, powerCeiling);
+                if (encoderTicks - tankDrive.getAverageEncoder('r') < 0) rightpower *= -1;
+                tankDrive.RM0.setPower(rightpower);
+                tankDrive.RM1.setPower(rightpower);
+                telemetry.addData("RightPower", rightpower);
+            }
+            else {
+                tankDrive.RM0.setPower(0);
+                tankDrive.RM1.setPower(0);
+            }
+            telemetry.addData("Left Encoder", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("Right Encoder", tankDrive.getAverageEncoder('r'));
+            telemetry.addData("ticks", encoderTicks);
+            telemetry.addData("Current L", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("Current R", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("kP", kp);
+            telemetry.update();
         }
     }
 
@@ -251,15 +318,16 @@ public class TankDriveAutoPark extends LinearOpMode {
             rawPower = Math.min(rawPower, powerCeiling);
             leftPower = rawPower;
             rightPower = rawPower;
-            if (error > 0)
-                leftPower *= -1;
-            else
-                rightPower *= -1;
 
+            if (error < 0) {
+                leftPower *= -1;
+                rightPower *= -1;
+            }
+
+            //tankDrive.RM0.setPower(leftPower);
+            //tankDrive.RM1.setPower(leftPower);
             tankDrive.LM0.setPower(leftPower);
             tankDrive.LM1.setPower(leftPower);
-            //tankDrive.RM0.setPower(rightPower);
-            //tankDrive.RM1.setPower(rightPower);
         }
 
         // turn the motors off.

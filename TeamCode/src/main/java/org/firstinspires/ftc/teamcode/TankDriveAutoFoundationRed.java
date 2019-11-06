@@ -55,7 +55,9 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
 
         while(isStarted())
         {
-
+            runIntake(0.75);
+            sleep(500);
+            runIntake(0);
             claw(true);
             moveOvershoot(35, 2.5, 0.001, 0.3);
             freeze();
@@ -67,12 +69,12 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
             turnOneWheelDirection(-45, 0.8, 0.6, 0.005, 4);
             turnOneWheelDirection(-45, 0.8, 0.6, 0.005, 4);
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
-
+            claw(true);
+            freeze();
+            sleep(1500);
+            movethForward(30, 3, 0.005, 0.4);
             freeze();
             sleep(1000);
-            movethForward(50, 3, 0.005, 0.9);
-            claw(true);
-            sleep(2000);
             movethForward(-30, 2.5, 0.005, 0.4);
             freeze();
             break;
