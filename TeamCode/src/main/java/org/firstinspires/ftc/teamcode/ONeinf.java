@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 
 
 @Autonomous(name="3inch", group="chimp")
-//@Disabled
+@Disabled
 public class ONeinf extends LinearOpMode {
     public final double WHEEL_DIAMETER = 90; //Wheel diameter in mm
     public final int MOTOR_GEAR_TEETH = 26; //# of teeth on the motor gear

@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import java.util.ArrayList;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="Auto Red", group="Obese Chimp")
+@Autonomous(name="Skystone Red", group="red")
 //@Disabled
 public class TankDriveAuto extends LinearOpMode {
 

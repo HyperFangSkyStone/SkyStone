@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="TankTeleOp", group="Bonobo")
+@TeleOp(name="Tank", group="1")
 //@Disabled
 public class TankDriveTeleop extends LinearOpMode {
 

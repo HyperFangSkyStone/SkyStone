@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="Auto Foundation BLU", group="Obese Chimp")
+@Autonomous(name="Foundation blue", group="blue")
 //@Disabled
 public class TankDriveAutoFoundationBlue extends LinearOpMode {
 
