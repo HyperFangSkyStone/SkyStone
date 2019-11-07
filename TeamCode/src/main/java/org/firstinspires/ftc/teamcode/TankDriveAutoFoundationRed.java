@@ -66,6 +66,7 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
             sleep(2000);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
+            turnOneWheelDirection(0, 0.6, 0.3, 0.005, 4, 'l');
             turnOneWheelDirection(-45, 0.8, 0.6, 0.005, 4);
             turnOneWheelDirection(-45, 0.8, 0.6, 0.005, 4);
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
@@ -337,6 +338,75 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
         // wait for rotation to stop.
         sleep(1000);
     }
+
+    private void turnOneWheelDirection(int initial, double powerCeiling, double powerFloor, double kp, double t, char l)
+    {
+        lastAngles = imu.getAngularOrientation();
+        double currentAngle = lastAngles.firstAngle;
+        ElapsedTime clock = new ElapsedTime();
+        clock.reset();
+        globalAngle += initial;
+        if(globalAngle > 180)
+            globalAngle -=360;
+        if (globalAngle < -180)
+            globalAngle += 360;
+        double  leftPower, rightPower;
+
+        // restart imu movement tracking.
+        //resetAngle();
+
+        telemetry.addData("currentAngle", currentAngle);
+        telemetry.update();
+        // getAngle() returns + when rotating counter clockwise (left) and - when rotating
+        // clockwise (right).
+
+        // set power to rotate.
+
+        // rotate until turn is completed.
+        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3)
+        {
+            lastAngles = imu.getAngularOrientation();
+            currentAngle = lastAngles.firstAngle;
+
+            telemetry.addData("CurrentAngle", currentAngle);
+            telemetry.update();
+
+            double error = globalAngle - currentAngle;
+            if (error > 180)
+                error -= 360;
+            if (error < -180)
+                error += 360;
+            double rawPower = Math.abs(error) * kp;
+            rawPower = Math.max(rawPower, powerFloor);
+            rawPower = Math.min(rawPower, powerCeiling);
+            leftPower = rawPower;
+            rightPower = rawPower;
+
+            if (error < 0)
+                leftPower *= -1;
+
+            if (l == 'l') {
+                tankDrive.LM0.setPower(leftPower);
+                tankDrive.LM1.setPower(leftPower);
+            }
+            else {
+                tankDrive.RM0.setPower(leftPower);
+                tankDrive.RM1.setPower(leftPower);
+            }
+            //tankDrive.RM0.setPower(rightPower);
+            //tankDrive.RM1.setPower(rightPower);
+        }
+
+        // turn the motors off.
+        tankDrive.LM0.setPower(0);
+        tankDrive.LM1.setPower(0);
+        tankDrive.RM0.setPower(0);
+        tankDrive.RM1.setPower(0);
+
+        // wait for rotation to stop.
+        sleep(1000);
+    }
+
 
     public double averageEncoderTick()
     {
