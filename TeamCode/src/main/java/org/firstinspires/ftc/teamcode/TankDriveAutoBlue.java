@@ -57,7 +57,7 @@ public class TankDriveAutoBlue extends LinearOpMode {
 
         while (!isStarted())
         {
-            skystonePosition = vbm.skyStonePos();
+            skystonePosition = vbm.skyStonePos('b');
 
             telemetry.addData("Skystone Pos", skystonePosition);
             telemetry.update();
