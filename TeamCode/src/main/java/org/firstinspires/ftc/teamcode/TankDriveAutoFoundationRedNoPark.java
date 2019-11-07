@@ -66,7 +66,6 @@ public class TankDriveAutoFoundationRedNoPark extends LinearOpMode {
             sleep(2000);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(0, 0.6, 0.3, 0.005, 4, 'l');
             turnOneWheelDirection(-45, 0.8, 0.6, 0.005, 4);
             turnOneWheelDirection(-45, 0.8, 0.6, 0.005, 4);
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
@@ -209,6 +208,8 @@ public class TankDriveAutoFoundationRedNoPark extends LinearOpMode {
             telemetry.addData("kP", kp);
             telemetry.update();
         }
+
+        freeze();
     }
 
     private void turnethDirection(int initial, double powerCeiling, double powerFloor, double kp, double t)
@@ -383,8 +384,8 @@ public class TankDriveAutoFoundationRedNoPark extends LinearOpMode {
                 leftPower *= -1;
 
             if (l == 'l') {
-                tankDrive.LM0.setPower(leftPower);
-                tankDrive.LM1.setPower(leftPower);
+                tankDrive.LM0.setPower(-leftPower);
+                tankDrive.LM1.setPower(-leftPower);
             }
             else {
                 tankDrive.RM0.setPower(leftPower);
