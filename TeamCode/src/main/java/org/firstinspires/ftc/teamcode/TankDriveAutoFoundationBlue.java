@@ -66,7 +66,7 @@ public class TankDriveAutoFoundationBlue extends LinearOpMode {
             sleep(2000);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(-50, 0.8, 0.6, 0.005, 4);
+            turnOneWheelDirection(90, 0.8, 0.6, 0.005, 4);
             //turnOneWheelDirection(-45, 0.8, 0.6, 0.005, 4);
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
             claw(true);
@@ -326,8 +326,8 @@ public class TankDriveAutoFoundationBlue extends LinearOpMode {
 
             //tankDrive.RM0.setPower(leftPower);
             //tankDrive.RM1.setPower(leftPower);
-            tankDrive.LM0.setPower(leftPower);
-            tankDrive.LM1.setPower(leftPower);
+            tankDrive.LM0.setPower(-leftPower);
+            tankDrive.LM1.setPower(-leftPower);
         }
 
         // turn the motors off.
