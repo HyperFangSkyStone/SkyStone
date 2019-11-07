@@ -162,12 +162,76 @@ public class    VisionBitMapping {
         return avgX;
     }
 
+    public double avgX(char b){
+        double avgX = 0;
+        double avgY = 0;
+        Bitmap bitmap = null;
+        try {
+            bitmap = getBitmap();
+        } catch (InterruptedException e) {
+            opMode.telemetry.addData("ERROR", "Flaming jesus with fiery fibroids");
+            opMode.telemetry.update();
+        }
+        int skystonePixelCount = 0;
+        ArrayList<Integer> xValues = new ArrayList<>();
+        ArrayList<Integer> yValues = new ArrayList<>();
+
+        boolean[] yellowYVals = new boolean[bitmap.getHeight()];
+
+        // Finds all heights with yellow pixels
+        for (int y = 0; y < bitmap.getHeight(); y++) {
+            for (int x = 0; x < bitmap.getWidth() - 160; x++) {
+                int pixel = bitmap.getPixel(x, y);
+                if (red(pixel) >= YELRED_THRESHOLD && blue(pixel) <= YELBLUE_THRESHOLD && green(pixel) <= YELGREEN_THRESHOLD) {
+                    yellowYVals[y] = true;
+                    break;
+                }
+            }
+        }
+
+        for (int y = 0; y < bitmap.getHeight(); y++) {
+            if (yellowYVals[y]) {
+                for (int x = 0; x < bitmap.getWidth() - 160; x++) {
+                    int pixel = bitmap.getPixel(x, y);
+                    if (red(pixel) <= RED_THRESHOLD && blue(pixel) <= BLUE_THRESHOLD && green(pixel) <= GREEN_THRESHOLD) {
+                        xValues.add(x);
+                        yValues.add(y);
+                    }
+                }
+            }
+        }
+
+        for (int xCoor : xValues) {
+            avgX += xCoor;
+        }
+        for (int yCoor : yValues) {
+            avgY += yCoor;
+        }
+        avgX /= xValues.size();
+        avgY /= yValues.size();
+
+        return avgX;
+    }
+
     public int skyStonePos()
     {
-
-        if (avgX() < 220)
+        double avg = avgX();
+        if (avg < 220)
             skystonePosition = 1;
-        else if (avgX() >= 220 && avgX() <= 330)
+        else if (avg >= 220 && avg <= 330)
+            skystonePosition = 2;
+        else
+            skystonePosition = 3;
+        return skystonePosition;
+    }
+
+
+    public int skyStonePos(char b)
+    {
+        double avg = avgX(b);
+        if (avg < 220)
+            skystonePosition = 1;
+        else if (avg >= 220 && avg <= 330)
             skystonePosition = 2;
         else
             skystonePosition = 3;
