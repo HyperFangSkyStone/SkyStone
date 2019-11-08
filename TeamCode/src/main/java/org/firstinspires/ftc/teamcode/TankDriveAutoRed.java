@@ -3,17 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-import java.util.ArrayList;
-
 @SuppressWarnings("ALL")
-@Autonomous(name="Skystone Red Old", group="red")
+@Autonomous(name="Skystone Red", group="red")
 //@Disabled
-public class TankDriveAuto extends LinearOpMode {
+public class TankDriveAutoRed extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
 
@@ -77,20 +74,19 @@ public class TankDriveAuto extends LinearOpMode {
             runIntake(0);
             if (skystonePosition == 1)
             {
-                movethForward(2, 2.5, 0.001, 0.6);
-                turnethDirection(4,0.35, 0.2, 0.005, 3);
-                movethForward(24, 2.5, 0.001, 0.6);
+                movethForward(24, 2.5, 0.001, 0.5);
                 freeze();
-                runIntake(-0.75);
-                movethForward(15, 2.5, 0.001, 0.6);
+                turnethDirection(10,0.35, 0.2, 0.005, 3);
+                runIntake(-0.5);
+                movethForward(20, 2.5, 0.001, 0.4);
                 sleep(250);
                 runIntake(0);
-                movethForward(-20, 2.5, 0.001, 0.4);
+                movethForward(-30, 2.5, 0.001, 0.4);
                 runIntake(0.5);
-                sleep(100);
+                sleep(110);
                 runIntake(0);
                 freeze();
-                turnethDirection(88,0.4, 0.2, 0.005, 3);
+                turnethDirection(80,0.4, 0.2, 0.005, 3);
             }
             else if (skystonePosition == 2)
             {
@@ -100,26 +96,28 @@ public class TankDriveAuto extends LinearOpMode {
                 movethForward(15, 2.5, 0.001, 0.6);
                 sleep(1000);
                 runIntake(0);
-                movethForward(-20, 2.5, 0.001, 0.4);
+                movethForward(-30, 2.5, 0.001, 0.4);
+                runIntake(0.5);
+                sleep(110);
+                runIntake(0);
                 freeze();
                 turnethDirection(90,0.35, 0.2, 0.005, 3);
             }
             else if (skystonePosition == 3)
             {
-                movethForward(2, 2.5, 0.001, 0.6);
-                turnethDirection(-7,0.35, 0.2, 0.005, 3);
-                movethForward(24, 2.5, 0.001, 0.6);
+                movethForward(22, 2.5, 0.001, 0.6);
                 freeze();
+                turnethDirection(-25,0.35, 0.2, 0.005, 3);
                 runIntake(-0.75);
-                movethForward(15, 2.5, 0.001, 0.6);
+                movethForward(20, 2.5, 0.001, 0.6);
                 sleep(250);
                 runIntake(0);
-                movethForward(-20, 2.5, 0.001, 0.4);
+                movethForward(-45, 2.5, 0.001, 0.4);
                 runIntake(0.5);
                 sleep(100);
                 runIntake(0);
                 freeze();
-                turnethDirection(98,0.35, 0.2, 0.005, 3);
+                turnethDirection(115,0.38, 0.23, 0.005, 3);
             }
             else
             {
@@ -130,12 +128,12 @@ public class TankDriveAuto extends LinearOpMode {
             }
 
             skystonePosition = 0;
-            movethForward(-60, 5, 0.003, 0.8);
+            movethForward(-35, 5, 0.001, 0.8, 0.25);
             freeze();
             runIntake(-1);
             sleep(1000);
             runIntake(0);
-            movethForward(20, 2.5, 0.001, 0.4);
+            movethForward(15, 2.5, 0.001, 0.4);
             break;
             /*claw(true);
             movethForward(85, 2.5, 0.001, 0.6);
@@ -184,7 +182,7 @@ public class TankDriveAuto extends LinearOpMode {
         ElapsedTime clock = new ElapsedTime();
         clock.reset();
         double encoderTicks = inches / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION; // target number of encoder tick
-        int errorMargin = 5; //Amount of error in ticks we are willing to accept
+        int errorMargin = 10; //Amount of error in ticks we are willing to accept
         double powerFloor = 0.19; //Minimum power
         double powerCeiling = power; //Maximum power
 
@@ -192,37 +190,21 @@ public class TankDriveAuto extends LinearOpMode {
         telemetry.update();
         while (Math.abs(tankDrive.getAverageEncoder('l') + tankDrive.getAverageEncoder('r') - encoderTicks * 2) > errorMargin && clock.seconds() < t)
         {
-            if (Math.abs(encoderTicks - tankDrive.getAverageEncoder('l')) >= errorMargin)
-            {
-                //double leftpower = Math.abs(encoderTicks - tank.getAverageEncoder('l')) * kp;
-                double leftpower = sigmoid(encoderTicks - tankDrive.getAverageEncoder('l'), powerCeiling, powerFloor, 800, kp * 4);
-                leftpower = Math.max(leftpower, powerFloor);
-                leftpower = Math.min(leftpower, powerCeiling);
-                if (encoderTicks - tankDrive.getAverageEncoder('l') < 0) leftpower *= -1;
-                tankDrive.LM0.setPower(leftpower);
-                tankDrive.LM1.setPower(leftpower);
-                telemetry.addData("LeftPower", leftpower);
-            }
-            else {
-                tankDrive.LM0.setPower(0);
-                tankDrive.LM1.setPower(0);
-            }
+            //double leftpower = Math.abs(encoderTicks - tank.getAverageEncoder('l')) * kp;
+            double leftpower = sigmoid(encoderTicks - tankDrive.getAverageEncoder('l'), powerCeiling, powerFloor, 800, kp * 4);
+            leftpower = Math.max(leftpower, powerFloor);
+            leftpower = Math.min(leftpower, powerCeiling);
+            if (encoderTicks - tankDrive.getAverageEncoder('l') < 0) leftpower *= -1;
+            tankDrive.LM0.setPower(leftpower);
+            tankDrive.LM1.setPower(leftpower);
+            telemetry.addData("LeftPower", leftpower);
 
-            if (Math.abs(encoderTicks - tankDrive.getAverageEncoder('r')) >= errorMargin)
-            {
-                //double rightpower = Math.abs(encoderTicks - tank.getAverageEncoder('r')) * kp;
-                double rightpower = sigmoid(encoderTicks - tankDrive.getAverageEncoder('r'), powerCeiling, powerFloor, 800, kp * 6);
-                rightpower = Math.max(rightpower, powerFloor);
-                rightpower = Math.min(rightpower, powerCeiling);
-                if (encoderTicks - tankDrive.getAverageEncoder('r') < 0) rightpower *= -1;
-                tankDrive.RM0.setPower(rightpower);
-                tankDrive.RM1.setPower(rightpower);
-                telemetry.addData("RightPower", rightpower);
-            }
-            else {
-                tankDrive.RM0.setPower(0);
-                tankDrive.RM1.setPower(0);
-            }
+            //double rightpower = Math.abs(encoderTicks - tank.getAverageEncoder('r')) * kp;
+            double rightpower = leftpower;
+            tankDrive.RM0.setPower(rightpower);
+            tankDrive.RM1.setPower(rightpower);
+
+            telemetry.addData("RightPower", rightpower);
             telemetry.addData("Left Encoder", tankDrive.getAverageEncoder('l'));
             telemetry.addData("Right Encoder", tankDrive.getAverageEncoder('r'));
             telemetry.addData("ticks", encoderTicks);
@@ -230,8 +212,51 @@ public class TankDriveAuto extends LinearOpMode {
             telemetry.addData("Current R", tankDrive.getAverageEncoder('l'));
             telemetry.addData("kP", kp);
             telemetry.update();
-
         }
+        freeze();
+        turnethDirection(0, 0.35, 0.2, 0.005, 3);
+    }
+
+
+    public void movethForward(double inches, double t, double kp, double ceil, double floor)
+    {
+        tankDrive.resetEncoders();
+        ElapsedTime clock = new ElapsedTime();
+        clock.reset();
+        double encoderTicks = inches / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION; // target number of encoder tick
+        int errorMargin = 10; //Amount of error in ticks we are willing to accept
+        double powerFloor = floor; //Minimum power
+        double powerCeiling = ceil; //Maximum power
+
+        telemetry.addData("ticks", encoderTicks);
+        telemetry.update();
+        while (Math.abs(tankDrive.getAverageEncoder('l') + tankDrive.getAverageEncoder('r') - encoderTicks * 2) > errorMargin && clock.seconds() < t)
+        {
+
+            //double leftpower = Math.abs(encoderTicks - tank.getAverageEncoder('l')) * kp;
+            double leftpower = sigmoid(encoderTicks - tankDrive.getAverageEncoder('l'), powerCeiling, powerFloor, 800, kp * 4);
+            leftpower = Math.max(leftpower, powerFloor);
+            leftpower = Math.min(leftpower, powerCeiling);
+            if (encoderTicks - tankDrive.getAverageEncoder('l') < 0) leftpower *= -1;
+            tankDrive.LM0.setPower(leftpower);
+            tankDrive.LM1.setPower(leftpower);
+            telemetry.addData("LeftPower", leftpower);
+
+            //double rightpower = Math.abs(encoderTicks - tank.getAverageEncoder('r')) * kp;
+            double rightpower = leftpower;
+            tankDrive.RM0.setPower(rightpower);
+            tankDrive.RM1.setPower(rightpower);
+
+            telemetry.addData("Left Encoder", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("Right Encoder", tankDrive.getAverageEncoder('r'));
+            telemetry.addData("ticks", encoderTicks);
+            telemetry.addData("Current L", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("Current R", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("kP", kp);
+            telemetry.update();
+        }
+        freeze();
+
         turnethDirection(0, 0.35, 0.2, 0.005, 3);
     }
 
