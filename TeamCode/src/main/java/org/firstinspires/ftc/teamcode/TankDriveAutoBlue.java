@@ -90,9 +90,12 @@ public class TankDriveAutoBlue extends LinearOpMode {
             }
             else if (skystonePosition == 2)
             {
-                movethForward(24, 2.5, 0.001, 0.8);
+                turnOneWheelDirection(60, 0.5, 0.3, 0.003, 3);
+                turnethDirection(-60, 0.5, 0.3, 0.003, 3);
+                movethForward(16, 2.5, 0.001, 0.8);
                 freeze();
                 runIntake(-0.75);
+                turnethDirection(-10, 0.5, 0.3, 0.003, 3);
                 movethForward(15, 2.5, 0.001, 0.6);
                 sleep(1000);
                 runIntake(0);
@@ -101,7 +104,7 @@ public class TankDriveAutoBlue extends LinearOpMode {
                 sleep(110);
                 runIntake(0);
                 freeze();
-                turnethDirection(-90,0.35, 0.2, 0.005, 3);
+                turnethDirection(-80,0.35, 0.2, 0.005, 3);
             }
             else if (skystonePosition == 3)
             {
@@ -128,7 +131,7 @@ public class TankDriveAutoBlue extends LinearOpMode {
             }
 
             skystonePosition = 0;
-            movethForward(-35, 5, 0.001, 0.8, 0.25);
+            movethForward(-40, 4, 0.001, 0.8, 0.25);
             freeze();
             runIntake(-1);
             sleep(1000);
