@@ -72,6 +72,9 @@ public class TankDriveAuto extends LinearOpMode {
 
         while(isStarted())
         {
+            runIntake(1);
+            sleep(750);
+            runIntake(0);
             if (skystonePosition == 1)
             {
                 movethForward(2, 2.5, 0.001, 0.6);

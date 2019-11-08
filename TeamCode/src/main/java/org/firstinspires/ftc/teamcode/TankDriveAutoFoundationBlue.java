@@ -55,8 +55,8 @@ public class TankDriveAutoFoundationBlue extends LinearOpMode {
 
         while(isStarted())
         {
-            runIntake(0.75);
-            sleep(500);
+            runIntake(1);
+            sleep(750);
             runIntake(0);
             claw(true);
             moveOvershoot(35, 2.5, 0.001, 0.3);

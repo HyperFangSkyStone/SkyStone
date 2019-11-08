@@ -47,9 +47,6 @@ public class TankDriveAutoPark extends LinearOpMode {
 
         while(isStarted())
         {
-            runIntake(0.75);
-            sleep(500);
-            runIntake(0);
             movethForward(-3, 2.5, 0.001, 0.4);
             freeze();
             break;
