@@ -77,7 +77,21 @@ public class TankDriveAuto extends LinearOpMode {
             runIntake(0);
             if (skystonePosition == 1)
             {
-                movethForward(2, 2.5, 0.001, 0.6);
+                movethForward(24, 2.5, 0.001, 0.5);
+                freeze();
+                turnethDirection(10,0.35, 0.3, 0.005, 3);
+                runIntake(-0.5);
+                movethForward(26, 2.5, 0.0009, 0.3, 0.2);
+                sleep(250);
+                runIntake(0);
+                movethForward(-36, 2.5, 0.001, 0.4);
+                runIntake(0.5);
+                sleep(110);
+                runIntake(0);
+                freeze();
+                turnethDirection(-100,0.4, 0.3, 0.005, 3);
+
+                /*movethForward(2, 2.5, 0.001, 0.6);
                 turnethDirection(4,0.35, 0.2, 0.005, 3);
                 movethForward(24, 2.5, 0.001, 0.6);
                 freeze();
@@ -90,23 +104,11 @@ public class TankDriveAuto extends LinearOpMode {
                 sleep(100);
                 runIntake(0);
                 freeze();
-                turnethDirection(88,0.4, 0.2, 0.005, 3);
+                turnethDirection(88,0.4, 0.2, 0.005, 3);*/
             }
             else if (skystonePosition == 2)
             {
-                movethForward(24, 2.5, 0.001, 0.8);
-                freeze();
-                runIntake(-0.75);
-                movethForward(15, 2.5, 0.001, 0.6);
-                sleep(1000);
-                runIntake(0);
-                movethForward(-20, 2.5, 0.001, 0.4);
-                freeze();
-                turnethDirection(90,0.35, 0.2, 0.005, 3);
-            }
-            else if (skystonePosition == 3)
-            {
-                movethForward(2, 2.5, 0.001, 0.6);
+                /*movethForward(2, 2.5, 0.001, 0.6);
                 turnethDirection(-7,0.35, 0.2, 0.005, 3);
                 movethForward(24, 2.5, 0.001, 0.6);
                 freeze();
@@ -119,7 +121,53 @@ public class TankDriveAuto extends LinearOpMode {
                 sleep(100);
                 runIntake(0);
                 freeze();
-                turnethDirection(98,0.35, 0.2, 0.005, 3);
+                turnethDirection(98,0.35, 0.2, 0.005, 3);  */
+                /*
+                movethForward(24, 2.5, 0.001, 0.8);
+                freeze();
+                runIntake(-0.75);
+                movethForward(15, 2.5, 0.001, 0.6);
+                sleep(1000);
+                runIntake(0);
+                movethForward(-20, 2.5, 0.001, 0.4);
+                freeze();
+                turnethDirection(90,0.35, 0.2, 0.005, 3);*/
+                movethForward(2, 0.5, 0.001, 0.3);
+                turnethDirection(-80, 0.5, 0.3, 0.003, 3);
+                turnOneWheelDirection(80, 0.5, 0.3, 0.003, 3);
+                movethForward(13, 2.5, 0.001, 0.8);
+                freeze();
+                turnethDirection(15, 0.5, 0.3, 0.003, 3);
+                runIntake(-0.75);
+                movethForward(16, 2.5, 0.001, 0.6);
+                sleep(1000);
+                runIntake(0);
+                movethForward(30, 2.5, 0.001, 0.4);
+                runIntake(0.5);
+                sleep(110);
+                runIntake(0);
+                freeze();
+                turnethDirection(-60,0.35, 0.3, 0.005, 3);
+            }
+            else if (skystonePosition == 3)
+            {
+                movethForward(2, 0.5, 0.001, 0.3);
+                turnethDirection(-80, 0.5, 0.3, 0.003, 3);
+                turnOneWheelDirection(80, 0.5, 0.3, 0.003, 3);
+                movethForward(13, 2.5, 0.001, 0.8);
+                freeze();
+                turnethDirection(45, 0.5, 0.3, 0.003, 3);
+                runIntake(-0.75);
+                movethForward(16, 2.5, 0.001, 0.6);
+                sleep(1000);
+                runIntake(0);
+                movethForward(30, 2.5, 0.001, 0.4);
+                runIntake(0.5);
+                sleep(110);
+                runIntake(0);
+                freeze();
+                turnethDirection(-60,0.35, 0.3, 0.005, 3);
+
             }
             else
             {
@@ -130,10 +178,9 @@ public class TankDriveAuto extends LinearOpMode {
             }
 
             skystonePosition = 0;
+            runIntake(-1);
             movethForward(-60, 5, 0.003, 0.8);
             freeze();
-            runIntake(-1);
-            sleep(1000);
             runIntake(0);
             movethForward(20, 2.5, 0.001, 0.4);
             break;
@@ -234,6 +281,64 @@ public class TankDriveAuto extends LinearOpMode {
         }
         turnethDirection(0, 0.35, 0.2, 0.005, 3);
     }
+
+    public void movethForward(double inches, double t, double kp, double power, double floor)
+    {
+        tankDrive.resetEncoders();
+        ElapsedTime clock = new ElapsedTime();
+        clock.reset();
+        double encoderTicks = inches / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION; // target number of encoder tick
+        int errorMargin = 5; //Amount of error in ticks we are willing to accept
+        double powerFloor = floor; //Minimum power
+        double powerCeiling = power; //Maximum power
+
+        telemetry.addData("ticks", encoderTicks);
+        telemetry.update();
+        while (Math.abs(tankDrive.getAverageEncoder('l') + tankDrive.getAverageEncoder('r') - encoderTicks * 2) > errorMargin && clock.seconds() < t)
+        {
+            if (Math.abs(encoderTicks - tankDrive.getAverageEncoder('l')) >= errorMargin)
+            {
+                //double leftpower = Math.abs(encoderTicks - tank.getAverageEncoder('l')) * kp;
+                double leftpower = sigmoid(encoderTicks - tankDrive.getAverageEncoder('l'), powerCeiling, powerFloor, 800, kp * 4);
+                leftpower = Math.max(leftpower, powerFloor);
+                leftpower = Math.min(leftpower, powerCeiling);
+                if (encoderTicks - tankDrive.getAverageEncoder('l') < 0) leftpower *= -1;
+                tankDrive.LM0.setPower(leftpower);
+                tankDrive.LM1.setPower(leftpower);
+                telemetry.addData("LeftPower", leftpower);
+            }
+            else {
+                tankDrive.LM0.setPower(0);
+                tankDrive.LM1.setPower(0);
+            }
+
+            if (Math.abs(encoderTicks - tankDrive.getAverageEncoder('r')) >= errorMargin)
+            {
+                //double rightpower = Math.abs(encoderTicks - tank.getAverageEncoder('r')) * kp;
+                double rightpower = sigmoid(encoderTicks - tankDrive.getAverageEncoder('r'), powerCeiling, powerFloor, 800, kp * 6);
+                rightpower = Math.max(rightpower, powerFloor);
+                rightpower = Math.min(rightpower, powerCeiling);
+                if (encoderTicks - tankDrive.getAverageEncoder('r') < 0) rightpower *= -1;
+                tankDrive.RM0.setPower(rightpower);
+                tankDrive.RM1.setPower(rightpower);
+                telemetry.addData("RightPower", rightpower);
+            }
+            else {
+                tankDrive.RM0.setPower(0);
+                tankDrive.RM1.setPower(0);
+            }
+            telemetry.addData("Left Encoder", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("Right Encoder", tankDrive.getAverageEncoder('r'));
+            telemetry.addData("ticks", encoderTicks);
+            telemetry.addData("Current L", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("Current R", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("kP", kp);
+            telemetry.update();
+
+        }
+        turnethDirection(0, 0.35, 0.2, 0.005, 3);
+    }
+
 
     private void turnethDirection(int initial, double powerCeiling, double powerFloor, double kp, double t)
     {
