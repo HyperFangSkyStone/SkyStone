@@ -216,9 +216,9 @@ public class    VisionBitMapping {
     public int skyStonePos()
     {
         double avg = avgX();
-        if (avg < 220)
+        if (avg < 260)
             skystonePosition = 1;
-        else if (avg >= 220 && avg <= 330)
+        else if (avg >= 260 && avg <= 400)
             skystonePosition = 2;
         else
             skystonePosition = 3;
