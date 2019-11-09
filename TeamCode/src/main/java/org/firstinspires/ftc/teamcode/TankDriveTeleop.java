@@ -128,6 +128,8 @@ public class TankDriveTeleop extends LinearOpMode {
 
         }
 
+        freeze();
+
     }
 
 
@@ -178,7 +180,7 @@ public class TankDriveTeleop extends LinearOpMode {
         double timePrev = 0;
 
 
-        while (clock.seconds() < timeFrame && Math.abs(error) > errorMargin )
+        while (clock.seconds() < timeFrame && Math.abs(error) > errorMargin && opModeIsActive())
         {
             //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
 
