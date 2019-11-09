@@ -67,7 +67,8 @@ public class TankDriveAutoBlue extends LinearOpMode {
             }
         }
 
-        while(isStarted())
+        waitForStart();
+        if(!isStopRequested())
         {
             runIntake(1);
             sleep(750);
@@ -76,27 +77,27 @@ public class TankDriveAutoBlue extends LinearOpMode {
             {
                 movethForward(24, 2.5, 0.001, 0.5);
                 freeze();
-                turnethDirection(10,0.35, 0.2, 0.005, 3);
+                turnethDirection(10,0.35, 0.3, 0.005, 3);
                 runIntake(-0.5);
-                movethForward(20, 2.5, 0.001, 0.4);
+                movethForward(26, 2.5, 0.0009, 0.3, 0.2);
                 sleep(250);
                 runIntake(0);
-                movethForward(-30, 2.5, 0.001, 0.4);
+                movethForward(-36, 2.5, 0.001, 0.4);
                 runIntake(0.5);
                 sleep(110);
                 runIntake(0);
                 freeze();
-                turnethDirection(-100,0.4, 0.2, 0.005, 3);
+                turnethDirection(-100,0.4, 0.3, 0.005, 3);
             }
             else if (skystonePosition == 2)
             {
                 turnOneWheelDirection(60, 0.5, 0.3, 0.003, 3);
                 turnethDirection(-60, 0.5, 0.3, 0.003, 3);
-                movethForward(16, 2.5, 0.001, 0.8);
+                movethForward(13, 2.5, 0.001, 0.8);
                 freeze();
+                turnethDirection(-30, 0.5, 0.3, 0.003, 3);
                 runIntake(-0.75);
-                turnethDirection(-10, 0.5, 0.3, 0.003, 3);
-                movethForward(15, 2.5, 0.001, 0.6);
+                movethForward(16, 2.5, 0.001, 0.6);
                 sleep(1000);
                 runIntake(0);
                 movethForward(-30, 2.5, 0.001, 0.4);
@@ -104,13 +105,13 @@ public class TankDriveAutoBlue extends LinearOpMode {
                 sleep(110);
                 runIntake(0);
                 freeze();
-                turnethDirection(-80,0.35, 0.2, 0.005, 3);
+                turnethDirection(-60,0.35, 0.3, 0.005, 3);
             }
             else if (skystonePosition == 3)
             {
                 movethForward(22, 2.5, 0.001, 0.6);
                 freeze();
-                turnethDirection(-25,0.35, 0.2, 0.005, 3);
+                turnethDirection(-25,0.35, 0.3, 0.005, 3);
                 runIntake(-0.75);
                 movethForward(20, 2.5, 0.001, 0.6);
                 sleep(250);
@@ -120,24 +121,21 @@ public class TankDriveAutoBlue extends LinearOpMode {
                 sleep(100);
                 runIntake(0);
                 freeze();
-                turnethDirection(-65,0.35, 0.2, 0.005, 3);
+                turnethDirection(-65,0.35, 0.3, 0.005, 3);
             }
             else
             {
                 telemetry.addData("ERROR", "SkyStone Not Found.");
                 telemetry.update();
                 freeze();
-                break;
             }
 
             skystonePosition = 0;
-            movethForward(-40, 4, 0.001, 0.8, 0.25);
-            freeze();
             runIntake(-1);
-            sleep(1000);
+            movethForward(-40, 3.5, 0.001, 0.8, 0.3);
+            freeze();
             runIntake(0);
-            movethForward(15, 2.5, 0.001, 0.4);
-            break;
+            movethForward(15, 2, 0.001, 0.4, 0.25);
             /*claw(true);
             movethForward(80, 2.5, 0.001, 0.6);
             turnethDirection(-90,0.4, 0.25, 0.005, 4);
@@ -189,7 +187,7 @@ public class TankDriveAutoBlue extends LinearOpMode {
 
         telemetry.addData("ticks", encoderTicks);
         telemetry.update();
-        while (Math.abs(tankDrive.getAverageEncoder('l') + tankDrive.getAverageEncoder('r') - encoderTicks * 2) > errorMargin && clock.seconds() < t)
+        while (Math.abs(tankDrive.getAverageEncoder('l') + tankDrive.getAverageEncoder('r') - encoderTicks * 2) > errorMargin && clock.seconds() < t && opModeIsActive())
         {
             //double leftpower = Math.abs(encoderTicks - tank.getAverageEncoder('l')) * kp;
             double leftpower = sigmoid(encoderTicks - tankDrive.getAverageEncoder('l'), powerCeiling, powerFloor, 800, kp * 4);
@@ -229,7 +227,7 @@ public class TankDriveAutoBlue extends LinearOpMode {
 
         telemetry.addData("ticks", encoderTicks);
         telemetry.update();
-        while (Math.abs(tankDrive.getAverageEncoder('l') + tankDrive.getAverageEncoder('r') - encoderTicks * 2) > errorMargin && clock.seconds() < t)
+        while (Math.abs(tankDrive.getAverageEncoder('l') + tankDrive.getAverageEncoder('r') - encoderTicks * 2) > errorMargin && clock.seconds() < t && opModeIsActive())
         {
 
             //double leftpower = Math.abs(encoderTicks - tank.getAverageEncoder('l')) * kp;
@@ -284,7 +282,7 @@ public class TankDriveAutoBlue extends LinearOpMode {
         // set power to rotate.
 
         // rotate until turn is completed.
-        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 2)
+        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 2 && opModeIsActive())
         {
             lastAngles = imu.getAngularOrientation();
             currentAngle = lastAngles.firstAngle;
@@ -347,7 +345,7 @@ public class TankDriveAutoBlue extends LinearOpMode {
         // set power to rotate.
 
         // rotate until turn is completed.
-        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3)
+        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3 && opModeIsActive())
         {
             lastAngles = imu.getAngularOrientation();
             currentAngle = lastAngles.firstAngle;
