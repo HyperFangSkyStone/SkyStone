@@ -112,7 +112,7 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
 
         telemetry.addData("ticks", encoderTicks);
         telemetry.update();
-        while (Math.abs(tankDrive.getAverageEncoder('l') + tankDrive.getAverageEncoder('r') - encoderTicks * 2) > errorMargin && clock.seconds() < t)
+        while (Math.abs(tankDrive.getAverageEncoder('l') + tankDrive.getAverageEncoder('r') - encoderTicks * 2) > errorMargin && clock.seconds() < t && opModeIsActive())
         {
             if (Math.abs(encoderTicks - tankDrive.getAverageEncoder('l')) >= errorMargin)
             {
@@ -169,7 +169,7 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
 
         telemetry.addData("ticks", encoderTicks);
         telemetry.update();
-        while (Math.abs(tankDrive.getAverageEncoder('l')) + Math.abs(tankDrive.getAverageEncoder('r')) < (encoderTicks - errorMargin) * 2 && clock.seconds() < t)
+        while (Math.abs(tankDrive.getAverageEncoder('l')) + Math.abs(tankDrive.getAverageEncoder('r')) < (encoderTicks - errorMargin) * 2 && clock.seconds() < t && opModeIsActive())
         {
             if (Math.abs(encoderTicks - tankDrive.getAverageEncoder('l')) > errorMargin)
             {
@@ -236,7 +236,7 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
         // set power to rotate.
 
         // rotate until turn is completed.
-        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3)
+        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3 && opModeIsActive())
         {
             lastAngles = imu.getAngularOrientation();
             currentAngle = lastAngles.firstAngle;
@@ -299,7 +299,7 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
         // set power to rotate.
 
         // rotate until turn is completed.
-        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3)
+        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3 && opModeIsActive())
         {
             lastAngles = imu.getAngularOrientation();
             currentAngle = lastAngles.firstAngle;
@@ -361,7 +361,7 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
         // set power to rotate.
 
         // rotate until turn is completed.
-        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3)
+        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3 && opModeIsActive())
         {
             lastAngles = imu.getAngularOrientation();
             currentAngle = lastAngles.firstAngle;
