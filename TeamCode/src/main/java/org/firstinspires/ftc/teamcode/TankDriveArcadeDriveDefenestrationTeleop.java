@@ -114,6 +114,8 @@ public class TankDriveArcadeDriveDefenestrationTeleop extends LinearOpMode {
             }
         }
 
+        freeze();
+
     }
 
 
@@ -126,7 +128,7 @@ public class TankDriveArcadeDriveDefenestrationTeleop extends LinearOpMode {
 
         clock.reset();
 
-        while (clock.seconds() < t)
+        while (clock.seconds() < t && opModeIsActive())
         {
             tankDrive.LM0.setPower(inputPower);
             tankDrive.LM1.setPower(inputPower);
@@ -152,7 +154,7 @@ public class TankDriveArcadeDriveDefenestrationTeleop extends LinearOpMode {
         double output;
         clock.reset();
         tankDrive.resetEncoders();
-        while (clock.seconds() < timeFrame && Math.abs(tankDrive.getEncoderAvg() - targetTick) > errorMargin )
+        while (clock.seconds() < timeFrame && Math.abs(tankDrive.getEncoderAvg() - targetTick) > errorMargin  && opModeIsActive())
         {
             //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
             output = Math.abs(targetTick - tankDrive.getEncoderAvg()) * kP;
