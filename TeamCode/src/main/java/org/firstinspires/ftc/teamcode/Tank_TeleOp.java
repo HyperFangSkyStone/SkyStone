@@ -2,25 +2,22 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="Tank", group="1")
+@TeleOp(name="TankDrive", group="1")
 //@Disabled
-public class TankDriveTeleop extends LinearOpMode {
+public class Tank_TeleOp extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
     ElapsedTime clock = new ElapsedTime();
+    ElapsedTime intakeClock = new ElapsedTime();
     ArrayList<Double> timeRecord = new ArrayList<>();
 
 
     PIDController PID = new PIDController(0, 0, 0);
 
-
-    boolean intakeOn = false;
-    int intakeDir = 1;
 
 
     public final double WHEEL_DIAMETER = 90; //Wheel diameter in mm
@@ -30,6 +27,8 @@ public class TankDriveTeleop extends LinearOpMode {
     public final double MM_TO_INCHES =  25.4;
     public final double MOTOR_TO_INCHES = GEAR_RATIO * WHEEL_DIAMETER * Math.PI / MM_TO_INCHES; //For every full turn of both motors, the wheel moves forward this many inches
     public final double NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 537.6;
+    public double intakeHalf = 0;
+    public double drivetrainHalf = 0;
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -41,15 +40,7 @@ public class TankDriveTeleop extends LinearOpMode {
 
         while(opModeIsActive())
         {
-            /*if (gamepad1.left_bumper)
-            {
-                double forwardPower = -gamepad1.left_stick_y;
-                double turnPower = gamepad1.left_stick_x;
-                tankDrive.LM0.setPower(forwardPower + turnPower);
-                tankDrive.LM1.setPower(forwardPower + turnPower);
-                tankDrive.RM0.setPower(forwardPower - turnPower);
-                tankDrive.RM1.setPower(forwardPower - turnPower);
-            }*/
+
             if (Math.abs(gamepad1.left_stick_y) > 0.2)
             {
                 tankDrive.LM0.setPower(-gamepad1.left_stick_y);
@@ -72,59 +63,18 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.RM1.setPower(0);
             }
 
-            /*
-            else
-            {
-                tankDrive.LM0.setPower(0);
-                tankDrive.LM1.setPower(0);
-                tankDrive.RM0.setPower(0);
-                tankDrive.RM1.setPower(0);
-            }*/
 
-            if (Math.abs(gamepad2.left_stick_y) > 0.2)
-            {
-                if(!gamepad2.right_bumper)
-                    tankDrive.Intake1.setPower(-gamepad2.left_stick_y);
-                else
-                {
-                    tankDrive.Intake1.setPower(-gamepad2.left_stick_y / 2);
-                    telemetry.addData("Intake1 is at", " half speed");
-                }
-            }
-            else
-            {
-                tankDrive.Intake1.setPower(0);
-            }
-
-            if (Math.abs(gamepad2.right_stick_y) > 0.2)
-            {
-                if(!gamepad2.right_bumper)
-                    tankDrive.Intake2.setPower(-gamepad2.right_stick_y);
-                else
-                {
-                    tankDrive.Intake2.setPower(-gamepad2.right_stick_y / 2);
-                    telemetry.addData("Intake2 is at", " half speed");
-                }
-            }
-            else
-            {
-                tankDrive.Intake2.setPower(0);
-            }
 
             if(gamepad2.dpad_up)
-            {
                 claw(false);
-            }
             else if (gamepad2.dpad_down)
-            {
                 claw(true);
-            }
 
 
             if (gamepad1.x)
-                pidLinearMovement(80,0.1);
-            else if (gamepad1.b)
-                pidLinearMovement(20, 0.1);
+            {
+                pidLinearMovement(100,0.1);
+            }
 
         }
 
@@ -172,7 +122,7 @@ public class TankDriveTeleop extends LinearOpMode {
         telemetry.update();
         double error = targetTick;
         double errorPrev = 0;
-        double kP = 0.8;
+        double kP = 0.0005;
         double kD = kd;
         double p, d;
         double output;
@@ -184,7 +134,7 @@ public class TankDriveTeleop extends LinearOpMode {
         {
             //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
 
-            p = Math.abs(error)/targetTick * kP;
+            p = Math.abs(error) * kP;
             d = ((error - errorPrev) / (time - timePrev)) /targetTick * kD;
 
             output = p + d;
@@ -216,12 +166,6 @@ public class TankDriveTeleop extends LinearOpMode {
     }
 
 
-
-    public void turnToAngle(double angle)
-    {
-
-    }
-
     public double averageEncoderTick()
     {
         double output = tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() + tankDrive.RM0.getCurrentPosition() +tankDrive.RM0.getCurrentPosition();
@@ -229,8 +173,7 @@ public class TankDriveTeleop extends LinearOpMode {
         return output;
     }
 
-    public double joystickAngle()
-    {
+    public double joystickAngle() {
         double angle;
         double x = gamepad1.left_stick_x;
         double y = -gamepad1.left_stick_y;
@@ -254,19 +197,45 @@ public class TankDriveTeleop extends LinearOpMode {
         return -angle;
     }
 
-    public void runMotor(double leftInput, double rightInput)
-    {
+    public void runMotor(double leftInput, double rightInput) {
         tankDrive.LM0.setPower(leftInput);
         tankDrive.LM1.setPower(leftInput);
         tankDrive.RM0.setPower(rightInput);
         tankDrive.RM1.setPower(rightInput);
     }
-    public void freeze()
-    {
+    public void freeze() {
         tankDrive.LM0.setPower(0);
         tankDrive.LM1.setPower(0);
         tankDrive.RM0.setPower(0);
         tankDrive.RM1.setPower(0);
+    }
+    public void runIntake(double power) {
+        tankDrive.Intake1.setPower(power);
+        tankDrive.Intake2.setPower(power);
+    }
+    public void intake()
+    {
+        if (gamepad2.a && intakeClock.seconds() > 0.2 & intakeHalf == 0.5)
+        {
+            intakeHalf = 1;
+            intakeClock.reset();
+            telemetry.addData("Current Intake Speed", intakeHalf);
+            telemetry.update();
+        }
+        else if (gamepad2.a && intakeClock.seconds() > 0.5 & intakeHalf == 1)
+        {
+            intakeHalf = 0.5;
+            intakeClock.reset();
+            telemetry.addData("Current Intake Speed", intakeHalf);
+            telemetry.update();
+        }
+
+        if (Math.abs(gamepad2.left_trigger) > 0.2)
+            runIntake(gamepad2.left_trigger * intakeHalf);
+        else if (Math.abs(gamepad2.right_trigger) > 0.2)
+            runIntake(-gamepad2.right_trigger * intakeHalf);
+        else
+            runIntake(0);
     }
 
     public void claw(boolean x) {

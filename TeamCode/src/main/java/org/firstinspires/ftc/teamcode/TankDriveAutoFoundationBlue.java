@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="Foundation blue", group="blue")
+@Autonomous(name="Foundation Blue", group="blue")
 //@Disabled
 public class TankDriveAutoFoundationBlue extends LinearOpMode {
 
@@ -51,7 +51,7 @@ public class TankDriveAutoFoundationBlue extends LinearOpMode {
 
 
         tankDrive.init(hardwareMap);
-        //waitForStart();
+        waitForStart();
 
         while(isStarted())
         {
