@@ -51,7 +51,7 @@ public class TankDriveAutoFoundationBlueNoPark extends LinearOpMode {
 
 
         tankDrive.init(hardwareMap);
-        //waitForStart();
+        waitForStart();
 
         while(isStarted())
         {

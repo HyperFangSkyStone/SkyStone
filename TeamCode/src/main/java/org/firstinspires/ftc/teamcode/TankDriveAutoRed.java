@@ -67,7 +67,7 @@ public class TankDriveAutoRed extends LinearOpMode {
             }
         }
 
-
+        waitForStart();
         while(isStarted())
         {
             runIntake(1);

@@ -38,13 +38,13 @@ public class TankDriveAutoPark extends LinearOpMode {
 
 
         tankDrive.init(hardwareMap);
-        //waitForStart();
 
 
         while (!isStarted())
         {
         }
 
+        waitForStart();
         while(isStarted())
         {
             movethForward(-3, 2.5, 0.001, 0.4);

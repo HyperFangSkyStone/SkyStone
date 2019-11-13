@@ -2,14 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="Tank", group="1")
+@TeleOp(name="Arc Test", group="2")
 //@Disabled
-public class TankDriveTeleop extends LinearOpMode {
+public class ArcTest extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
     ElapsedTime clock = new ElapsedTime();
@@ -122,9 +121,11 @@ public class TankDriveTeleop extends LinearOpMode {
 
 
             if (gamepad1.x)
-                pidLinearMovement(80,0.1);
-            else if (gamepad1.b)
-                pidLinearMovement(20, 0.1);
+            {
+                double d1 = 50;
+                double d2 = 50 - 7 * Math.PI;
+                movethForward(d1, d2, 5, 0.6, 0.8);
+            }
 
         }
 
@@ -172,7 +173,7 @@ public class TankDriveTeleop extends LinearOpMode {
         telemetry.update();
         double error = targetTick;
         double errorPrev = 0;
-        double kP = 0.8;
+        double kP = 0.0005;
         double kD = kd;
         double p, d;
         double output;
@@ -184,7 +185,7 @@ public class TankDriveTeleop extends LinearOpMode {
         {
             //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
 
-            p = Math.abs(error)/targetTick * kP;
+            p = Math.abs(error) * kP;
             d = ((error - errorPrev) / (time - timePrev)) /targetTick * kD;
 
             output = p + d;
@@ -276,6 +277,67 @@ public class TankDriveTeleop extends LinearOpMode {
         } else {
             tankDrive.LServo.setPosition(0); //false = down
             tankDrive.RServo.setPosition(1);
+        }
+    }
+
+
+    public double sigmoid(double error, double ceiling, double floor, double half, double stiff) {
+        return floor + (ceiling - floor) / (1 + Math.pow(Math.E, stiff * (half - error)));
+    }
+
+    public void movethForward(double inchesL, double inchesR, double t, double kp, double power)
+    {
+        tankDrive.resetEncoders();
+        ElapsedTime clock = new ElapsedTime();
+        clock.reset();
+        double encoderTicksL = inchesL / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION; // target number of encoder tick
+        double encoderTicksR = inchesR / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION;
+        int errorMargin = 5; //Amount of error in ticks we are willing to accept
+        double powerFloor = 0.19; //Minimum power
+        double powerCeiling = power; //Maximum power
+
+        while (Math.abs(tankDrive.getAverageEncoder('l') + tankDrive.getAverageEncoder('r') - encoderTicksL * 2) > errorMargin && clock.seconds() < t)
+        {
+            if (Math.abs(encoderTicksL - tankDrive.getAverageEncoder('l')) >= errorMargin)
+            {
+                double leftpower = Math.abs((encoderTicksL - tankDrive.getAverageEncoder('l'))/encoderTicksL) * kp;
+                //double leftpower = sigmoid(encoderTicksL - tankDrive.getAverageEncoder('l'), powerCeiling, powerFloor, 800, kp * 4);
+                leftpower = Math.max(leftpower, powerFloor);
+                leftpower = Math.min(leftpower, powerCeiling);
+                if (encoderTicksL - tankDrive.getAverageEncoder('l') < 0) leftpower *= -1;
+                tankDrive.LM0.setPower(leftpower);
+                tankDrive.LM1.setPower(leftpower);
+                telemetry.addData("LeftPower", leftpower);
+            }
+            else {
+                tankDrive.LM0.setPower(0);
+                tankDrive.LM1.setPower(0);
+            }
+
+            if (Math.abs(encoderTicksR - tankDrive.getAverageEncoder('r')) >= errorMargin)
+            {
+                double rightpower = Math.abs((encoderTicksR - tankDrive.getAverageEncoder('r'))/encoderTicksR) * kp;
+                //double rightpower = sigmoid(encoderTicksR - tankDrive.getAverageEncoder('r'), powerCeiling, powerFloor, 800, kp * 6);
+                rightpower = Math.max(rightpower, powerFloor);
+                rightpower = Math.min(rightpower, powerCeiling);
+                if (encoderTicksR - tankDrive.getAverageEncoder('r') < 0) rightpower *= -1;
+                tankDrive.RM0.setPower(rightpower);
+                tankDrive.RM1.setPower(rightpower);
+                telemetry.addData("RightPower", rightpower);
+            }
+            else {
+                tankDrive.RM0.setPower(0);
+                tankDrive.RM1.setPower(0);
+            }
+            telemetry.addData("Left Encoder", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("Right Encoder", tankDrive.getAverageEncoder('r'));
+            telemetry.addData("L", encoderTicksL);
+            telemetry.addData("R", encoderTicksR);
+            telemetry.addData("Current L", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("Current R", tankDrive.getAverageEncoder('l'));
+            telemetry.addData("kP", kp);
+            telemetry.update();
+
         }
     }
 }
