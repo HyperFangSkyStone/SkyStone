@@ -86,12 +86,27 @@ public class TankDriveTeleop extends LinearOpMode {
 
             if (Math.abs(gamepad2.left_stick_y) > 0.2)
             {
-                if(!gamepad2.right_bumper)
-                    tankDrive.Intake1.setPower(-gamepad2.left_stick_y);
+                if(gamepad2.left_stick_button && gamepad2.right_stick_button) {
+                    tankDrive.Intake2.setPower(-gamepad2.left_stick_y / 2);
+                }
                 else
                 {
-                    tankDrive.Intake1.setPower(-gamepad2.left_stick_y / 2);
-                    telemetry.addData("Intake1 is at", " half speed");
+                    tankDrive.Intake2.setPower(-gamepad2.left_stick_y);
+                }
+            }
+            else
+            {
+                tankDrive.Intake2.setPower(0);
+            }
+
+            if (Math.abs(gamepad2.right_stick_y) > 0.2)
+            {
+                if(gamepad2.left_stick_button && gamepad2.right_stick_button) {
+                    tankDrive.Intake1.setPower(-gamepad2.right_stick_y / 2);
+                }
+                else
+                {
+                    tankDrive.Intake1.setPower(-gamepad2.right_stick_y);
                 }
             }
             else
@@ -99,19 +114,14 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.Intake1.setPower(0);
             }
 
-            if (Math.abs(gamepad2.right_stick_y) > 0.2)
+            if(gamepad2.left_stick_button && gamepad2.right_stick_button)
             {
-                if(!gamepad2.right_bumper)
-                    tankDrive.Intake2.setPower(-gamepad2.right_stick_y);
-                else
-                {
-                    tankDrive.Intake2.setPower(-gamepad2.right_stick_y / 2);
-                    telemetry.addData("Intake2 is at", " half speed");
-                }
+                telemetry.addData("Intake Operating at", " Half Speed");
+                telemetry.update();
             }
             else
             {
-                tankDrive.Intake2.setPower(0);
+                telemetry.update();
             }
 
             if(gamepad2.dpad_up)
@@ -129,7 +139,7 @@ public class TankDriveTeleop extends LinearOpMode {
             else if (gamepad1.y)
                 pidLinearMovement(20, 0.1);
 
-
+            intakeServos();
 
         }
 
