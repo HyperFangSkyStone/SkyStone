@@ -15,6 +15,9 @@ public class TankDriveTeleop extends LinearOpMode {
     ElapsedTime clock = new ElapsedTime();
     ArrayList<Double> timeRecord = new ArrayList<>();
 
+    ElapsedTime lServoToggleTimeOut = new ElapsedTime();
+    ElapsedTime rServoToggleTimeOut = new ElapsedTime();
+
 
     PIDController PID = new PIDController(0, 0, 0);
 
@@ -126,28 +129,6 @@ public class TankDriveTeleop extends LinearOpMode {
             else if (gamepad1.y)
                 pidLinearMovement(20, 0.1);
 
-            if (gamepad2.dpad_down && tankDrive.RServo.getPosition() != 0.0 && tankDrive.LServo.getPosition() != 1.0)
-            {
-                tankDrive.RServo.setPosition(0.0);
-                tankDrive.LServo.setPosition(1.0);
-            }
-
-            else if (gamepad2.dpad_up && tankDrive.LServo.getPosition() != 0.0 && tankDrive.RServo.getPosition() != 1.0) {
-                tankDrive.RServo.setPosition(1.0);
-                tankDrive.LServo.setPosition(0.0);
-            }
-
-            else if (gamepad2.dpad_right)
-            {
-                tankDrive.RServo.setPosition(1.0);
-                tankDrive.LServo.setPosition(1.0);
-            }
-
-            else if (gamepad2.dpad_left)
-            {
-                tankDrive.RServo.setPosition(0.0);
-                tankDrive.LServo.setPosition(0.0);
-            }
 
 
         }
@@ -300,6 +281,27 @@ public class TankDriveTeleop extends LinearOpMode {
         } else {
             tankDrive.LServo.setPosition(0); //false = down
             tankDrive.RServo.setPosition(1);
+        }
+    }
+
+    public void intakeServos()
+    {
+
+        if (gamepad2.left_bumper && lServoToggleTimeOut.seconds() > 0.5) {
+            lServoToggleTimeOut.reset();
+            if (tankDrive.LServo.getPosition() == 0.0)
+                tankDrive.LServo.setPosition(1.0);
+            else
+                tankDrive.LServo.setPosition(0.0);
+
+        }
+        if (gamepad2.right_bumper && rServoToggleTimeOut.seconds() > 0.5) {
+            rServoToggleTimeOut.reset();
+            if (tankDrive.RServo.getPosition() == 0.0)
+                tankDrive.RServo.setPosition(1.0);
+            else
+                tankDrive.RServo.setPosition(0.0);
+
         }
     }
 }
