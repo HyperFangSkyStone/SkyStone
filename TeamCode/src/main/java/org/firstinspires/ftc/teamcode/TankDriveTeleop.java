@@ -121,11 +121,21 @@ public class TankDriveTeleop extends LinearOpMode {
             }
 
 
-            if (gamepad1.x)
+            if (gamepad2.x)
                 pidLinearMovement(80,0.1);
-            else if (gamepad1.b)
+            else if (gamepad1.y)
                 pidLinearMovement(20, 0.1);
 
+            if (gamepad2.left_bumper)
+            {
+                tankDrive.RServo.setPosition(1.0);
+                tankDrive.LServo.setPosition(0.0);
+            }
+
+            if (gamepad2.right_bumper) {
+                tankDrive.RServo.setPosition(0);
+                tankDrive.LServo.setPosition(1.0);
+            }
         }
 
         freeze();
