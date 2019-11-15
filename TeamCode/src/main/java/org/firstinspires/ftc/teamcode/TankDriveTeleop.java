@@ -15,6 +15,9 @@ public class TankDriveTeleop extends LinearOpMode {
     ElapsedTime clock = new ElapsedTime();
     ArrayList<Double> timeRecord = new ArrayList<>();
 
+    ElapsedTime lServoToggleTimeOut = new ElapsedTime();
+    ElapsedTime rServoToggleTimeOut = new ElapsedTime();
+
 
     PIDController PID = new PIDController(0, 0, 0);
 
@@ -83,12 +86,27 @@ public class TankDriveTeleop extends LinearOpMode {
 
             if (Math.abs(gamepad2.left_stick_y) > 0.2)
             {
-                if(!gamepad2.right_bumper)
-                    tankDrive.Intake1.setPower(-gamepad2.left_stick_y);
+                if(gamepad2.left_stick_button && gamepad2.right_stick_button) {
+                    tankDrive.Intake2.setPower(-gamepad2.left_stick_y / 2);
+                }
                 else
                 {
-                    tankDrive.Intake1.setPower(-gamepad2.left_stick_y / 2);
-                    telemetry.addData("Intake1 is at", " half speed");
+                    tankDrive.Intake2.setPower(-gamepad2.left_stick_y);
+                }
+            }
+            else
+            {
+                tankDrive.Intake2.setPower(0);
+            }
+
+            if (Math.abs(gamepad2.right_stick_y) > 0.2)
+            {
+                if(gamepad2.left_stick_button && gamepad2.right_stick_button) {
+                    tankDrive.Intake1.setPower(-gamepad2.right_stick_y / 2);
+                }
+                else
+                {
+                    tankDrive.Intake1.setPower(-gamepad2.right_stick_y);
                 }
             }
             else
@@ -96,19 +114,14 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.Intake1.setPower(0);
             }
 
-            if (Math.abs(gamepad2.right_stick_y) > 0.2)
+            if(gamepad2.left_stick_button && gamepad2.right_stick_button)
             {
-                if(!gamepad2.right_bumper)
-                    tankDrive.Intake2.setPower(-gamepad2.right_stick_y);
-                else
-                {
-                    tankDrive.Intake2.setPower(-gamepad2.right_stick_y / 2);
-                    telemetry.addData("Intake2 is at", " half speed");
-                }
+                telemetry.addData("Intake Operating at", " Half Speed");
+                telemetry.update();
             }
             else
             {
-                tankDrive.Intake2.setPower(0);
+                telemetry.update();
             }
 
             if(gamepad2.dpad_up)
@@ -126,16 +139,8 @@ public class TankDriveTeleop extends LinearOpMode {
             else if (gamepad1.y)
                 pidLinearMovement(20, 0.1);
 
-            if (gamepad2.left_bumper)
-            {
-                tankDrive.RServo.setPosition(1.0);
-                tankDrive.LServo.setPosition(0.0);
-            }
+            intakeServos();
 
-            if (gamepad2.right_bumper) {
-                tankDrive.RServo.setPosition(0);
-                tankDrive.LServo.setPosition(1.0);
-            }
         }
 
         freeze();
@@ -286,6 +291,27 @@ public class TankDriveTeleop extends LinearOpMode {
         } else {
             tankDrive.LServo.setPosition(0); //false = down
             tankDrive.RServo.setPosition(1);
+        }
+    }
+
+    public void intakeServos()
+    {
+
+        if (gamepad2.left_bumper && lServoToggleTimeOut.seconds() > 0.5) {
+            lServoToggleTimeOut.reset();
+            if (tankDrive.LServo.getPosition() == 0.0)
+                tankDrive.LServo.setPosition(1.0);
+            else
+                tankDrive.LServo.setPosition(0.0);
+
+        }
+        if (gamepad2.right_bumper && rServoToggleTimeOut.seconds() > 0.5) {
+            rServoToggleTimeOut.reset();
+            if (tankDrive.RServo.getPosition() == 0.0)
+                tankDrive.RServo.setPosition(1.0);
+            else
+                tankDrive.RServo.setPosition(0.0);
+
         }
     }
 }
