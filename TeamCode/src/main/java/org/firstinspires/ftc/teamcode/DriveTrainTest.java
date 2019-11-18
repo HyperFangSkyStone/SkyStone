@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="DriveTrainTestSEP", group="Pushbot")
+@TeleOp(name="DSDriveTrainTestSEP", group="Pushbot")
 //@Disabled
 public class DriveTrainTest extends LinearOpMode {
 
