@@ -73,7 +73,19 @@ public class Tank_TeleOp extends LinearOpMode {
 
             if (gamepad1.x)
             {
-                pidLinearMovement(100,0.1);
+                pidLinearMovement(100,0.001);
+            }
+            else if (gamepad1.y)
+            {
+                pidLinearMovement(100,0.0003);
+            }
+            else if (gamepad1.a)
+            {
+                pidLinearMovement(100,0.0001);
+            }
+            else if (gamepad1.b)
+            {
+                pidLinearMovement(100,0.00003);
             }
 
         }
@@ -135,7 +147,8 @@ public class Tank_TeleOp extends LinearOpMode {
             //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
 
             p = Math.abs(error) * kP;
-            d = ((error - errorPrev) / (time - timePrev)) /targetTick * kD;
+            //d = ((error - errorPrev) / (time - timePrev)) /targetTick * kD;
+            d = ((error - errorPrev) / (time - timePrev)) * kD;
 
             output = p + d;
             output = Math.max(output, powerFloor);
