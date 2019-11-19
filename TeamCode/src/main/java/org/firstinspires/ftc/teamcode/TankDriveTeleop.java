@@ -15,9 +15,6 @@ public class TankDriveTeleop extends LinearOpMode {
     ElapsedTime clock = new ElapsedTime();
     ArrayList<Double> timeRecord = new ArrayList<>();
 
-    ElapsedTime lServoToggleTimeOut = new ElapsedTime();
-    ElapsedTime rServoToggleTimeOut = new ElapsedTime();
-
 
     PIDController PID = new PIDController(0, 0, 0);
 
@@ -34,10 +31,15 @@ public class TankDriveTeleop extends LinearOpMode {
     public final double MOTOR_TO_INCHES = GEAR_RATIO * WHEEL_DIAMETER * Math.PI / MM_TO_INCHES; //For every full turn of both motors, the wheel moves forward this many inches
     public final double NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 537.6;
 
+    int lIntakeServoPosition;
+    int rIntakeServoPosition;
+
     @Override
     public void runOpMode() throws InterruptedException
     {
         tankDrive.init(hardwareMap);
+        lIntakeServoPosition = 0;
+        rIntakeServoPosition = 0;
 
         waitForStart();
 
@@ -121,14 +123,14 @@ public class TankDriveTeleop extends LinearOpMode {
             }
             else
             {
-                telemetry.update();
+                telemetry.update(); 
             }
 
-            if(gamepad2.dpad_up)
+            if(gamepad2.left_bumper)
             {
                 claw(false);
             }
-            else if (gamepad2.dpad_down)
+            else if (gamepad2.right_bumper)
             {
                 claw(true);
             }
@@ -139,7 +141,30 @@ public class TankDriveTeleop extends LinearOpMode {
             else if (gamepad1.y)
                 pidLinearMovement(20, 0.1);
 
+
             intakeServos();
+
+
+
+            //for lift
+            if (gamepad2.right_trigger > 0.1)
+            {
+                tankDrive.Lift1.setPower(gamepad2.right_trigger);
+                tankDrive.Lift2.setPower(gamepad2.right_trigger);
+            }
+
+            else if (gamepad2.left_trigger > 0.1)
+            {
+                tankDrive.Lift1.setPower(-gamepad2.left_trigger);
+                tankDrive.Lift2.setPower(-gamepad2.left_trigger);
+            }
+
+            else
+            {
+                tankDrive.Lift1.setPower(0);
+                tankDrive.Lift2.setPower(0);
+            }
+
 
         }
 
@@ -294,24 +319,36 @@ public class TankDriveTeleop extends LinearOpMode {
         }
     }
 
-    public void intakeServos()
-    {
-
-        if (gamepad2.left_bumper && lServoToggleTimeOut.seconds() > 0.5) {
-            lServoToggleTimeOut.reset();
-            if (tankDrive.LServo.getPosition() == 0.0)
-                tankDrive.LServo.setPosition(1.0);
-            else
-                tankDrive.LServo.setPosition(0.0);
-
+    private void intakeServos() {
+        if (gamepad2.dpad_down && lIntakeServoPosition != 0 && rIntakeServoPosition != 0)
+        {
+            lIntakeServoPosition = 0;
+            rIntakeServoPosition = 0;
+            tankDrive.RServo2.setPosition(0.0);
+            tankDrive.LServo2.setPosition(1.0);
         }
-        if (gamepad2.right_bumper && rServoToggleTimeOut.seconds() > 0.5) {
-            rServoToggleTimeOut.reset();
-            if (tankDrive.RServo.getPosition() == 0.0)
-                tankDrive.RServo.setPosition(1.0);
-            else
-                tankDrive.RServo.setPosition(0.0);
 
+        else if (gamepad2.dpad_up && lIntakeServoPosition != 1 && rIntakeServoPosition != 1) {
+            lIntakeServoPosition = 1;
+            rIntakeServoPosition = 1;
+            tankDrive.RServo2.setPosition(1.0);
+            tankDrive.LServo2.setPosition(0.0);
+        }
+
+        else if (gamepad2.dpad_right && lIntakeServoPosition != 0 && rIntakeServoPosition != 1)
+        {
+            lIntakeServoPosition = 0;
+            rIntakeServoPosition = 1;
+            tankDrive.RServo2.setPosition(1.0);
+            tankDrive.LServo2.setPosition(1.0);
+        }
+
+        else if (gamepad2.dpad_left && lIntakeServoPosition != 1 && rIntakeServoPosition != 0)
+        {
+            lIntakeServoPosition = 1;
+            rIntakeServoPosition = 0;
+            tankDrive.RServo2.setPosition(0.0);
+            tankDrive.LServo2.setPosition(0.0);
         }
     }
 }

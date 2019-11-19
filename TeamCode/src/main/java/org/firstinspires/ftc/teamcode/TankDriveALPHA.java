@@ -17,12 +17,16 @@ public class TankDriveALPHA
     public DcMotor  LM1  = null;
     public DcMotor  RM0  = null;
     public DcMotor  RM1  = null;
+    public DcMotor Lift1 = null;
+    public DcMotor Lift2 = null;
 
     public DcMotor  Intake1  = null;
     public DcMotor  Intake2  = null;
 
     public Servo LServo = null;
+    public Servo LServo2 = null;
     public Servo RServo = null;
+    public Servo RServo2 = null;
 
     HardwareMap hwMap =  null;
 
@@ -36,17 +40,23 @@ public class TankDriveALPHA
         LM1 = hwMap.get(DcMotor.class, "LM1");
         RM0 = hwMap.get(DcMotor.class, "RM0");
         RM1 = hwMap.get(DcMotor.class, "RM1");
+        Lift1 = hwMap.get(DcMotor.class, "Lift1");
+        Lift2 = hwMap.get(DcMotor.class, "Lift2");
 
         Intake1 = hwMap.get(DcMotor.class, "Intake1");
         Intake2 = hwMap.get(DcMotor.class, "Intake2");
 
         LServo = hwMap.get(Servo.class, "LServo");
+        LServo2 = hwMap.get(Servo.class, "LServo2");
         RServo = hwMap.get(Servo.class, "RServo");
+        RServo2 = hwMap.get(Servo.class, "RServo2");
 
         LM0.setDirection(DcMotor.Direction.REVERSE);
         LM1.setDirection(DcMotor.Direction.REVERSE);
         RM0.setDirection(DcMotor.Direction.FORWARD);
         RM1.setDirection(DcMotor.Direction.FORWARD);
+        Lift1.setDirection(DcMotor.Direction.FORWARD);
+        Lift2.setDirection(DcMotor.Direction.REVERSE);
         Intake1.setDirection(DcMotor.Direction.REVERSE);
         Intake2.setDirection(DcMotor.Direction.FORWARD);
 
@@ -54,6 +64,8 @@ public class TankDriveALPHA
         LM1.setPower(0);
         RM0.setPower(0);
         RM1.setPower(0);
+        Lift1.setPower(0);
+        Lift2.setPower(0);
         Intake1.setPower(0);
         Intake2.setPower(0);
 
@@ -63,6 +75,8 @@ public class TankDriveALPHA
         RM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Intake2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         LM0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -70,6 +84,8 @@ public class TankDriveALPHA
         RM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Intake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         LM0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
