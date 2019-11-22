@@ -40,12 +40,13 @@ public class TankDriveTeleop extends LinearOpMode {
         tankDrive.init(hardwareMap);
         lIntakeServoPosition = 0;
         rIntakeServoPosition = 0;
+        //tankDrive.PServo1.;
+        //tankDrive.PServo2.setPosition(1);
 
         waitForStart();
 
 
-        while(opModeIsActive())
-        {
+        while(opModeIsActive()) {
             /*if (gamepad1.left_bumper)
             {
                 double forwardPower = -gamepad1.left_stick_y;
@@ -55,24 +56,18 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.RM0.setPower(forwardPower - turnPower);
                 tankDrive.RM1.setPower(forwardPower - turnPower);
             }*/
-            if (Math.abs(gamepad1.left_stick_y) > 0.2)
-            {
+            if (Math.abs(gamepad1.left_stick_y) > 0.2) {
                 tankDrive.LM0.setPower(-gamepad1.left_stick_y);
                 tankDrive.LM1.setPower(-gamepad1.left_stick_y);
-            }
-            else
-            {
+            } else {
                 tankDrive.LM0.setPower(0);
                 tankDrive.LM1.setPower(0);
             }
 
-            if (Math.abs(gamepad1.right_stick_y) > 0.2)
-            {
+            if (Math.abs(gamepad1.right_stick_y) > 0.2) {
                 tankDrive.RM0.setPower(-gamepad1.right_stick_y);
                 tankDrive.RM1.setPower(-gamepad1.right_stick_y);
-            }
-            else
-            {
+            } else {
                 tankDrive.RM0.setPower(0);
                 tankDrive.RM1.setPower(0);
             }
@@ -86,58 +81,42 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.RM1.setPower(0);
             }*/
 
-            if (Math.abs(gamepad2.left_stick_y) > 0.2)
-            {
-                if(gamepad2.left_stick_button && gamepad2.right_stick_button) {
+            if (Math.abs(gamepad2.left_stick_y) > 0.2) {
+                if (gamepad2.left_stick_button && gamepad2.right_stick_button) {
                     tankDrive.Intake2.setPower(-gamepad2.left_stick_y / 2);
-                }
-                else
-                {
+                } else {
                     tankDrive.Intake2.setPower(-gamepad2.left_stick_y);
                 }
-            }
-            else
-            {
+            } else {
                 tankDrive.Intake2.setPower(0);
             }
 
-            if (Math.abs(gamepad2.right_stick_y) > 0.2)
-            {
-                if(gamepad2.left_stick_button && gamepad2.right_stick_button) {
+            if (Math.abs(gamepad2.right_stick_y) > 0.2) {
+                if (gamepad2.left_stick_button && gamepad2.right_stick_button) {
                     tankDrive.Intake1.setPower(-gamepad2.right_stick_y / 2);
-                }
-                else
-                {
+                } else {
                     tankDrive.Intake1.setPower(-gamepad2.right_stick_y);
                 }
-            }
-            else
-            {
+            } else {
                 tankDrive.Intake1.setPower(0);
             }
 
-            if(gamepad2.left_stick_button && gamepad2.right_stick_button)
-            {
+            if (gamepad2.left_stick_button && gamepad2.right_stick_button) {
                 telemetry.addData("Intake Operating at", " Half Speed");
                 telemetry.update();
-            }
-            else
-            {
-                telemetry.update(); 
+            } else {
+                telemetry.update();
             }
 
-            if(gamepad2.left_bumper)
-            {
+            if (gamepad2.left_bumper) {
                 claw(false);
-            }
-            else if (gamepad2.right_bumper)
-            {
+            } else if (gamepad2.right_bumper) {
                 claw(true);
             }
 
 
-            if (gamepad2.x)
-                pidLinearMovement(80,0.1);
+            if (gamepad1.x)
+                pidLinearMovement(80, 0.1);
             else if (gamepad1.y)
                 pidLinearMovement(20, 0.1);
 
@@ -145,30 +124,84 @@ public class TankDriveTeleop extends LinearOpMode {
             intakeServos();
 
 
-
             //for lift
-            if (gamepad2.right_trigger > 0.1)
-            {
+            if (gamepad2.right_trigger > 0.1) {
                 tankDrive.Lift1.setPower(gamepad2.right_trigger);
                 tankDrive.Lift2.setPower(gamepad2.right_trigger);
-            }
-
-            else if (gamepad2.left_trigger > 0.1)
-            {
+            } else if (gamepad2.left_trigger > 0.1) {
                 tankDrive.Lift1.setPower(-gamepad2.left_trigger);
                 tankDrive.Lift2.setPower(-gamepad2.left_trigger);
-            }
-
-            else
-            {
+            } else {
                 tankDrive.Lift1.setPower(0);
                 tankDrive.Lift2.setPower(0);
             }
 
+            //for the the extender servos on lifts
+            /*if (gamepad2.a && (tankDrive.PServo1.getPosition() != 1) && (tankDrive.PServo2.getPosition() != 0)) {
+                tankDrive.PServo1.setPosition(tankDrive.PServo1.getPosition() + .1);
+                tankDrive.PServo2.setPosition(tankDrive.PServo2.getPosition() - .1);
+                telemetry.addData("IN PServo 1 position: ", tankDrive.PServo1.getPosition() );
+                telemetry.addData("IN PServo 2 position: ", tankDrive.PServo2.getPosition() );
+                telemetry.update();
+            }
+            else if (gamepad2.b && (tankDrive.PServo1.getPosition() != 0) && (tankDrive.PServo2.getPosition() != 1)) {
+                tankDrive.PServo1.setPosition(tankDrive.PServo1.getPosition() - .1);
+                tankDrive.PServo2.setPosition(tankDrive.PServo2.getPosition() + .1);
+                telemetry.addData("IN PServo 1 position: ", tankDrive.PServo1.getPosition() );
+                telemetry.addData("IN PServo 2 position: ", tankDrive.PServo2.getPosition() );
+                telemetry.update();
+            }
+            */
+            /*else
+            {
+                tankDrive.PServo1.setPosition(tankDrive.PServo1.getPosition() - 0);
+                tankDrive.PServo2.setPosition(tankDrive.PServo2.getPosition() + 0);
+                telemetry.addData("STAWP", tankDrive.PServo1.getPosition() );
+                telemetry.addData("STAWP", tankDrive.PServo2.getPosition() );
+                telemetry.update();
+
+            }*/
+                if (gamepad2.right_stick_button ) {
+                    tankDrive.PServo1.setPosition(tankDrive.PServo1.getPosition() + .1);
+                    telemetry.addData("PServo 1 UP :: ", tankDrive.PServo1.getPosition());
+                    telemetry.update();
+
+                }
+                else if (gamepad2.left_stick_button) {
+                    tankDrive.PServo1.setPosition(tankDrive.PServo1.getPosition() - .1);
+                    telemetry.addData("PServo 1 DOWN :: ", tankDrive.PServo1.getPosition());
+                    telemetry.update();
+                }
+                else if (tankDrive.PServo1.getPosition() <= .05) {
+                    tankDrive.PServo1.setPosition(tankDrive.PServo1.getPosition() + .05);
+                    telemetry.addData("PServo 1 LOW BOI!!!! :: ", tankDrive.PServo1.getPosition());
+                    telemetry.update();
+                }
+                else if (tankDrive.PServo1.getPosition() >= .95)
+                {
+                    tankDrive.PServo1.setPosition(tankDrive.PServo1.getPosition() - .05);
+                    telemetry.addData("PServo 1 HIGH BOI!!!! :: ", tankDrive.PServo1.getPosition());
+                    telemetry.update();
+                }
+                else
+                {
+
+                    telemetry.addData("PServo 1 STAWP!!! :: ", tankDrive.PServo1.getPosition());
+                    telemetry.update();
+                }
+
+
+
+
+            //if (gamepad2.x){
+              //  telemetry.addData("IN PServo 1 position: ", tankDrive.PServo1.getPosition() );
+                //telemetry.addData("IN PServo 2 position: ", tankDrive.PServo2.getPosition() );
+                //telemetry.update();
+            //}
 
         }
 
-        freeze();
+        //freeze();
 
     }
 
