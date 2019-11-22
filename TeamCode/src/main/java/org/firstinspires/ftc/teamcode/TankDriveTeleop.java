@@ -44,9 +44,11 @@ public class TankDriveTeleop extends LinearOpMode {
         //tankDrive.PServo2.setPosition(1);
 
         waitForStart();
-
+        int pinger = 0;
 
         while(opModeIsActive()) {
+            telemetry.addData("Pinger", ++pinger);
+            telemetry.update();
             /*if (gamepad1.left_bumper)
             {
                 double forwardPower = -gamepad1.left_stick_y;
@@ -80,6 +82,8 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.RM0.setPower(0);
                 tankDrive.RM1.setPower(0);
             }*/
+            telemetry.addData("Intake", ++pinger);
+            telemetry.update();
 
             if (Math.abs(gamepad2.left_stick_y) > 0.2) {
                 if (gamepad2.left_stick_button && gamepad2.right_stick_button) {
@@ -101,13 +105,17 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.Intake1.setPower(0);
             }
 
+
             if (gamepad2.left_stick_button && gamepad2.right_stick_button) {
                 telemetry.addData("Intake Operating at", " Half Speed");
                 telemetry.update();
             } else {
+                telemetry.addData("Intake Operating at", " Full Speed");
                 telemetry.update();
             }
 
+            telemetry.addData("Claw", ++pinger);
+            telemetry.update();
             if (gamepad2.left_bumper) {
                 claw(false);
             } else if (gamepad2.right_bumper) {
@@ -115,16 +123,24 @@ public class TankDriveTeleop extends LinearOpMode {
             }
 
 
+
+            telemetry.addData("pidLinearMovement", ++pinger);
+            telemetry.update();
             if (gamepad1.x)
                 pidLinearMovement(80, 0.1);
             else if (gamepad1.y)
                 pidLinearMovement(20, 0.1);
 
 
-            intakeServos();
+            telemetry.addData("IntakeServos", ++pinger);
+            telemetry.update();
+            intakeServos(); // Why do we have two things for intake?
 
 
             //for lift
+
+            telemetry.addData("Lift", ++pinger);
+            telemetry.update();
             if (gamepad2.right_trigger > 0.1) {
                 tankDrive.Lift1.setPower(gamepad2.right_trigger);
                 tankDrive.Lift2.setPower(gamepad2.right_trigger);
@@ -161,6 +177,10 @@ public class TankDriveTeleop extends LinearOpMode {
                 telemetry.update();
 
             }*/
+
+
+            telemetry.addData("PServo", ++pinger);
+            telemetry.update();
                 if (gamepad2.right_stick_button ) {
                     tankDrive.PServo1.setPosition(tankDrive.PServo1.getPosition() + .1);
                     telemetry.addData("PServo 1 UP :: ", tankDrive.PServo1.getPosition());
@@ -187,6 +207,7 @@ public class TankDriveTeleop extends LinearOpMode {
                 {
 
                     telemetry.addData("PServo 1 STAWP!!! :: ", tankDrive.PServo1.getPosition());
+                    telemetry.addData("Eric WTH ARE YOU DOIN?! ", tankDrive.PServo1.getPosition());
                     telemetry.update();
                 }
 
