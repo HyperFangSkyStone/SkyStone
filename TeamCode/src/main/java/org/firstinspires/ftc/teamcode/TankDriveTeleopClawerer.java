@@ -12,9 +12,10 @@ public class TankDriveTeleopClawerer extends LinearOpMode {
     public void runOpMode() throws InterruptedException
     {
         tankDrive.init(hardwareMap);
-        tankDrive.LClaw.setPosition(.5);
-        tankDrive.RClaw.setPosition(.25);
-        tankDrive.PosClaw.setPosition(.75);
+        /*tankDrive.LClaw.setPosition(.3);
+        tankDrive.RClaw.setPosition(.5);
+        tankDrive.PosClaw.setPosition(1);
+        */
         telemetry.addData("R Claw :: ", tankDrive.RClaw.getPosition());
         telemetry.addData("L Claw :: ", tankDrive.LClaw.getPosition());
         telemetry.addData("Pos Claw :: ", tankDrive.PosClaw.getPosition());
