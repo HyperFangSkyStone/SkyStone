@@ -103,6 +103,8 @@ public class TankDriveALPHA
         LM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RM0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Lift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Lift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
     }
