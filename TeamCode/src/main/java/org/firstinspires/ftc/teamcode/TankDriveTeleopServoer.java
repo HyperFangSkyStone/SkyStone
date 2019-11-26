@@ -20,9 +20,14 @@ public class TankDriveTeleopServoer extends LinearOpMode {
 
         while(opModeIsActive()) {
             if (gamepad2.a) {
-                telemetry.addData("Pservo1 Position", tankDrive.PServo1.getPosition()); //To be replaced with the correct servo
-                telemetry.addData("Pservo2 Position", tankDrive.PServo2.getPosition()); //To be replaced with the correct servo
-                telemetry.update();
+                tankDrive.PServo1.setPower(.5);
+                tankDrive.PServo2.setPower(-.5);
+            } else if (gamepad2.b) {
+                tankDrive.PServo1.setPower(-.5);
+                tankDrive.PServo2.setPower(.5);
+            } else {
+                tankDrive.PServo1.setPower(0);
+                tankDrive.PServo1.setPower(0);
             }
         }
 
