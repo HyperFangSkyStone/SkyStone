@@ -12,6 +12,11 @@ public class TankDriveTeleopClawerer extends LinearOpMode {
     public void runOpMode() throws InterruptedException
     {
         tankDrive.init(hardwareMap);
+        tankDrive.LClaw.setPosition(0);
+        tankDrive.RClaw.setPosition(0);
+        tankDrive.PosClaw.setPosition(0);
+        telemetry.addData("All", "Done");
+        telemetry.update();
 
         waitForStart();
 
