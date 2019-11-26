@@ -28,8 +28,12 @@ public class TankDriveALPHA
     public Servo LServo2 = null;
     public Servo RServo = null;
     public Servo RServo2 = null;
-    public CRServo PServo1 = null;
+    public CRServo PServo1 = null; // Ball servos
     public CRServo PServo2 = null;
+
+    public Servo LClaw = null;
+    public Servo RClaw = null;
+    public Servo PosClaw = null;
 
     HardwareMap hwMap =  null;
 
@@ -55,6 +59,9 @@ public class TankDriveALPHA
         RServo2 = hwMap.get(Servo.class, "RServo2");
         PServo1 = hwMap.get(CRServo.class, "PServo1");
         PServo2 = hwMap.get(CRServo.class, "PServo2");
+        LClaw = hwMap.get(Servo.class, "LClaw");
+        RClaw = hwMap.get(Servo.class, "RClaw");
+        PosClaw = hwMap.get(Servo.class, "PosClaw");
 
         LM0.setDirection(DcMotor.Direction.REVERSE);
         LM1.setDirection(DcMotor.Direction.REVERSE);
