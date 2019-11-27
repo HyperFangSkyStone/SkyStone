@@ -92,13 +92,13 @@ public class TankDriveTeleop extends LinearOpMode {
 
 
 
-            if(gamepad2.left_bumper)
-            {
-                fang(false);
-            }
-            else if (gamepad2.right_bumper)
+            if(gamepad1.left_bumper)
             {
                 fang(true);
+            }
+            else if (gamepad1.right_bumper)
+            {
+                fang(false);
             }
 
 
@@ -110,6 +110,7 @@ public class TankDriveTeleop extends LinearOpMode {
 
             intake();
             claw();
+            balls();
 
 
             //for lift
