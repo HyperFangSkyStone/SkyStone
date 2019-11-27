@@ -444,9 +444,10 @@ public class TankDriveTeleop extends LinearOpMode {
         double inches = position * 4 + 2.25;
         double targ = inches * LIFT_ENCODER_TICKS_PER_INCH;
         double kp = 0.003;
-        double kI = 2 * conversionFunction;
+        double kI = 0.000002;
         double kd = 4 * conversionFunction;
-        double powerFloor = 0.35;
+        double powerFloor = 0.4;
+        double powerCeiling = 0.8;
         double I = 0;
         double prevError = 0;
         double d = 0;
@@ -457,6 +458,7 @@ public class TankDriveTeleop extends LinearOpMode {
             d = (error - prevError) * 10;
             double porg = Math.abs(error) * kp + I * kI + kd * d;
             porg = Math.max(porg, powerFloor);
+            porg = Math.min(porg, powerCeiling);
             if (error < 0)
                 porg *= -1;
             tankDrive.Lift1.setPower(porg);
@@ -465,6 +467,7 @@ public class TankDriveTeleop extends LinearOpMode {
             telemetry.addData("Porg:", porg);
             telemetry.addData("Lift 1:", tankDrive.Lift1.getCurrentPosition());
             telemetry.addData("Lift 2:", tankDrive.Lift2.getCurrentPosition());
+            telemetry.addData("I:", I);
             telemetry.addData("Error:", error);
             telemetry.update();
             prevError = error;
