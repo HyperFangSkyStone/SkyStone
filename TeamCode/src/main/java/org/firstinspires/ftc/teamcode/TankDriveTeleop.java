@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
@@ -38,12 +39,18 @@ public class TankDriveTeleop extends LinearOpMode {
     int lIntakeServoPosition;
     int rIntakeServoPosition;
 
+    DcMotor LM0 = tankDrive.LM0;
+    DcMotor LM1 = tankDrive.LM1;
+    DcMotor RM0 = tankDrive.RM0;
+    DcMotor RM1 = tankDrive.RM1;
+
     @Override
     public void runOpMode() throws InterruptedException
     {
         tankDrive.init(hardwareMap);
         lIntakeServoPosition = 0;
         rIntakeServoPosition = 0;
+
 
         waitForStart();
 
@@ -61,24 +68,24 @@ public class TankDriveTeleop extends LinearOpMode {
             }*/
             if (Math.abs(gamepad1.left_stick_y) > 0.2)
             {
-                tankDrive.LM0.setPower(-gamepad1.left_stick_y);
-                tankDrive.LM1.setPower(-gamepad1.left_stick_y);
+                LM0.setPower(-gamepad1.left_stick_y);
+                LM1.setPower(-gamepad1.left_stick_y);
             }
             else
             {
-                tankDrive.LM0.setPower(0);
-                tankDrive.LM1.setPower(0);
+                LM0.setPower(0);
+                LM1.setPower(0);
             }
 
             if (Math.abs(gamepad1.right_stick_y) > 0.2)
             {
-                tankDrive.RM0.setPower(-gamepad1.right_stick_y);
-                tankDrive.RM1.setPower(-gamepad1.right_stick_y);
+                RM0.setPower(-gamepad1.right_stick_y);
+                RM1.setPower(-gamepad1.right_stick_y);
             }
             else
             {
-                tankDrive.RM0.setPower(0);
-                tankDrive.RM1.setPower(0);
+                RM0.setPower(0);
+                RM1.setPower(0);
             }
 
             /*
@@ -132,9 +139,36 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.Lift2.setPower(0);
             }
             telemetry.update();
+
+            if (gamepad1.b) {
+                telemetry.addData("Current Mode:", " REVERSE!!!!");
+                telemetry.update();
+                tankDrive.LM0.setDirection(DcMotor.Direction.FORWARD);
+                tankDrive.LM1.setDirection(DcMotor.Direction.FORWARD);
+                tankDrive.RM0.setDirection(DcMotor.Direction.REVERSE);
+                tankDrive.RM1.setDirection(DcMotor.Direction.REVERSE);
+                LM0 = tankDrive.RM0;
+                LM1 = tankDrive.RM1;
+                RM0 = tankDrive.LM0;
+                RM1 = tankDrive.LM1;
+            } else if (gamepad1.a) {
+                telemetry.addData("Current Mode:", " FORWARD!!!!");
+                telemetry.update();
+                tankDrive.LM0.setDirection(DcMotor.Direction.REVERSE);
+                tankDrive.LM1.setDirection(DcMotor.Direction.REVERSE);
+                tankDrive.RM0.setDirection(DcMotor.Direction.FORWARD);
+                tankDrive.RM1.setDirection(DcMotor.Direction.FORWARD);
+                LM0 = tankDrive.LM0;
+                LM1 = tankDrive.LM1;
+                RM0 = tankDrive.RM0;
+                RM1 = tankDrive.RM1;
+            }
+
+
         }
 
         freeze();
+
 
     }
 
@@ -150,16 +184,16 @@ public class TankDriveTeleop extends LinearOpMode {
 
         while (clock.seconds() < t)
         {
-            tankDrive.LM0.setPower(inputPower);
-            tankDrive.LM1.setPower(inputPower);
-            tankDrive.RM0.setPower(inputPower);
-            tankDrive.RM1.setPower(inputPower);
+            LM0.setPower(inputPower);
+            LM1.setPower(inputPower);
+            RM0.setPower(inputPower);
+            RM1.setPower(inputPower);
             telemetry.update();
         }
-        tankDrive.LM0.setPower(0);
-        tankDrive.LM1.setPower(0);
-        tankDrive.RM0.setPower(0);
-        tankDrive.RM1.setPower(0);
+        LM0.setPower(0);
+        LM1.setPower(0);
+        RM0.setPower(0);
+        RM1.setPower(0);
     }
 
     public void pidLinearMovement(double distance, double kd)
@@ -207,10 +241,10 @@ public class TankDriveTeleop extends LinearOpMode {
 
             telemetry.addData("Target", targetTick);
             telemetry.addData("Current", averageEncoderTick());
-            telemetry.addData("RM0", tankDrive.RM0.getCurrentPosition());
-            telemetry.addData("RM1", tankDrive.RM1.getCurrentPosition());
-            telemetry.addData("LM0", tankDrive.LM0.getCurrentPosition());
-            telemetry.addData("LM1", tankDrive.LM1.getCurrentPosition());
+            telemetry.addData("RM0", RM0.getCurrentPosition());
+            telemetry.addData("RM1", RM1.getCurrentPosition());
+            telemetry.addData("LM0", LM0.getCurrentPosition());
+            telemetry.addData("LM1", LM1.getCurrentPosition());
             telemetry.addData("error", error);
             telemetry.addData("kP", kP);
             telemetry.addData("output", output);
@@ -262,17 +296,17 @@ public class TankDriveTeleop extends LinearOpMode {
 
     public void runMotor(double leftInput, double rightInput)
     {
-        tankDrive.LM0.setPower(leftInput);
-        tankDrive.LM1.setPower(leftInput);
-        tankDrive.RM0.setPower(rightInput);
-        tankDrive.RM1.setPower(rightInput);
+        LM0.setPower(leftInput);
+        LM1.setPower(leftInput);
+        RM0.setPower(rightInput);
+        RM1.setPower(rightInput);
     }
     public void freeze()
     {
-        tankDrive.LM0.setPower(0);
-        tankDrive.LM1.setPower(0);
-        tankDrive.RM0.setPower(0);
-        tankDrive.RM1.setPower(0);
+        LM0.setPower(0);
+        LM1.setPower(0);
+        RM0.setPower(0);
+        RM1.setPower(0);
     }
 
     public void fang(boolean x) {
