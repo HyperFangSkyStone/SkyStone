@@ -26,16 +26,16 @@ public class TankDriveTeleopClawerer extends LinearOpMode {
         while(opModeIsActive()) {
 
             if (gamepad2.dpad_right) {
-                tankDrive.RClaw.setPosition(tankDrive.RClaw.getPosition() + .1);
-                tankDrive.LClaw.setPosition(tankDrive.LClaw.getPosition() - .1);
+                tankDrive.RClaw.setPosition(tankDrive.RClaw.getPosition() + .03);
+                tankDrive.LClaw.setPosition(tankDrive.LClaw.getPosition() - .03);
                 telemetry.addData("R Claw CLAMP :: ", tankDrive.RClaw.getPosition());
                 telemetry.addData("L Claw CLAMP :: ", tankDrive.LClaw.getPosition());
                 telemetry.update();
                 sleep(100);
             }
             else if (gamepad2.dpad_left) {
-                tankDrive.RClaw.setPosition(tankDrive.RClaw.getPosition() - .1);
-                tankDrive.LClaw.setPosition(tankDrive.LClaw.getPosition() + .1);
+                tankDrive.RClaw.setPosition(tankDrive.RClaw.getPosition() - .03);
+                tankDrive.LClaw.setPosition(tankDrive.LClaw.getPosition() + .03);
                 telemetry.addData("R Claw LETGO :: ", tankDrive.RClaw.getPosition());
                 telemetry.addData("L Claw LETGO :: ", tankDrive.LClaw.getPosition());
                 telemetry.update();
@@ -55,6 +55,14 @@ public class TankDriveTeleopClawerer extends LinearOpMode {
                 telemetry.update();
                 sleep(100);
 
+            }
+
+            if (gamepad2.a) {
+                tankDrive.RClaw.setPosition(0.4);
+                tankDrive.LClaw.setPosition(0.4);
+            } else if (gamepad2.b) {
+                tankDrive.RClaw.setPosition(0.25);
+                tankDrive.LClaw.setPosition(0.55);
             }
 
 
