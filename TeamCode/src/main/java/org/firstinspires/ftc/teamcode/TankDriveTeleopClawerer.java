@@ -12,12 +12,12 @@ public class TankDriveTeleopClawerer extends LinearOpMode {
     public void runOpMode() throws InterruptedException
     {
         tankDrive.init(hardwareMap);
-        /*tankDrive.LClaw.setPosition(.3);
-        tankDrive.RClaw.setPosition(.5);
+        /*tankDrive.LeftClaw.setPosition(.3);
+        tankDrive.RightClaw.setPosition(.5);
         tankDrive.PosClaw.setPosition(1);
         */
-        telemetry.addData("R Claw :: ", tankDrive.RClaw.getPosition());
-        telemetry.addData("L Claw :: ", tankDrive.LClaw.getPosition());
+        telemetry.addData("R Claw :: ", tankDrive.RightClaw.getPosition());
+        telemetry.addData("L Claw :: ", tankDrive.LeftClaw.getPosition());
         telemetry.addData("Pos Claw :: ", tankDrive.PosClaw.getPosition());
         telemetry.update();
 
@@ -26,18 +26,18 @@ public class TankDriveTeleopClawerer extends LinearOpMode {
         while(opModeIsActive()) {
 
             if (gamepad2.dpad_right) {
-                tankDrive.RClaw.setPosition(tankDrive.RClaw.getPosition() + .03);
-                tankDrive.LClaw.setPosition(tankDrive.LClaw.getPosition() - .03);
-                telemetry.addData("R Claw CLAMP :: ", tankDrive.RClaw.getPosition());
-                telemetry.addData("L Claw CLAMP :: ", tankDrive.LClaw.getPosition());
+                tankDrive.RightClaw.setPosition(tankDrive.RightClaw.getPosition() + .03);
+                tankDrive.LeftClaw.setPosition(tankDrive.LeftClaw.getPosition() - .03);
+                telemetry.addData("R Claw CLAMP :: ", tankDrive.RightClaw.getPosition());
+                telemetry.addData("L Claw CLAMP :: ", tankDrive.LeftClaw.getPosition());
                 telemetry.update();
                 sleep(100);
             }
             else if (gamepad2.dpad_left) {
-                tankDrive.RClaw.setPosition(tankDrive.RClaw.getPosition() - .03);
-                tankDrive.LClaw.setPosition(tankDrive.LClaw.getPosition() + .03);
-                telemetry.addData("R Claw LETGO :: ", tankDrive.RClaw.getPosition());
-                telemetry.addData("L Claw LETGO :: ", tankDrive.LClaw.getPosition());
+                tankDrive.RightClaw.setPosition(tankDrive.RightClaw.getPosition() - .03);
+                tankDrive.LeftClaw.setPosition(tankDrive.LeftClaw.getPosition() + .03);
+                telemetry.addData("R Claw LETGO :: ", tankDrive.RightClaw.getPosition());
+                telemetry.addData("L Claw LETGO :: ", tankDrive.LeftClaw.getPosition());
                 telemetry.update();
                 sleep(100);
 
@@ -58,11 +58,11 @@ public class TankDriveTeleopClawerer extends LinearOpMode {
             }
 
             if (gamepad2.a) {
-                tankDrive.RClaw.setPosition(0.4);
-                tankDrive.LClaw.setPosition(0.4);
+                tankDrive.RightClaw.setPosition(0.4);
+                tankDrive.LeftClaw.setPosition(0.4);
             } else if (gamepad2.b) {
-                tankDrive.RClaw.setPosition(0.25);
-                tankDrive.LClaw.setPosition(0.55);
+                tankDrive.RightClaw.setPosition(0.25);
+                tankDrive.LeftClaw.setPosition(0.55);
             }
 
 

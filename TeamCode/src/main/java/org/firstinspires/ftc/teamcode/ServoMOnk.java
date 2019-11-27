@@ -23,14 +23,14 @@ public class ServoMOnk extends LinearOpMode {
 
             if (gamepad1.a)
             {
-                servo.LServo.setPosition(1);
-                servo.RServo.setPosition(0);
+                servo.LeftFang.setPosition(1);
+                servo.RightFang.setPosition(0);
             }
 
             else if (gamepad1.x)
             {
-                servo.LServo.setPosition(0);
-                servo.RServo.setPosition(1);
+                servo.LeftFang.setPosition(0);
+                servo.RightFang.setPosition(1);
             }
         }
 
