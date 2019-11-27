@@ -51,6 +51,12 @@ public class TankDriveTeleop extends LinearOpMode {
         lIntakeServoPosition = 0;
         rIntakeServoPosition = 0;
 
+        DcMotor LM0 = tankDrive.LM0;
+        DcMotor LM1 = tankDrive.LM1;
+        DcMotor RM0 = tankDrive.RM0;
+        DcMotor RM1 = tankDrive.RM1;
+
+
 
         waitForStart();
 
