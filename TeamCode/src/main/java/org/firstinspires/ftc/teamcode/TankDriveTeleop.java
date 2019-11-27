@@ -318,10 +318,10 @@ public class TankDriveTeleop extends LinearOpMode {
 
     private void claw()
     {
-        if (gamepad2.a) {
+        if (gamepad2.b) {
             tankDrive.RightClaw.setPosition(0.4);
             tankDrive.LeftClaw.setPosition(0.4);
-        } else if (gamepad2.b) {
+        } else if (gamepad2.a) {
             tankDrive.RightClaw.setPosition(0.25);
             tankDrive.LeftClaw.setPosition(0.55);
         }
