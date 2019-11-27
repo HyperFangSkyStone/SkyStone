@@ -44,6 +44,12 @@ public class TankDriveTeleop extends LinearOpMode {
     DcMotor RM0 = tankDrive.RM0;
     DcMotor RM1 = tankDrive.RM1;
 
+    final double LIFT_ENCODER_TICKS_PER_INCH = 85;
+
+    int towerPosition = 0;
+    boolean dpadright2Ispressed = false;
+    boolean dpadleft2Ispressed = false;
+
     @Override
     public void runOpMode() throws InterruptedException
     {
@@ -168,6 +174,32 @@ public class TankDriveTeleop extends LinearOpMode {
                 LM1 = tankDrive.LM1;
                 RM0 = tankDrive.RM0;
                 RM1 = tankDrive.RM1;
+            }
+
+            if (gamepad2.dpad_right && !dpadright2Ispressed) {
+                dpadright2Ispressed = true;
+                towerPosition++;
+            } else {
+                dpadright2Ispressed = false;
+            }
+
+            if (gamepad2.dpad_left && !dpadleft2Ispressed) {
+                dpadleft2Ispressed = true;
+                towerPosition--;
+            } else {
+                dpadleft2Ispressed = false;
+            }
+
+            telemetry.addData("Tower Position", towerPosition);
+
+            if (gamepad2.dpad_up) {
+                liftererPID(towerPosition);
+            }
+
+            if (gamepad2.dpad_down) {
+                tankDrive.RightClaw.setPosition(0.25);
+                tankDrive.LeftClaw.setPosition(0.55);
+                setLiftToZero();
             }
 
 
@@ -396,5 +428,55 @@ public class TankDriveTeleop extends LinearOpMode {
         } else if (gamepad2.y) {
             tankDrive.PosClaw.setPosition(1);
         }
+    }
+
+    private void liftererPID(int position) { // Position 0 is foundation (2.25 inches), position 1, 2, 3, etc. are block heights
+        double inches = position * 4 + 2.25;
+        double targ = inches * LIFT_ENCODER_TICKS_PER_INCH;
+        double kp = 0.003;
+        double powerFloor = 0.35;
+        int errMarg = 10;
+        while (Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && opModeIsActive()) {
+            double error = targ - Math.max(Math.abs(tankDrive.Lift1.getCurrentPosition()), Math.abs(tankDrive.Lift2.getCurrentPosition()));
+            double porg = Math.abs(error) * kp;
+            porg = Math.max(porg, powerFloor);
+            if (error < 0)
+                porg *= -1;
+            tankDrive.Lift1.setPower(porg);
+            tankDrive.Lift2.setPower(porg);
+
+            telemetry.addData("Porg:", porg);
+            telemetry.addData("Lift 1:", tankDrive.Lift1.getCurrentPosition());
+            telemetry.addData("Lift 2:", tankDrive.Lift2.getCurrentPosition());
+            telemetry.addData("Error:", error);
+            telemetry.update();
+        }
+        tankDrive.Lift1.setPower(0);
+        tankDrive.Lift2.setPower(0);
+
+    }
+
+    private void setLiftToZero() {
+        double targ = 0;
+        double kp = 0.003;
+        double powerFloor = 0.35;
+        int errMarg = 10;
+        while (Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && opModeIsActive()) {
+            double error = targ - Math.max(Math.abs(tankDrive.Lift1.getCurrentPosition()), Math.abs(tankDrive.Lift2.getCurrentPosition()));
+            double porg = Math.abs(error) * kp;
+            porg = Math.max(porg, powerFloor);
+            if (error < 0)
+                porg *= -1;
+            tankDrive.Lift1.setPower(porg);
+            tankDrive.Lift2.setPower(porg);
+
+            telemetry.addData("Porg:", porg);
+            telemetry.addData("Lift 1:", tankDrive.Lift1.getCurrentPosition());
+            telemetry.addData("Lift 2:", tankDrive.Lift2.getCurrentPosition());
+            telemetry.addData("Error:", error);
+            telemetry.update();
+        }
+        tankDrive.Lift1.setPower(0);
+        tankDrive.Lift2.setPower(0);
     }
 }
