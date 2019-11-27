@@ -19,7 +19,7 @@ public class TankDriveTeleopLifterer extends LinearOpMode {
             if (gamepad2.y) {
                 int targ = 175; //Target
                 double kp = 0.003;
-                double powerFloor = 0.25;
+                double powerFloor = 0.3;
                 int errMarg = 10;
                 while (Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && opModeIsActive()) {
                     int error = targ - Math.max(tankDrive.Lift1.getCurrentPosition(), tankDrive.Lift2.getCurrentPosition());
@@ -36,8 +36,8 @@ public class TankDriveTeleopLifterer extends LinearOpMode {
                     telemetry.update();
                 }
             } else if (Math.abs(gamepad2.left_stick_y) > 0.1) {
-                tankDrive.Lift1.setPower(gamepad2.left_stick_y);
-                tankDrive.Lift2.setPower(gamepad2.left_stick_y);
+                tankDrive.Lift1.setPower(gamepad2.left_stick_y / 2);
+                tankDrive.Lift2.setPower(gamepad2.left_stick_y / 2);
             }
             telemetry.addData("Lift 1:", tankDrive.Lift1.getCurrentPosition());
             telemetry.addData("Lift 2:", tankDrive.Lift2.getCurrentPosition());
