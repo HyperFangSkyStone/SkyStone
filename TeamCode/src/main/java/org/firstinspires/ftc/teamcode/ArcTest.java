@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
+@Disabled
 @TeleOp(name="Arc Test", group="2")
-//@Disabled
 public class ArcTest extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
@@ -270,14 +271,14 @@ public class ArcTest extends LinearOpMode {
         tankDrive.RM1.setPower(0);
     }
 
-    public void claw(boolean x) {
+    public void claw(boolean x) {/*
         if (x) {
             tankDrive.LServo.setPosition(1); //true = up
             tankDrive.RServo.setPosition(0);
         } else {
             tankDrive.LServo.setPosition(0); //false = down
             tankDrive.RServo.setPosition(1);
-        }
+        }*/
     }
 
 
