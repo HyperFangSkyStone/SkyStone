@@ -24,15 +24,15 @@ public class TankDriveALPHA
     public DcMotor Intake1  = null;
     public DcMotor Intake2  = null;
 
-    public Servo LServo = null;
-    public Servo LServo2 = null;
-    public Servo RServo = null;
-    public Servo RServo2 = null;
-    public CRServo PServo1 = null; // Ball servos
-    public CRServo PServo2 = null;
+    public Servo LeftFang = null;
+    public Servo LeftNugget = null;
+    public Servo RightFang = null;
+    public Servo RightNugget = null;
+    public CRServo LeftBall = null; // Ball servos
+    public CRServo RightBall = null;
 
-    public Servo LClaw = null;
-    public Servo RClaw = null;
+    public Servo LeftClaw = null;
+    public Servo RightClaw = null;
     public Servo PosClaw = null;
 
     HardwareMap hwMap =  null;
@@ -53,14 +53,14 @@ public class TankDriveALPHA
         Intake1 = hwMap.get(DcMotor.class, "Intake1");
         Intake2 = hwMap.get(DcMotor.class, "Intake2");
 
-        LServo = hwMap.get(Servo.class, "LServo");
-        LServo2 = hwMap.get(Servo.class, "LServo2");
-        RServo = hwMap.get(Servo.class, "RServo");
-        RServo2 = hwMap.get(Servo.class, "RServo2");
-        PServo1 = hwMap.get(CRServo.class, "PServo1");
-        PServo2 = hwMap.get(CRServo.class, "PServo2");
-        LClaw = hwMap.get(Servo.class, "LClaw");
-        RClaw = hwMap.get(Servo.class, "RClaw");
+        LeftFang = hwMap.get(Servo.class, "LeftFang");
+        LeftNugget = hwMap.get(Servo.class, "LeftNugget");
+        RightFang = hwMap.get(Servo.class, "RightFang");
+        RightNugget = hwMap.get(Servo.class, "RightNugget");
+        LeftBall = hwMap.get(CRServo.class, "LeftBall");
+        RightBall = hwMap.get(CRServo.class, "RightBall");
+        LeftClaw = hwMap.get(Servo.class, "LeftClaw");
+        RightClaw = hwMap.get(Servo.class, "RightClaw");
         PosClaw = hwMap.get(Servo.class, "PosClaw");
 
         LM0.setDirection(DcMotor.Direction.REVERSE);

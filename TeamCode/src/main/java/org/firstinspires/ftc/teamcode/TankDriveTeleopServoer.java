@@ -20,14 +20,14 @@ public class TankDriveTeleopServoer extends LinearOpMode {
 
         while(opModeIsActive()) {
             if (gamepad2.a) {
-                tankDrive.PServo1.setPower(.5);
-                tankDrive.PServo2.setPower(-.5);
+                tankDrive.LeftBall.setPower(.5);
+                tankDrive.RightBall.setPower(-.5);
             } else if (gamepad2.b) {
-                tankDrive.PServo1.setPower(-.5);
-                tankDrive.PServo2.setPower(.5);
+                tankDrive.LeftBall.setPower(-.5);
+                tankDrive.RightBall.setPower(.5);
             } else {
-                tankDrive.PServo1.setPower(0);
-                tankDrive.PServo1.setPower(0);
+                tankDrive.LeftBall.setPower(0);
+                tankDrive.LeftBall.setPower(0);
             }
         }
 

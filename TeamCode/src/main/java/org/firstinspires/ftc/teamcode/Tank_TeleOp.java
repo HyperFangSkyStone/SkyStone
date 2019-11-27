@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="ChimpanzeeTankDrive", group="1")
+@TeleOp(name="ChimpanzeeAutoPIDTest", group="1")
 //@Disabled
 public class Tank_TeleOp extends LinearOpMode {
 
@@ -253,11 +253,11 @@ public class Tank_TeleOp extends LinearOpMode {
 
     public void claw(boolean x) {
         if (x) {
-            tankDrive.LServo.setPosition(1); //true = up
-            tankDrive.RServo.setPosition(0);
+            tankDrive.LeftFang.setPosition(1); //true = up
+            tankDrive.RightFang.setPosition(0);
         } else {
-            tankDrive.LServo.setPosition(0); //false = down
-            tankDrive.RServo.setPosition(1);
+            tankDrive.LeftFang.setPosition(0); //false = down
+            tankDrive.RightFang.setPosition(1);
         }
     }
 }

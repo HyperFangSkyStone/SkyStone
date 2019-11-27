@@ -2,14 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="Tank", group="1")
+@TeleOp(name="Orangutank", group="monkey")
 //@Disabled
-public class TankDriveTeleop extends LinearOpMode {
+public class ULTIMATETankDrive extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
     ElapsedTime clock = new ElapsedTime();
@@ -22,6 +21,10 @@ public class TankDriveTeleop extends LinearOpMode {
     boolean intakeOn = false;
     int intakeDir = 1;
 
+    public static final double LOUT = 0.0;
+    public static final double LIN = 1.0;
+    public static final double ROUT = 1.0;
+    public static final double RIN = 0.0;
 
     public final double WHEEL_DIAMETER = 90; //Wheel diameter in mm
     public final int MOTOR_GEAR_TEETH = 26; //# of teeth on the motor gear
