@@ -315,43 +315,22 @@ public class TankDriveTeleop extends LinearOpMode {
 
         if(gamepad2.left_stick_button && gamepad2.right_stick_button)
         {
-            telemetry.addData("Intake Operating at", " Half Speed");
+            lIntakeServoPosition = 1;
+            rIntakeServoPosition = 1;
+            tankDrive.RightNugget.setPosition(1.0);
+            tankDrive.LeftNugget.setPosition(0.0);
+            telemetry.addData("Intake Nuggets", " Open");
             telemetry.update();
         }
         else
         {
+            lIntakeServoPosition = 0;
+            rIntakeServoPosition = 0;
+            tankDrive.RightNugget.setPosition(0.0);
+            tankDrive.LeftNugget.setPosition(1.0);
+            telemetry.addData("Intake Nuggets", " Closed");
             telemetry.update();
         }
 
-        if (gamepad2.dpad_down && lIntakeServoPosition != 0 && rIntakeServoPosition != 0)
-        {
-            lIntakeServoPosition = 0;
-            rIntakeServoPosition = 0;
-            tankDrive.RightNugget.setPosition(0.0);
-            tankDrive.LeftNugget.setPosition(1.0);
-        }
-
-        else if (gamepad2.dpad_up && lIntakeServoPosition != 1 && rIntakeServoPosition != 1) {
-            lIntakeServoPosition = 1;
-            rIntakeServoPosition = 1;
-            tankDrive.RightNugget.setPosition(1.0);
-            tankDrive.LeftNugget.setPosition(0.0);
-        }
-
-        else if (gamepad2.dpad_right && lIntakeServoPosition != 0 && rIntakeServoPosition != 1)
-        {
-            lIntakeServoPosition = 0;
-            rIntakeServoPosition = 1;
-            tankDrive.RightNugget.setPosition(1.0);
-            tankDrive.LeftNugget.setPosition(1.0);
-        }
-
-        else if (gamepad2.dpad_left && lIntakeServoPosition != 1 && rIntakeServoPosition != 0)
-        {
-            lIntakeServoPosition = 1;
-            rIntakeServoPosition = 0;
-            tankDrive.RightNugget.setPosition(0.0);
-            tankDrive.LeftNugget.setPosition(0.0);
-        }
     }
 }
