@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="ChimpanzeeTankDrive", group="1")
+@TeleOp(name="ChimpanzeeAutoPIDTest", group="1")
 //@Disabled
 public class Tank_TeleOp extends LinearOpMode {
 
