@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -20,13 +21,19 @@ public class TankDriveALPHA
     public DcMotor Lift1 = null;
     public DcMotor Lift2 = null;
 
-    public DcMotor  Intake1  = null;
-    public DcMotor  Intake2  = null;
+    public DcMotor Intake1  = null;
+    public DcMotor Intake2  = null;
 
     public Servo LServo = null;
     public Servo LServo2 = null;
     public Servo RServo = null;
     public Servo RServo2 = null;
+    public CRServo PServo1 = null; // Ball servos
+    public CRServo PServo2 = null;
+
+    public Servo LClaw = null;
+    public Servo RClaw = null;
+    public Servo PosClaw = null;
 
     HardwareMap hwMap =  null;
 
@@ -50,6 +57,11 @@ public class TankDriveALPHA
         LServo2 = hwMap.get(Servo.class, "LServo2");
         RServo = hwMap.get(Servo.class, "RServo");
         RServo2 = hwMap.get(Servo.class, "RServo2");
+        PServo1 = hwMap.get(CRServo.class, "PServo1");
+        PServo2 = hwMap.get(CRServo.class, "PServo2");
+        LClaw = hwMap.get(Servo.class, "LClaw");
+        RClaw = hwMap.get(Servo.class, "RClaw");
+        PosClaw = hwMap.get(Servo.class, "PosClaw");
 
         LM0.setDirection(DcMotor.Direction.REVERSE);
         LM1.setDirection(DcMotor.Direction.REVERSE);
@@ -91,6 +103,8 @@ public class TankDriveALPHA
         LM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RM0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Lift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Lift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
     }
