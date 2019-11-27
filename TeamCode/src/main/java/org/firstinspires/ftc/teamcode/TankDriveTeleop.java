@@ -118,7 +118,7 @@ public class TankDriveTeleop extends LinearOpMode {
             intake();
             claw();
             balls();
-
+            rotateClaw();
 
             //for lift
             if (gamepad2.right_trigger > 0.1)
@@ -352,10 +352,10 @@ public class TankDriveTeleop extends LinearOpMode {
 
     private void claw()
     {
-        if (gamepad2.a) {
+        if (gamepad2.b) {
             tankDrive.RightClaw.setPosition(0.4);
             tankDrive.LeftClaw.setPosition(0.4);
-        } else if (gamepad2.b) {
+        } else if (gamepad2.a) {
             tankDrive.RightClaw.setPosition(0.25);
             tankDrive.LeftClaw.setPosition(0.55);
         }
@@ -381,6 +381,14 @@ public class TankDriveTeleop extends LinearOpMode {
         } else {
             tankDrive.LeftBall.setPower(0);
             tankDrive.LeftBall.setPower(0);
+        }
+    }
+
+    private void rotateClaw() {
+        if (gamepad2.x) {
+            tankDrive.PosClaw.setPosition(0);
+        } else if (gamepad2.y) {
+            tankDrive.PosClaw.setPosition(1);
         }
     }
 }
