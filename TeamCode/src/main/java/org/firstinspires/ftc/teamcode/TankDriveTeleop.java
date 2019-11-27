@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="Tank", group="1")
+@TeleOp(name="Orangutank", group="1")
 //@Disabled
 public class TankDriveTeleop extends LinearOpMode {
 
@@ -22,6 +22,10 @@ public class TankDriveTeleop extends LinearOpMode {
     boolean intakeOn = false;
     int intakeDir = 1;
 
+    public static final double LOUT = 0.0;
+    public static final double LIN = 1.0;
+    public static final double ROUT = 1.0;
+    public static final double RIN = 0.0;
 
     public final double WHEEL_DIAMETER = 90; //Wheel diameter in mm
     public final int MOTOR_GEAR_TEETH = 26; //# of teeth on the motor gear
@@ -90,22 +94,22 @@ public class TankDriveTeleop extends LinearOpMode {
 
             if(gamepad2.left_bumper)
             {
-                claw(false);
+                fang(false);
             }
             else if (gamepad2.right_bumper)
             {
-                claw(true);
+                fang(true);
             }
 
 
-            if (gamepad2.x)
+            /*if (gamepad2.x)
                 pidLinearMovement(80,0.1);
             else if (gamepad1.y)
-                pidLinearMovement(20, 0.1);
+                pidLinearMovement(20, 0.1);*/
 
 
             intake();
-
+            claw();
 
 
             //for lift
@@ -126,8 +130,7 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.Lift1.setPower(0);
                 tankDrive.Lift2.setPower(0);
             }
-
-
+            telemetry.update();
         }
 
         freeze();
@@ -271,7 +274,7 @@ public class TankDriveTeleop extends LinearOpMode {
         tankDrive.RM1.setPower(0);
     }
 
-    public void claw(boolean x) {
+    public void fang(boolean x) {
         if (x) {
             tankDrive.LeftFang.setPosition(1); //true = up
             tankDrive.RightFang.setPosition(0);
@@ -284,53 +287,65 @@ public class TankDriveTeleop extends LinearOpMode {
     private void intake() {
 
         if (Math.abs(gamepad2.left_stick_y) > 0.2)
-        {
-            if(gamepad2.left_stick_button && gamepad2.right_stick_button) {
-                tankDrive.Intake2.setPower(-gamepad2.left_stick_y / 2);
-            }
-            else
-            {
                 tankDrive.Intake2.setPower(-gamepad2.left_stick_y);
-            }
-        }
         else
-        {
             tankDrive.Intake2.setPower(0);
-        }
 
         if (Math.abs(gamepad2.right_stick_y) > 0.2)
-        {
-            if(gamepad2.left_stick_button && gamepad2.right_stick_button) {
-                tankDrive.Intake1.setPower(-gamepad2.right_stick_y / 2);
-            }
-            else
-            {
                 tankDrive.Intake1.setPower(-gamepad2.right_stick_y);
-            }
-        }
         else
-        {
             tankDrive.Intake1.setPower(0);
-        }
 
         if(gamepad2.left_stick_button && gamepad2.right_stick_button)
         {
             lIntakeServoPosition = 1;
             rIntakeServoPosition = 1;
-            tankDrive.RightNugget.setPosition(1.0);
-            tankDrive.LeftNugget.setPosition(0.0);
+            tankDrive.RightNugget.setPosition(ROUT);
+            tankDrive.LeftNugget.setPosition(LOUT);
             telemetry.addData("Intake Nuggets", " Open");
-            telemetry.update();
         }
         else
         {
             lIntakeServoPosition = 0;
             rIntakeServoPosition = 0;
-            tankDrive.RightNugget.setPosition(0.0);
-            tankDrive.LeftNugget.setPosition(1.0);
+            tankDrive.RightNugget.setPosition(RIN);
+            tankDrive.LeftNugget.setPosition(LIN);
             telemetry.addData("Intake Nuggets", " Closed");
-            telemetry.update();
         }
 
+    }
+
+    private void claw()
+    {
+        if (gamepad2.a) {
+            tankDrive.RightClaw.setPosition(0.4);
+            tankDrive.LeftClaw.setPosition(0.4);
+        } else if (gamepad2.b) {
+            tankDrive.RightClaw.setPosition(0.25);
+            tankDrive.LeftClaw.setPosition(0.55);
+        }
+
+        if(gamepad2.x)
+        {
+            //claw CW
+        }
+        else if(gamepad2.y)
+        {
+            //claw CCW
+        }
+    }
+
+    private void balls()
+    {
+        if (gamepad2.left_bumper) {
+            tankDrive.LeftBall.setPower(.5);
+            tankDrive.RightBall.setPower(-.5);
+        } else if (gamepad2.right_bumper) {
+            tankDrive.LeftBall.setPower(-.5);
+            tankDrive.RightBall.setPower(.5);
+        } else {
+            tankDrive.LeftBall.setPower(0);
+            tankDrive.LeftBall.setPower(0);
+        }
     }
 }
