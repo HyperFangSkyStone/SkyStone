@@ -44,7 +44,7 @@ public class TankDriveTeleop extends LinearOpMode {
     DcMotor RM0 = tankDrive.RM0;
     DcMotor RM1 = tankDrive.RM1;
 
-    final double LIFT_ENCODER_TICKS_PER_INCH = 85;
+    final double LIFT_ENCODER_TICKS_PER_INCH = 82;
 
     int towerPosition = 0;
     boolean dpadright2Ispressed = false;
@@ -52,17 +52,22 @@ public class TankDriveTeleop extends LinearOpMode {
 
     double conversionFunction = Math.pow(10, -30);
 
+    ElapsedTime et = new ElapsedTime();
+
     @Override
     public void runOpMode() throws InterruptedException
     {
         tankDrive.init(hardwareMap);
         lIntakeServoPosition = 0;
         rIntakeServoPosition = 0;
+        tankDrive.RightNugget.setPosition(RIN);
+        tankDrive.LeftNugget.setPosition(LIN);
 
         DcMotor LM0 = tankDrive.LM0;
         DcMotor LM1 = tankDrive.LM1;
         DcMotor RM0 = tankDrive.RM0;
         DcMotor RM1 = tankDrive.RM1;
+
 
 
 
@@ -152,11 +157,10 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.Lift1.setPower(0);
                 tankDrive.Lift2.setPower(0);
             }
-            telemetry.update();
+
+            telemetry.addData("Current Mode: ", LM0 == tankDrive.LM0 ? "FORWARD!!!!" : "REVERSE!!!!");
 
             if (gamepad1.b) {
-                telemetry.addData("Current Mode:", " REVERSE!!!!");
-                telemetry.update();
                 tankDrive.LM0.setDirection(DcMotor.Direction.FORWARD);
                 tankDrive.LM1.setDirection(DcMotor.Direction.FORWARD);
                 tankDrive.RM0.setDirection(DcMotor.Direction.REVERSE);
@@ -166,8 +170,6 @@ public class TankDriveTeleop extends LinearOpMode {
                 RM0 = tankDrive.LM0;
                 RM1 = tankDrive.LM1;
             } else if (gamepad1.a) {
-                telemetry.addData("Current Mode:", " FORWARD!!!!");
-                telemetry.update();
                 tankDrive.LM0.setDirection(DcMotor.Direction.REVERSE);
                 tankDrive.LM1.setDirection(DcMotor.Direction.REVERSE);
                 tankDrive.RM0.setDirection(DcMotor.Direction.FORWARD);
@@ -178,6 +180,7 @@ public class TankDriveTeleop extends LinearOpMode {
                 RM1 = tankDrive.RM1;
             }
 
+            // Lift height doer
             if (gamepad2.dpad_right) {
                 if (towerPosition >= 7) {
                     telemetry.addData("Oi, towerPosition is already greater than or equal to 7.", "etartsenefeD yourself!!");
@@ -209,9 +212,11 @@ public class TankDriveTeleop extends LinearOpMode {
             if (gamepad2.dpad_down) {
                 tankDrive.RightClaw.setPosition(0.25);
                 tankDrive.LeftClaw.setPosition(0.55);
+                tankDrive.PosClaw.setPosition(0.5);
                 setLiftToZero();
             }
 
+            telemetry.update();
 
         }
 
@@ -428,7 +433,7 @@ public class TankDriveTeleop extends LinearOpMode {
             tankDrive.RightBall.setPower(.5);
         } else {
             tankDrive.LeftBall.setPower(0);
-            tankDrive.LeftBall.setPower(0);
+            tankDrive.RightBall.setPower(0);
         }
     }
 
@@ -441,18 +446,24 @@ public class TankDriveTeleop extends LinearOpMode {
     }
 
     private void liftererPID(int position) { // Position 0 is foundation (2.25 inches), position 1, 2, 3, etc. are block heights
-        double inches = position * 4 + 2.25;
+        double inches = position * 4 + 4.7;
         double targ = inches * LIFT_ENCODER_TICKS_PER_INCH;
+
         double kp = 0.003;
         double kI = 0.000002;
         double kd = 4 * conversionFunction;
-        double powerFloor = 0.4;
+
+        double powerFloor = 0.4 + 0.02 * position;
         double powerCeiling = 0.8;
+
         double I = 0;
         double prevError = 0;
         double d = 0;
+
         int errMarg = 10;
-        while (Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && opModeIsActive()) {
+        double timeOut = 3.0;
+        et.reset();
+        while (Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && opModeIsActive() && et.seconds() < timeOut) {
             double error = targ - Math.max(Math.abs(tankDrive.Lift1.getCurrentPosition()), Math.abs(tankDrive.Lift2.getCurrentPosition()));
             I += error;
             d = (error - prevError) * 10;
@@ -478,6 +489,8 @@ public class TankDriveTeleop extends LinearOpMode {
     }
 
     private void setLiftToZero() {
+
+
         double targ = 0;
         double kp = 0.003;
         double kI = 2 * conversionFunction;
@@ -487,7 +500,11 @@ public class TankDriveTeleop extends LinearOpMode {
         double prevError = 0;
         double d = 0;
         int errMarg = 10;
-        while (Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && opModeIsActive()) {
+
+        et.reset();
+        double timeout = 3;
+
+        while (Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && opModeIsActive() && et.seconds() < timeout) {
             double error = targ - Math.max(Math.abs(tankDrive.Lift1.getCurrentPosition()), Math.abs(tankDrive.Lift2.getCurrentPosition()));
             I += error;
             d = (error - prevError) * 10;
