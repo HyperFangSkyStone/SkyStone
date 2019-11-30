@@ -35,6 +35,8 @@ public class TankDriveTeleop extends LinearOpMode {
     public final double MM_TO_INCHES =  25.4;
     public final double MOTOR_TO_INCHES = GEAR_RATIO * WHEEL_DIAMETER * Math.PI / MM_TO_INCHES; //For every full turn of both motors, the wheel moves forward this many inches
     public final double NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 537.6;
+    public final double POSCLAW_NEUTRAL_POSITION = 0.7;
+
 
     int lIntakeServoPosition;
     int rIntakeServoPosition;
@@ -68,7 +70,7 @@ public class TankDriveTeleop extends LinearOpMode {
         DcMotor RM0 = tankDrive.RM0;
         DcMotor RM1 = tankDrive.RM1;
 
-        tankDrive.PosClaw.setPosition(0);
+        tankDrive.PosClaw.setPosition(POSCLAW_NEUTRAL_POSITION);
 
 
         waitForStart();
@@ -212,7 +214,7 @@ public class TankDriveTeleop extends LinearOpMode {
             if (gamepad2.dpad_down) {
                 tankDrive.RightClaw.setPosition(0.25);
                 tankDrive.LeftClaw.setPosition(0.55);
-                tankDrive.PosClaw.setPosition(0);
+                tankDrive.PosClaw.setPosition(POSCLAW_NEUTRAL_POSITION);
                 setLiftToZero();
             }
 
@@ -416,9 +418,9 @@ public class TankDriveTeleop extends LinearOpMode {
     private void rotateClaw() //manipulator claws rotation
     {
         if (gamepad2.x) {
-            tankDrive.PosClaw.setPosition(0);
-        } else if (gamepad2.y) {
             tankDrive.PosClaw.setPosition(1);
+        } else if (gamepad2.y) {
+            tankDrive.PosClaw.setPosition(POSCLAW_NEUTRAL_POSITION);
         }
     }
 

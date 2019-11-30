@@ -43,15 +43,15 @@ public class TankDriveTeleopClawerer extends LinearOpMode {
 
             }
             else if (gamepad2.dpad_up) {
-                //tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() + .1);
-                //telemetry.addData("Pos Claw TURN R :: ", tankDrive.PosClaw.getPosition());
+                tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() + .1);
+                telemetry.addData("Pos Claw TURN R :: ", tankDrive.PosClaw.getPosition());
                 telemetry.update();
                 sleep(100);
 
             }
             else if (gamepad2.dpad_down) {
-                //tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() - .1);
-                //telemetry.addData("Pos Claw TURN L :: ", tankDrive.PosClaw.getPosition());
+                tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() - .1);
+                telemetry.addData("Pos Claw TURN L :: ", tankDrive.PosClaw.getPosition());
                 telemetry.update();
                 sleep(100);
 
