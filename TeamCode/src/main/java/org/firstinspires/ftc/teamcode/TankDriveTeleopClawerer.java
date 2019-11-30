@@ -57,6 +57,9 @@ public class TankDriveTeleopClawerer extends LinearOpMode {
 
             }
 
+            telemetry.addData("PosClaw Position", tankDrive.PosClaw.getPosition());
+            telemetry.update();
+
             if (gamepad2.a) {
                 tankDrive.RightClaw.setPosition(0.4);
                 tankDrive.LeftClaw.setPosition(0.4);
