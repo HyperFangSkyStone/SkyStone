@@ -68,7 +68,7 @@ public class TankDriveTeleop extends LinearOpMode {
         DcMotor RM0 = tankDrive.RM0;
         DcMotor RM1 = tankDrive.RM1;
 
-
+        tankDrive.PosClaw.setPosition(0);
 
 
         waitForStart();
@@ -212,7 +212,7 @@ public class TankDriveTeleop extends LinearOpMode {
             if (gamepad2.dpad_down) {
                 tankDrive.RightClaw.setPosition(0.25);
                 tankDrive.LeftClaw.setPosition(0.55);
-                tankDrive.PosClaw.setPosition(0.5);
+                tankDrive.PosClaw.setPosition(0);
                 setLiftToZero();
             }
 
