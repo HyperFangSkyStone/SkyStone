@@ -212,5 +212,42 @@ public class TankDriveALPHA
         RM0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
+    public void runMotor(double universalInput)
+    {
+        LM0.setPower(universalInput);
+        LM1.setPower(universalInput);
+        RM0.setPower(universalInput);
+        RM1.setPower(universalInput);
+    }
+
+    public void runMotor(double leftInput, double rightInput)
+    {
+        LM0.setPower(leftInput);
+        LM1.setPower(leftInput);
+        RM0.setPower(rightInput);
+        RM1.setPower(rightInput);
+    }
+    public void freeze() //completely stops drivetrain
+    {
+        LM0.setPower(0);
+        LM1.setPower(0);
+        RM0.setPower(0);
+        RM1.setPower(0);
+    }
+
+    public void fang(boolean x) //foundation fangs manipulation
+    {
+        if (x) //fangs up
+        {
+            LeftFang.setPosition(1);
+            RightFang.setPosition(0);
+        }
+        else //fangs down
+        {
+            LeftFang.setPosition(0);
+            RightFang.setPosition(1);
+        }
+    }
 }
 

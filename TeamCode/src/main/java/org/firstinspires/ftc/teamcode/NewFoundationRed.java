@@ -20,6 +20,8 @@ public class NewFoundationRed extends LinearOpMode {
     PIDController turningPID = new PIDController(0, 0, 0);
     Orientation lastAngles = new Orientation();
 
+    ElapsedTime clock = new ElapsedTime();
+
     public static int skystonePosition = 0;
     public static double distanceTimeIndex = 0; //time expected per inch
     public static double angleTimeIndex = 0; //time expected per degree
@@ -58,23 +60,26 @@ public class NewFoundationRed extends LinearOpMode {
             runIntake(1);
             sleep(750);
             runIntake(0);
-            claw(true);
-            moveOvershoot(35, 2.5, 0.001, 0.3);
+            tankDrive.fang(true);
+            overshootLinearMovement(30,2);
+            //moveOvershoot(35, 2.5, 0.001, 0.3);
             freeze();
+            sleep(250);
+            tankDrive.fang(false);
             sleep(500);
-            claw(false);
-            sleep(2000);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(-90, 0.8, 0.6, 0.005, 4);
+            turnOneWheelDirection(-90, 1.0, 0.8, 0.005, 3);
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
-            claw(true);
+            tankDrive.fang(true);
             freeze();
-            sleep(1500);
-            movethForward(30, 3, 0.005, 0.4);
+            pidLinearMovement(35,2);
             freeze();
-            sleep(1000);
-            movethForward(-30, 2.5, 0.005, 0.4);
+            turnOneWheelDirection(-45, 0.8, 0.5, 0.005, 3);
+            sleep(200);
+            turnOneWheelDirection(45, 0.8,0.5, 0.005,3,'l');
+            sleep(200);
+            pidLinearMovement(-20,3);
             freeze();
             break;
         }
@@ -98,6 +103,127 @@ public class NewFoundationRed extends LinearOpMode {
 
     public double sigmoid(double error, double ceiling, double floor, double half, double stiff) {
         return floor + (ceiling - floor) / (1 + Math.pow(Math.E, stiff * (half - error)));
+    }
+
+
+    public void pidLinearMovement(double distance, double timeframe)
+    {
+        double conversionIndex = 537.6/((26.0/20.0)*90.0* Math.PI / 25.4); // Ticks per inch
+        double timeFrame = timeframe; //distance * distanceTimeIndex;
+        double errorMargin = 5;
+        double powerFloor = 0.25;
+        double powerCeiling = 0.8;
+
+        clock.reset();
+        tankDrive.resetEncoders();
+
+        double targetTick = distance / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION *50/47;
+        telemetry.addData("ticks", targetTick);
+        telemetry.update();
+        double error = targetTick;
+        double errorPrev = 0;
+        double kP = 1.5;
+        double kD = 0.01;
+        double p, d;
+        double output;
+        double time = clock.seconds();
+        double timePrev = 0;
+
+
+        while (clock.seconds() < timeFrame && Math.abs(error) > errorMargin && opModeIsActive())
+        {
+            //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
+
+            p = Math.abs(error/targetTick * kP);
+            d = 0; //((error - errorPrev) / (time - timePrev)) / 1000 /targetTick * kD;
+
+            output = p + d;
+            output = Math.max(output, powerFloor);
+            output = Math.min(output, powerCeiling);
+            if (error < 0) output *= -1;
+            runMotor(output, output);
+
+            errorPrev = error;
+
+            double tempAvg = targetTick > 0 ? tankDrive.getEncoderAvg(telemetry) : -tankDrive.getEncoderAvg(telemetry);
+            error = targetTick - tempAvg;
+
+            timePrev = time;
+            time = clock.seconds();
+
+            telemetry.addData("Target", targetTick);
+            telemetry.addData("Current", averageEncoderTick());
+            telemetry.addData("RM0", tankDrive.RM0.getCurrentPosition());
+            telemetry.addData("RM1", tankDrive.RM1.getCurrentPosition());
+            telemetry.addData("LM0", tankDrive.LM0.getCurrentPosition());
+            telemetry.addData("LM1", tankDrive.LM1.getCurrentPosition());
+            telemetry.addData("error", error);
+            telemetry.addData("kP", kP);
+            telemetry.addData("output", output);
+            telemetry.update();
+
+
+        }
+        runMotor(0,0);
+    }
+
+    public void overshootLinearMovement(double distance, double timeframe)
+    {
+        double conversionIndex = 537.6/((26.0/20.0)*90.0* Math.PI / 25.4); // Ticks per inch
+        double timeFrame = timeframe; //distance * distanceTimeIndex;
+        double errorMargin = 5;
+        double powerFloor = 0.2;
+        double powerCeiling = 0.8;
+
+        clock.reset();
+        tankDrive.resetEncoders();
+
+        double targetTick = distance / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION *50/47;
+        telemetry.addData("ticks", targetTick);
+        telemetry.update();
+        double error = targetTick;
+        double errorPrev = 0;
+        double kP = 0.8;
+        double kD = 0.01;
+        double p, d;
+        double output;
+        double time = clock.seconds();
+        double timePrev = 0;
+
+
+        while (clock.seconds() < timeFrame && error > 0 && opModeIsActive())
+        {
+            //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
+
+            p = Math.abs(error)/targetTick * kP;
+            d = ((error - errorPrev) / (time - timePrev)) /targetTick * kD;
+
+            output = p + d;
+            output = Math.max(output, powerFloor);
+            output = Math.min(output, powerCeiling);
+            if (error < 0) output *= -1;
+            tankDrive.runMotor(output, output);
+
+            errorPrev = error;
+            error = targetTick - tankDrive.getEncoderAvg(telemetry);
+
+            timePrev = time;
+            time = clock.seconds();
+
+            telemetry.addData("Target", targetTick);
+            telemetry.addData("Current", averageEncoderTick());
+            telemetry.addData("RM0", tankDrive.RM0.getCurrentPosition());
+            telemetry.addData("RM1", tankDrive.RM1.getCurrentPosition());
+            telemetry.addData("LM0", tankDrive.LM0.getCurrentPosition());
+            telemetry.addData("LM1", tankDrive.LM1.getCurrentPosition());
+            telemetry.addData("error", error);
+            telemetry.addData("kP", kP);
+            telemetry.addData("output", output);
+            telemetry.update();
+
+
+        }
+        tankDrive.runMotor(0,0);
     }
 
     public void movethForward(double inches, double t, double kp, double power)
@@ -384,8 +510,8 @@ public class NewFoundationRed extends LinearOpMode {
                 leftPower *= -1;
 
             if (l == 'l') {
-                tankDrive.LM0.setPower(leftPower);
-                tankDrive.LM1.setPower(leftPower);
+                tankDrive.LM0.setPower(-leftPower);
+                tankDrive.LM1.setPower(-leftPower);
             }
             else {
                 tankDrive.RM0.setPower(leftPower);
@@ -417,17 +543,5 @@ public class NewFoundationRed extends LinearOpMode {
     {
         tankDrive.Intake1.setPower(input);
         tankDrive.Intake2.setPower(input);
-    }
-
-    public void claw(boolean x)
-    {
-        if (x) {
-            tankDrive.LeftFang.setPosition(1); //true = up
-            tankDrive.RightFang.setPosition(0);
-        }
-        else {
-            tankDrive.LeftFang.setPosition(0); //false = down
-            tankDrive.RightFang.setPosition(1);
-        }
     }
 }

@@ -3,14 +3,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
-@TeleOp(name="Orangutank", group="1")
+@TeleOp(name="AutoTests", group="1")
 //@Disabled
-public class TankDriveTeleop extends LinearOpMode {
+public class AutoTests extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
     ElapsedTime clock = new ElapsedTime();
@@ -127,96 +126,17 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.fang(false);
             }
 
-
-            /*if (gamepad2.x)
-                pidLinearMovement(80,0.1);
+            if (gamepad1.a)
+                pidLinearMovement(50, 5);
+            else if (gamepad1.b)
+                pidLinearMovement(40, 5);
+            if (gamepad2.x)
+                pidLinearMovement(30,5);
             else if (gamepad1.y)
-                pidLinearMovement(20, 0.1);*/
+                pidLinearMovement(20, 5);
 
 
-            intake();
-            claw();
-            balls();
-            rotateClaw();
 
-            //for lift
-            if (gamepad2.right_trigger > 0.1)
-            {
-                tankDrive.Lift1.setPower(gamepad2.right_trigger);
-                tankDrive.Lift2.setPower(gamepad2.right_trigger);
-            }
-
-            else if (gamepad2.left_trigger > 0.1)
-            {
-                tankDrive.Lift1.setPower(-gamepad2.left_trigger);
-                tankDrive.Lift2.setPower(-gamepad2.left_trigger);
-            }
-
-            else
-            {
-                tankDrive.Lift1.setPower(0);
-                tankDrive.Lift2.setPower(0);
-            }
-
-            telemetry.addData("Current Mode: ", LM0 == tankDrive.LM0 ? "FORWARD!!!!" : "REVERSE!!!!");
-
-            if (gamepad1.b) {
-                tankDrive.LM0.setDirection(DcMotor.Direction.FORWARD);
-                tankDrive.LM1.setDirection(DcMotor.Direction.FORWARD);
-                tankDrive.RM0.setDirection(DcMotor.Direction.REVERSE);
-                tankDrive.RM1.setDirection(DcMotor.Direction.REVERSE);
-                LM0 = tankDrive.RM0;
-                LM1 = tankDrive.RM1;
-                RM0 = tankDrive.LM0;
-                RM1 = tankDrive.LM1;
-            } else if (gamepad1.a) {
-                tankDrive.LM0.setDirection(DcMotor.Direction.REVERSE);
-                tankDrive.LM1.setDirection(DcMotor.Direction.REVERSE);
-                tankDrive.RM0.setDirection(DcMotor.Direction.FORWARD);
-                tankDrive.RM1.setDirection(DcMotor.Direction.FORWARD);
-                LM0 = tankDrive.LM0;
-                LM1 = tankDrive.LM1;
-                RM0 = tankDrive.RM0;
-                RM1 = tankDrive.RM1;
-            }
-
-            // Lift height doer
-            if (gamepad2.dpad_right) {
-                if (towerPosition >= 7) {
-                    telemetry.addData("Oi, towerPosition is already greater than or equal to 7.", "etartsenefeD yourself!!");
-                } else if (!dpadright2Ispressed) {
-                    dpadright2Ispressed = true;
-                    towerPosition++;
-                }
-            } else {
-                dpadright2Ispressed = false;
-            }
-
-            if (gamepad2.dpad_left) {
-                if (towerPosition <= 0) {
-                    telemetry.addData("Oi, towerPosition is already less than or equal to 0.", "Defenestrate yourself!!");
-                } else if (!dpadleft2Ispressed) {
-                    dpadleft2Ispressed = true;
-                    towerPosition--;
-                }
-            } else {
-                dpadleft2Ispressed = false;
-            }
-
-            telemetry.addData("Tower Position", towerPosition);
-
-            if (gamepad2.dpad_up) {
-                liftererPID(towerPosition);
-            }
-
-            if (gamepad2.dpad_down) {
-                tankDrive.RightClaw.setPosition(0.25);
-                tankDrive.LeftClaw.setPosition(0.55);
-                tankDrive.PosClaw.setPosition(0);
-                setLiftToZero();
-            }
-
-            telemetry.update();
 
         }
 
@@ -249,10 +169,10 @@ public class TankDriveTeleop extends LinearOpMode {
         RM1.setPower(0);
     }
 
-    public void pidLinearMovement(double distance, double kd)
+    public void overshootLinearMovement(double distance, double timeframe)
     {
         double conversionIndex = 537.6/((26.0/20.0)*90.0* Math.PI / 25.4); // Ticks per inch
-        double timeFrame = 5; //distance * distanceTimeIndex;
+        double timeFrame = timeframe; //distance * distanceTimeIndex;
         double errorMargin = 5;
         double powerFloor = 0.2;
         double powerCeiling = 0.8;
@@ -266,7 +186,66 @@ public class TankDriveTeleop extends LinearOpMode {
         double error = targetTick;
         double errorPrev = 0;
         double kP = 0.8;
-        double kD = kd;
+        double kD = 0.01;
+        double p, d;
+        double output;
+        double time = clock.seconds();
+        double timePrev = 0;
+
+
+        while (clock.seconds() < timeFrame && error > 0 && opModeIsActive())
+        {
+            //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
+
+            p = Math.abs(error)/targetTick * kP;
+            d = ((error - errorPrev) / (time - timePrev)) /targetTick * kD;
+
+            output = p + d;
+            output = Math.max(output, powerFloor);
+            output = Math.min(output, powerCeiling);
+            if (error < 0) output *= -1;
+            tankDrive.runMotor(output, output);
+
+            errorPrev = error;
+            error = targetTick - tankDrive.getEncoderAvg(telemetry);
+
+            timePrev = time;
+            time = clock.seconds();
+
+            telemetry.addData("Target", targetTick);
+            telemetry.addData("Current", averageEncoderTick());
+            telemetry.addData("RM0", tankDrive.RM0.getCurrentPosition());
+            telemetry.addData("RM1", tankDrive.RM1.getCurrentPosition());
+            telemetry.addData("LM0", tankDrive.LM0.getCurrentPosition());
+            telemetry.addData("LM1", tankDrive.LM1.getCurrentPosition());
+            telemetry.addData("error", error);
+            telemetry.addData("kP", kP);
+            telemetry.addData("output", output);
+            telemetry.update();
+
+
+        }
+        tankDrive.runMotor(0,0);
+    }
+
+    public void pidLinearMovement(double distance, double timeframe)
+    {
+        double conversionIndex = 537.6/((26.0/20.0)*90.0* Math.PI / 25.4); // Ticks per inch
+        double timeFrame = timeframe; //distance * distanceTimeIndex;
+        double errorMargin = 5;
+        double powerFloor = 0.2;
+        double powerCeiling = 0.8;
+
+        clock.reset();
+        tankDrive.resetEncoders();
+
+        double targetTick = distance / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION *50/47;
+        telemetry.addData("ticks", targetTick);
+        telemetry.update();
+        double error = targetTick;
+        double errorPrev = 0;
+        double kP = 0.8;
+        double kD = 0.01;
         double p, d;
         double output;
         double time = clock.seconds();
@@ -294,10 +273,10 @@ public class TankDriveTeleop extends LinearOpMode {
 
             telemetry.addData("Target", targetTick);
             telemetry.addData("Current", averageEncoderTick());
-            telemetry.addData("RM0", RM0.getCurrentPosition());
-            telemetry.addData("RM1", RM1.getCurrentPosition());
-            telemetry.addData("LM0", LM0.getCurrentPosition());
-            telemetry.addData("LM1", LM1.getCurrentPosition());
+            telemetry.addData("RM0", tankDrive.RM0.getCurrentPosition());
+            telemetry.addData("RM1", tankDrive.RM1.getCurrentPosition());
+            telemetry.addData("LM0", tankDrive.LM0.getCurrentPosition());
+            telemetry.addData("LM1", tankDrive.LM1.getCurrentPosition());
             telemetry.addData("error", error);
             telemetry.addData("kP", kP);
             telemetry.addData("output", output);
