@@ -1,16 +1,18 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.DISABLED;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.DSDriveTrainHardware;
+import org.firstinspires.ftc.teamcode.PIDController;
 
 import java.util.ArrayList;
 
-@TeleOp(name="DSDriveTrainTestSEP", group="Pushbot")
-//@Disabled
+@TeleOp(name="DSDriveTrainTestSEP", group="Pushbot") //diffyswerve
+@Disabled
 public class DriveTrainTest extends LinearOpMode {
 
     DSDriveTrainHardware dsDrive = new DSDriveTrainHardware();
