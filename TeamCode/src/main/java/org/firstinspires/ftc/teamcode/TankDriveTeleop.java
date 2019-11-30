@@ -349,6 +349,14 @@ public class TankDriveTeleop extends LinearOpMode {
         return -angle;
     }
 
+    public void runMotor(double universalInput)
+    {
+        LM0.setPower(universalInput);
+        LM1.setPower(universalInput);
+        RM0.setPower(universalInput);
+        RM1.setPower(universalInput);
+    }
+
     public void runMotor(double leftInput, double rightInput)
     {
         LM0.setPower(leftInput);
@@ -356,7 +364,7 @@ public class TankDriveTeleop extends LinearOpMode {
         RM0.setPower(rightInput);
         RM1.setPower(rightInput);
     }
-    public void freeze()
+    public void freeze() //completely stops drivetrain
     {
         LM0.setPower(0);
         LM1.setPower(0);
@@ -364,18 +372,22 @@ public class TankDriveTeleop extends LinearOpMode {
         RM1.setPower(0);
     }
 
-    public void fang(boolean x) {
-        if (x) {
-            tankDrive.LeftFang.setPosition(1); //true = up
+    public void fang(boolean x) //foundation fangs manipulation
+    {
+        if (x) //fangs up
+        {
+            tankDrive.LeftFang.setPosition(1);
             tankDrive.RightFang.setPosition(0);
-        } else {
-            tankDrive.LeftFang.setPosition(0); //false = down
+        }
+        else //fangs down
+        {
+            tankDrive.LeftFang.setPosition(0);
             tankDrive.RightFang.setPosition(1);
         }
     }
 
-    private void intake() {
-
+    private void intake() //intake wheels & nuggets manipulation
+    {
         if (Math.abs(gamepad2.left_stick_y) > 0.2)
                 tankDrive.Intake2.setPower(-gamepad2.left_stick_y);
         else
@@ -405,7 +417,7 @@ public class TankDriveTeleop extends LinearOpMode {
 
     }
 
-    private void claw()
+    private void claw() //manipulator claws opening and closing
     {
         if (gamepad2.b) {
             tankDrive.RightClaw.setPosition(0.4);
@@ -425,7 +437,7 @@ public class TankDriveTeleop extends LinearOpMode {
         }
     }
 
-    private void balls()
+    private void balls() //balls manipulation
     {
         if (gamepad2.left_bumper) {
             tankDrive.LeftBall.setPower(.5);
@@ -439,7 +451,8 @@ public class TankDriveTeleop extends LinearOpMode {
         }
     }
 
-    private void rotateClaw() {
+    private void rotateClaw() //manipulator claws rotation
+    {
         if (gamepad2.x) {
             tankDrive.PosClaw.setPosition(1);
         } else if (gamepad2.y) {
@@ -447,7 +460,8 @@ public class TankDriveTeleop extends LinearOpMode {
         }
     }
 
-    private void liftererPID(int position) { // Position 0 is foundation (2.25 inches), position 1, 2, 3, etc. are block heights
+    private void liftererPID(int position) {
+        // Position 0 is foundation (2.25 inches), position 1, 2, 3, etc. are block heights
         double inches = position * 4 + 4.7;
         double targ = inches * LIFT_ENCODER_TICKS_PER_INCH;
 

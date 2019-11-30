@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.DISABLED;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -10,13 +10,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.PIDController;
+import org.firstinspires.ftc.teamcode.TankDriveHardware;
+import org.firstinspires.ftc.teamcode.VisionBitMapping;
 
 import java.util.ArrayList;
 
 
-@Autonomous(name="3inch", group="chimp")
+@Autonomous(name="TankDrive MONK PID", group="chimp")
 @Disabled
-public class ONeinf extends LinearOpMode {
+public class AutoPositionARedTamarin extends LinearOpMode {
     public final double WHEEL_DIAMETER = 90; //Wheel diameter in mm
     public final int MOTOR_GEAR_TEETH = 26; //# of teeth on the motor gear
     public final int WHEEL_GEAR_TEETH = 20; //# of teeth on the wheel gear
@@ -49,8 +52,53 @@ public class ONeinf extends LinearOpMode {
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.loggingEnabled      = false;
 
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameters);
+
+        telemetry.addData("Mode", "calibrating...");
+        telemetry.update();
+
+        // make sure the imu gyro is calibrated before continuing.
+        /*while (!isStopRequested() && !imu.isGyroCalibrated())
+        {
+            sleep(50);
+            idle();
+        }*/
+
+        telemetry.addData("Mode", "waiting for start");
+        telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
+        telemetry.addData("Number of inches per motor rotation", MOTOR_TO_INCHES);
+        telemetry.update();
+
+        VisionBitMapping vbm = new VisionBitMapping(this);
+        resetAngle();
+
         waitForStart();
-        movethForward(-3, 5, 0.3, 0.4);
+
+        if (skystonePosition == 1)
+        {
+            /*move to position 1*/
+
+        }
+        else if (skystonePosition == 2)
+        {
+            /*move to position 2*/
+
+        }
+        else if (skystonePosition == 3)
+        {
+            /*move to position 3*/
+
+        }
+        else {
+            telemetry.addData("ERROR", "SkyStone Not Found. Doing position one...");
+            telemetry.update();
+            sleep(3);
+        }
 
 
     }
