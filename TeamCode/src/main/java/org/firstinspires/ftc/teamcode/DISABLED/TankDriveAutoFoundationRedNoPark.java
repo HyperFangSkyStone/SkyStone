@@ -1,16 +1,19 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.DISABLED;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.PIDController;
+import org.firstinspires.ftc.teamcode.TankDriveALPHA;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="Foundation Red", group="red")
-//@Disabled
-public class TankDriveAutoFoundationRed extends LinearOpMode {
+@Autonomous(name="Foundation Red No-Park", group="red")
+@Disabled
+public class TankDriveAutoFoundationRedNoPark extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
 
@@ -72,9 +75,6 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
             freeze();
             sleep(1500);
             movethForward(30, 3, 0.005, 0.4);
-            freeze();
-            sleep(1000);
-            movethForward(-30, 2.5, 0.005, 0.4);
             freeze();
             break;
         }
@@ -210,6 +210,8 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
             telemetry.addData("kP", kp);
             telemetry.update();
         }
+
+        freeze();
     }
 
     private void turnethDirection(int initial, double powerCeiling, double powerFloor, double kp, double t)
@@ -384,8 +386,8 @@ public class TankDriveAutoFoundationRed extends LinearOpMode {
                 leftPower *= -1;
 
             if (l == 'l') {
-                tankDrive.LM0.setPower(leftPower);
-                tankDrive.LM1.setPower(leftPower);
+                tankDrive.LM0.setPower(-leftPower);
+                tankDrive.LM1.setPower(-leftPower);
             }
             else {
                 tankDrive.RM0.setPower(leftPower);
