@@ -1,16 +1,19 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.DISABLED;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.PIDController;
+import org.firstinspires.ftc.teamcode.TankDriveALPHA;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="Foundation Blue", group="blue")
-//@Disabled
-public class TankDriveAutoFoundationBlue extends LinearOpMode {
+@Autonomous(name="Foundation Red", group="red")
+@Disabled
+public class TankDriveAutoFoundationRed extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
 
@@ -66,8 +69,7 @@ public class TankDriveAutoFoundationBlue extends LinearOpMode {
             sleep(2000);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(90, 0.8, 0.6, 0.005, 4);
-            //turnOneWheelDirection(-45, 0.8, 0.6, 0.005, 4);
+            turnOneWheelDirection(-90, 0.8, 0.6, 0.005, 4);
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
             claw(true);
             freeze();
@@ -319,15 +321,13 @@ public class TankDriveAutoFoundationBlue extends LinearOpMode {
             leftPower = rawPower;
             rightPower = rawPower;
 
-            if (error < 0) {
+            if (error < 0)
                 leftPower *= -1;
-                rightPower *= -1;
-            }
 
-            //tankDrive.RM0.setPower(leftPower);
-            //tankDrive.RM1.setPower(leftPower);
-            tankDrive.LM0.setPower(-leftPower);
-            tankDrive.LM1.setPower(-leftPower);
+            tankDrive.RM0.setPower(leftPower);
+            tankDrive.RM1.setPower(leftPower);
+            //tankDrive.RM0.setPower(rightPower);
+            //tankDrive.RM1.setPower(rightPower);
         }
 
         // turn the motors off.
@@ -339,6 +339,75 @@ public class TankDriveAutoFoundationBlue extends LinearOpMode {
         // wait for rotation to stop.
         sleep(1000);
     }
+
+    private void turnOneWheelDirection(int initial, double powerCeiling, double powerFloor, double kp, double t, char l)
+    {
+        lastAngles = imu.getAngularOrientation();
+        double currentAngle = lastAngles.firstAngle;
+        ElapsedTime clock = new ElapsedTime();
+        clock.reset();
+        globalAngle += initial;
+        if(globalAngle > 180)
+            globalAngle -=360;
+        if (globalAngle < -180)
+            globalAngle += 360;
+        double  leftPower, rightPower;
+
+        // restart imu movement tracking.
+        //resetAngle();
+
+        telemetry.addData("currentAngle", currentAngle);
+        telemetry.update();
+        // getAngle() returns + when rotating counter clockwise (left) and - when rotating
+        // clockwise (right).
+
+        // set power to rotate.
+
+        // rotate until turn is completed.
+        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3 && opModeIsActive())
+        {
+            lastAngles = imu.getAngularOrientation();
+            currentAngle = lastAngles.firstAngle;
+
+            telemetry.addData("CurrentAngle", currentAngle);
+            telemetry.update();
+
+            double error = globalAngle - currentAngle;
+            if (error > 180)
+                error -= 360;
+            if (error < -180)
+                error += 360;
+            double rawPower = Math.abs(error) * kp;
+            rawPower = Math.max(rawPower, powerFloor);
+            rawPower = Math.min(rawPower, powerCeiling);
+            leftPower = rawPower;
+            rightPower = rawPower;
+
+            if (error < 0)
+                leftPower *= -1;
+
+            if (l == 'l') {
+                tankDrive.LM0.setPower(leftPower);
+                tankDrive.LM1.setPower(leftPower);
+            }
+            else {
+                tankDrive.RM0.setPower(leftPower);
+                tankDrive.RM1.setPower(leftPower);
+            }
+            //tankDrive.RM0.setPower(rightPower);
+            //tankDrive.RM1.setPower(rightPower);
+        }
+
+        // turn the motors off.
+        tankDrive.LM0.setPower(0);
+        tankDrive.LM1.setPower(0);
+        tankDrive.RM0.setPower(0);
+        tankDrive.RM1.setPower(0);
+
+        // wait for rotation to stop.
+        sleep(1000);
+    }
+
 
     public double averageEncoderTick()
     {
