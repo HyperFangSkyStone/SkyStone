@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="New Foundation Red", group="red")
+@Autonomous(name="New Foundation Red Center", group="red")
 //@Disabled
 public class NewFoundationRed extends LinearOpMode {
 
