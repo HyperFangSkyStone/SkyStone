@@ -37,6 +37,8 @@ public class TankDriveTeleop extends LinearOpMode {
     public final double NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 537.6;
     public final double POSCLAW_NEUTRAL_POSITION = 0.7;
 
+    public final double LIFT_HEIGHT_TO_PICK_UP_BLOCKS_INCHES = .5;
+
 
     int lIntakeServoPosition;
     int rIntakeServoPosition;
@@ -107,6 +109,31 @@ public class TankDriveTeleop extends LinearOpMode {
             {
                 RM0.setPower(0);
                 RM1.setPower(0);
+            }
+
+            if (gamepad1.left_stick_y > 0.2 && gamepad2.right_stick_y > 0.2) // While intaking blocks, aligns claw and lowers lift to correct height
+            {
+                tankDrive.PosClaw.setPosition(POSCLAW_NEUTRAL_POSITION);
+                double targ = LIFT_ENCODER_TICKS_PER_INCH * LIFT_HEIGHT_TO_PICK_UP_BLOCKS_INCHES;
+                double error = targ - Math.max(Math.abs(tankDrive.Lift1.getCurrentPosition()), Math.abs(tankDrive.Lift2.getCurrentPosition()));
+                if (error > 10) {
+                    double kp = 0.001;
+                    double powerFloor = 0.15;
+                    double powerCeiling = 0.5;
+                    double pow = kp * Math.abs(error);
+                    pow = Math.max(pow, powerFloor);
+                    pow = Math.min(pow, powerCeiling);
+                    if (error < 0) {
+                        pow *= -1;
+                    }
+                    tankDrive.Lift1.setPower(pow);
+                    tankDrive.Lift2.setPower(pow);
+                    
+                } else {
+                    tankDrive.Lift1.setPower(0);
+                    tankDrive.Lift2.setPower(0);
+                }
+
             }
 
             /*
@@ -425,7 +452,7 @@ public class TankDriveTeleop extends LinearOpMode {
     }
 
     private void liftererPID(int position) {
-        // Position 0 is foundation (2.25 inches), position 1, 2, 3, etc. are block heights
+        // Position 0 is foundation (2.25 inches), position 1, 2, 3, etc. are block heights of the EXISTING tower
         double inches = position * 4 + 4.7;
         double targ = inches * LIFT_ENCODER_TICKS_PER_INCH;
 
