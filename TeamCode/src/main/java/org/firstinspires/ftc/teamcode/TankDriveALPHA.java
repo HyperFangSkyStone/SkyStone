@@ -35,6 +35,11 @@ public class TankDriveALPHA
     public Servo RightClaw = null;
     public Servo PosClaw = null;
 
+    public static final double LOUT = 0.0;
+    public static final double LIN = 1.0;
+    public static final double ROUT = 1.0;
+    public static final double RIN = 0.0;
+
     HardwareMap hwMap =  null;
 
     public TankDriveALPHA(){

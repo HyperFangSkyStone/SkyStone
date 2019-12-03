@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="New Foundation Red Center", group="red")
+@Autonomous(name="Foundation Blue Edge", group="blue")
 //@Disabled
-public class NewFoundationRed extends LinearOpMode {
+public class FoundationBlueEdge extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
 
@@ -53,13 +53,14 @@ public class NewFoundationRed extends LinearOpMode {
 
 
         tankDrive.init(hardwareMap);
+        tankDrive.RightNugget.setPosition(tankDrive.ROUT);
+        tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
         waitForStart();
 
         while(isStarted())
         {
-            runIntake(1);
-            sleep(750);
-            runIntake(0);
+            tankDrive.RightNugget.setPosition(tankDrive.RIN);
+            tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
             overshootLinearMovement(30,2);
             //moveOvershoot(35, 2.5, 0.001, 0.3);
@@ -75,9 +76,9 @@ public class NewFoundationRed extends LinearOpMode {
             freeze();
             pidLinearMovement(35,2);
             freeze();
-            turnOneWheelDirection(45, 0.8, 0.5, 0.005, 3, 'l');
+            turnOneWheelDirection(-45, 0.8, 0.5, 0.005, 3);
             sleep(200);
-            turnOneWheelDirection(-45, 0.8,0.5, 0.005,3);
+            turnOneWheelDirection(45, 0.8,0.5, 0.005,3,'l');
             sleep(200);
             pidLinearMovement(-20,3);
             freeze();

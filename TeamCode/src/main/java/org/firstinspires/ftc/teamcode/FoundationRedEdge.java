@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="New Foundation Red Edge", group="red")
+@Autonomous(name="Foundation Red Edge", group="red")
 //@Disabled
-public class NewFoundationRedEdge extends LinearOpMode {
+public class FoundationRedEdge extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
 
@@ -53,13 +53,15 @@ public class NewFoundationRedEdge extends LinearOpMode {
 
 
         tankDrive.init(hardwareMap);
+
+        tankDrive.RightNugget.setPosition(tankDrive.ROUT);
+        tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
         waitForStart();
 
         while(isStarted())
         {
-            runIntake(1);
-            sleep(750);
-            runIntake(0);
+            tankDrive.RightNugget.setPosition(tankDrive.RIN);
+            tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
             overshootLinearMovement(30,2);
             //moveOvershoot(35, 2.5, 0.001, 0.3);
@@ -69,17 +71,17 @@ public class NewFoundationRedEdge extends LinearOpMode {
             sleep(500);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(90, 1.0, 0.8, 0.005, 3, 'l');
+            turnOneWheelDirection(-90, 1.0, 0.8, 0.005, 2.75);
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
             tankDrive.fang(true);
             freeze();
             pidLinearMovement(35,2);
             freeze();
-            turnOneWheelDirection(-45, 0.8, 0.5, 0.005, 3);
+            turnOneWheelDirection(60, 0.8, 0.5, 0.005, 3, 'l');
             sleep(200);
-            turnOneWheelDirection(45, 0.8,0.5, 0.005,3,'l');
+            turnOneWheelDirection(-45, 0.8,0.5, 0.005, 3);
             sleep(200);
-            pidLinearMovement(-20,3);
+            pidLinearMovement(-25,3);
             freeze();
             break;
         }

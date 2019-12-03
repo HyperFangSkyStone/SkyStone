@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="New Foundation Red No Park", group="red")
+@Autonomous(name="Foundation Blue No Park", group="blue")
 //@Disabled
-public class NewFoundationRedNoPark extends LinearOpMode {
+public class FoundationBlueNoPark extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
 
@@ -53,13 +53,14 @@ public class NewFoundationRedNoPark extends LinearOpMode {
 
 
         tankDrive.init(hardwareMap);
+        tankDrive.RightNugget.setPosition(tankDrive.ROUT);
+        tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
         waitForStart();
 
         while(isStarted())
         {
-            runIntake(1);
-            sleep(750);
-            runIntake(0);
+            tankDrive.RightNugget.setPosition(tankDrive.RIN);
+            tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
             overshootLinearMovement(30,2);
             //moveOvershoot(35, 2.5, 0.001, 0.3);

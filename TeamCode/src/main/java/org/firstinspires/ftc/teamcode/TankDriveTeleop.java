@@ -23,10 +23,6 @@ public class TankDriveTeleop extends LinearOpMode {
     boolean intakeOn = false;
     int intakeDir = 1;
 
-    public static final double LOUT = 0.0;
-    public static final double LIN = 1.0;
-    public static final double ROUT = 1.0;
-    public static final double RIN = 0.0;
 
     public final double WHEEL_DIAMETER = 90; //Wheel diameter in mm
     public final int MOTOR_GEAR_TEETH = 26; //# of teeth on the motor gear
@@ -64,8 +60,8 @@ public class TankDriveTeleop extends LinearOpMode {
         tankDrive.init(hardwareMap);
         lIntakeServoPosition = 0;
         rIntakeServoPosition = 0;
-        tankDrive.RightNugget.setPosition(RIN);
-        tankDrive.LeftNugget.setPosition(LIN);
+        tankDrive.RightNugget.setPosition(tankDrive.RIN);
+        tankDrive.LeftNugget.setPosition(tankDrive.LIN);
 
         DcMotor LM0 = tankDrive.LM0;
         DcMotor LM1 = tankDrive.LM1;
@@ -393,16 +389,16 @@ public class TankDriveTeleop extends LinearOpMode {
         {
             lIntakeServoPosition = 1;
             rIntakeServoPosition = 1;
-            tankDrive.RightNugget.setPosition(ROUT);
-            tankDrive.LeftNugget.setPosition(LOUT);
+            tankDrive.RightNugget.setPosition(tankDrive.ROUT);
+            tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
             telemetry.addData("Intake Nuggets", " Open");
         }
         else
         {
             lIntakeServoPosition = 0;
             rIntakeServoPosition = 0;
-            tankDrive.RightNugget.setPosition(RIN);
-            tankDrive.LeftNugget.setPosition(LIN);
+            tankDrive.RightNugget.setPosition(tankDrive.RIN);
+            tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             telemetry.addData("Intake Nuggets", " Closed");
         }
 
