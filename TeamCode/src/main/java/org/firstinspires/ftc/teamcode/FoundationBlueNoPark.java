@@ -70,7 +70,7 @@ public class FoundationBlueNoPark extends LinearOpMode {
             sleep(500);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(-90, 1.0, 0.8, 0.005, 3);
+            turnOneWheelDirection(90, 1.0, 0.8, 0.005, 3, 'l');
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
             tankDrive.fang(true);
             freeze();

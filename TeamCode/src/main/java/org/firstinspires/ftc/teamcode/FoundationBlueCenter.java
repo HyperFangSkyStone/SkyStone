@@ -70,15 +70,15 @@ public class FoundationBlueCenter extends LinearOpMode {
             sleep(500);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(90, 1.0, 0.8, 0.005, 3, 'l');
+            turnOneWheelDirection(-90, 1.0, 0.8, 0.005, 3);
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
             tankDrive.fang(true);
             freeze();
             pidLinearMovement(35,2);
             freeze();
-            turnOneWheelDirection(45, 0.8, 0.5, 0.005, 3, 'l');
+            turnOneWheelDirection(-45, 0.8, 0.5, 0.005, 3);
             sleep(200);
-            turnOneWheelDirection(-45, 0.8,0.5, 0.005,3);
+            turnOneWheelDirection(45, 0.8,0.5, 0.005,3, 'l');
             sleep(200);
             pidLinearMovement(-20,3);
             freeze();
