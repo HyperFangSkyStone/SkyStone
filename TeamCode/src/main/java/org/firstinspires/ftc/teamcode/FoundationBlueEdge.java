@@ -70,17 +70,17 @@ public class FoundationBlueEdge extends LinearOpMode {
             sleep(500);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(-90, 1.0, 0.8, 0.005, 3);
+            turnOneWheelDirection(90, 1.0, 0.8, 0.005, 2.75, 'l');
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
             tankDrive.fang(true);
             freeze();
             pidLinearMovement(35,2);
             freeze();
-            turnOneWheelDirection(-45, 0.8, 0.5, 0.005, 3, 'l');
+            turnOneWheelDirection(-60, 0.8, 0.5, 0.005, 2.5);
             sleep(200);
-            turnOneWheelDirection(45, 0.8,0.5, 0.005,3);
+            turnOneWheelDirection(45, 0.8,0.5, 0.005, 2.5, 'l');
             sleep(200);
-            pidLinearMovement(-20,3);
+            pidLinearMovement(-25,3);
             freeze();
             break;
         }

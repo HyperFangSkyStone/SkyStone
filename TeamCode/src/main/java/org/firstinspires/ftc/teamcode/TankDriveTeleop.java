@@ -31,7 +31,7 @@ public class TankDriveTeleop extends LinearOpMode {
     public final double MM_TO_INCHES =  25.4;
     public final double MOTOR_TO_INCHES = GEAR_RATIO * WHEEL_DIAMETER * Math.PI / MM_TO_INCHES; //For every full turn of both motors, the wheel moves forward this many inches
     public final double NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 537.6;
-    public final double POSCLAW_NEUTRAL_POSITION = 0.7;
+    public final double POSCLAW_NEUTRAL_POSITION = 0.5;
 
     public final double LIFT_HEIGHT_TO_PICK_UP_BLOCKS_INCHES = .5;
 
@@ -112,7 +112,7 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.PosClaw.setPosition(POSCLAW_NEUTRAL_POSITION);
                 double targ = LIFT_ENCODER_TICKS_PER_INCH * LIFT_HEIGHT_TO_PICK_UP_BLOCKS_INCHES;
                 double error = targ - Math.max(Math.abs(tankDrive.Lift1.getCurrentPosition()), Math.abs(tankDrive.Lift2.getCurrentPosition()));
-                if (error > 10) {
+                if (Math.abs(error) > 10) {
                     double kp = 0.001;
                     double powerFloor = 0.15;
                     double powerCeiling = 0.5;
