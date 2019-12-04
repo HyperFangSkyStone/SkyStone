@@ -81,7 +81,7 @@ public class FoundationRedEdge extends LinearOpMode {
             sleep(200);
             turnOneWheelDirection(-45, 0.8,0.5, 0.005, 2.5);
             sleep(200);
-            pidLinearMovement(-25,3);
+            pidLinearMovement(-22,3);
             freeze();
             break;
         }

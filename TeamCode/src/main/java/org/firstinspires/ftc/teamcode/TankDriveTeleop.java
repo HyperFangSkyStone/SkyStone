@@ -31,7 +31,7 @@ public class TankDriveTeleop extends LinearOpMode {
     public final double MM_TO_INCHES =  25.4;
     public final double MOTOR_TO_INCHES = GEAR_RATIO * WHEEL_DIAMETER * Math.PI / MM_TO_INCHES; //For every full turn of both motors, the wheel moves forward this many inches
     public final double NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 537.6;
-    public final double POSCLAW_NEUTRAL_POSITION = 0.5;
+    public final double POSCLAW_NEUTRAL_POSITION = 0.58;
 
     public final double LIFT_HEIGHT_TO_PICK_UP_BLOCKS_INCHES = .5;
 
@@ -162,7 +162,7 @@ public class TankDriveTeleop extends LinearOpMode {
             intake();
             claw();
             balls();
-            rotateClaw();
+            //rotateClaw();
 
             //for lift
             if (gamepad2.right_trigger > 0.1)
@@ -185,7 +185,10 @@ public class TankDriveTeleop extends LinearOpMode {
 
             telemetry.addData("Current Mode: ", LM0 == tankDrive.LM0 ? "FORWARD!!!!" : "REVERSE!!!!");
 
-            if (gamepad1.b) {
+
+            if (gamepad2.a && gamepad2.b && gamepad2.x && gamepad2.y)
+                resetLiftEncoder();
+            else if (gamepad1.b) {
                 tankDrive.LM0.setDirection(DcMotor.Direction.FORWARD);
                 tankDrive.LM1.setDirection(DcMotor.Direction.FORWARD);
                 tankDrive.RM0.setDirection(DcMotor.Direction.REVERSE);
@@ -235,13 +238,14 @@ public class TankDriveTeleop extends LinearOpMode {
             }
 
             if (gamepad2.dpad_down) {
-                tankDrive.RightClaw.setPosition(0.25);
-                tankDrive.LeftClaw.setPosition(0.55);
+                tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_GRIP_POS);
+                tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_GRIP_POS);
                 tankDrive.PosClaw.setPosition(POSCLAW_NEUTRAL_POSITION);
                 setLiftToZero();
             }
 
             telemetry.update();
+
 
         }
 
@@ -406,21 +410,23 @@ public class TankDriveTeleop extends LinearOpMode {
 
     private void claw() //manipulator claws opening and closing
     {
-        if (gamepad2.b) {
-            tankDrive.RightClaw.setPosition(0.4);
-            tankDrive.LeftClaw.setPosition(0.4);
+        if (gamepad2.b && !(gamepad2.x && gamepad2.y)) {
+            tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_RELEASE_POS);
+            tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_RELEASE_POS);
         } else if (gamepad2.a) {
-            tankDrive.RightClaw.setPosition(0.25);
-            tankDrive.LeftClaw.setPosition(0.55);
+            tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_GRIP_POS);
+            tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_GRIP_POS);
         }
 
-        if(gamepad2.x)
+        if(gamepad2.x && !(gamepad2.a && gamepad2.b))
         {
             //claw CW
+            tankDrive.PosClaw.setPosition(POSCLAW_NEUTRAL_POSITION);
         }
         else if(gamepad2.y)
         {
             //claw CCW
+            tankDrive.PosClaw.setPosition(1);
         }
     }
 
@@ -526,5 +532,13 @@ public class TankDriveTeleop extends LinearOpMode {
         }
         tankDrive.Lift1.setPower(0);
         tankDrive.Lift2.setPower(0);
+    }
+
+    public void resetLiftEncoder() {
+        tankDrive.Lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        tankDrive.Lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        tankDrive.Lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        tankDrive.Lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 }

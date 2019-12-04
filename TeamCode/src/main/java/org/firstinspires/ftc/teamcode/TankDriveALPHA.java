@@ -40,6 +40,12 @@ public class TankDriveALPHA
     public static final double ROUT = 1.0;
     public static final double RIN = 0.0;
 
+    public static final double LCLAW_GRIP_POS = 0.2;
+    public static final double LCLAW_RELEASE_POS = 0;
+    public static final double RCLAW_GRIP_POS = 0;
+    public static final double RCLAW_RELEASE_POS = 0.27;
+
+
     HardwareMap hwMap =  null;
 
     public TankDriveALPHA(){
