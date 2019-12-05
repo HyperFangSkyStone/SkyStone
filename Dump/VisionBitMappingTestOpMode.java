@@ -67,7 +67,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @Autonomous(name="VisionMonkey", group="Pushbot")
-//@Disabled
+@Disabled
 public class VisionBitMappingTestOpMode extends LinearOpMode {
 
 

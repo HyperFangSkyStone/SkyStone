@@ -12,7 +12,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.TankDriveHardware;
-import org.firstinspires.ftc.teamcode.VisionBitMapping;
 
 import java.util.ArrayList;
 

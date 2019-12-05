@@ -76,11 +76,11 @@ public class FoundationRedCenter extends LinearOpMode {
             freeze();
             pidLinearMovement(35,2);
             freeze();
-            turnOneWheelDirection(-15, 0.8, 0.5, 0.005, 2.5);
+            turnOneWheelDirection(-14, 0.8, 0.5, 0.005, 2.5);
             //turnOneWheelDirection(65, 0.8,0.5, 0.005,3,'l');
             //sleep(200);
             pidLinearMovement(-20,3);
-            turnOneWheelDirection(10, 0.8, 0.5, 0.005, 2.5);
+            turnOneWheelDirection(11, 0.8, 0.5, 0.005, 2.5);
             pidLinearMovement(-18,3);
             freeze();
             break;

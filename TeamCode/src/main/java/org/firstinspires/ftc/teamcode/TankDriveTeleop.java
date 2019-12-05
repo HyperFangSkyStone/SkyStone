@@ -31,7 +31,7 @@ public class TankDriveTeleop extends LinearOpMode {
     public final double MM_TO_INCHES =  25.4;
     public final double MOTOR_TO_INCHES = GEAR_RATIO * WHEEL_DIAMETER * Math.PI / MM_TO_INCHES; //For every full turn of both motors, the wheel moves forward this many inches
     public final double NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 537.6;
-    public final double POSCLAW_NEUTRAL_POSITION = 0.58;
+    public final double POSCLAW_NEUTRAL_POSITION = 1;
 
     public final double LIFT_HEIGHT_TO_PICK_UP_BLOCKS_INCHES = .5;
 
@@ -426,7 +426,7 @@ public class TankDriveTeleop extends LinearOpMode {
         else if(gamepad2.y)
         {
             //claw CCW
-            tankDrive.PosClaw.setPosition(1);
+            tankDrive.PosClaw.setPosition(0.65);
         }
     }
 
