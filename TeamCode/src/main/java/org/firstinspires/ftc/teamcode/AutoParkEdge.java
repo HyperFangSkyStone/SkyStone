@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="Foundation Red Center", group="red")
+@Autonomous(name="ParkEdge", group="park")
 //@Disabled
-public class FoundationRedCenter extends LinearOpMode {
+public class AutoParkEdge extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
 
@@ -53,6 +53,7 @@ public class FoundationRedCenter extends LinearOpMode {
 
 
         tankDrive.init(hardwareMap);
+
         tankDrive.RightNugget.setPosition(tankDrive.ROUT);
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
         waitForStart();
@@ -61,28 +62,9 @@ public class FoundationRedCenter extends LinearOpMode {
         {
             tankDrive.RightNugget.setPosition(tankDrive.RIN);
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-            tankDrive.fang(true);
-            overshootLinearMovement(30,2);
-            //moveOvershoot(35, 2.5, 0.001, 0.3);
-            freeze();
-            sleep(250);
-            tankDrive.fang(false);
+            runMotor(-0.7, -0.7);
             sleep(500);
-            freeze();
-            //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(-90, 1.0, 0.8, 0.005, 2.75);
-            //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
-            tankDrive.fang(true);
-            freeze();
-            pidLinearMovement(35,2);
-            freeze();
-            turnOneWheelDirection(-15, 0.8, 0.5, 0.005, 2.5);
-            //turnOneWheelDirection(65, 0.8,0.5, 0.005,3,'l');
-            //sleep(200);
-            pidLinearMovement(-20,3);
-            turnOneWheelDirection(11, 0.8, 0.5, 0.005, 2.5);
-            pidLinearMovement(-18,3);
-            freeze();
+            runMotor(0, 0);
             break;
         }
     }

@@ -76,7 +76,7 @@ public class FoundationBlueCenter extends LinearOpMode {
             freeze();
             pidLinearMovement(35,2);
             freeze();
-            turnOneWheelDirection(14, 0.8, 0.5, 0.005, 2.5, 'l');
+            turnOneWheelDirection(15, 0.8, 0.5, 0.005, 2.5, 'l');
             //turnOneWheelDirection(65, 0.8,0.5, 0.005,3,'l');
             //sleep(200);
             pidLinearMovement(-20,3);
