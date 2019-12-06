@@ -199,7 +199,7 @@ public class TankDriveTeleop extends LinearOpMode {
                 if (!dpadright2Ispressed) {
 
                     if (!gamepad2.right_bumper)
-                        tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() - 0.05);
+                        tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() - 0.02);
                     else {
                         if (towerPosition >= 7) {
                             telemetry.addData("Oi, towerPosition is already greater than or equal to 7.", "etartsenefeD yourself!!");
@@ -216,7 +216,7 @@ public class TankDriveTeleop extends LinearOpMode {
             if (gamepad2.dpad_left) {
                 if (!dpadleft2Ispressed) {
                     if (!gamepad2.right_bumper)
-                        tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() + 0.05);
+                        tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() + 0.02);
                     else {
                         if (towerPosition <= 0) {
                             telemetry.addData("Oi, towerPosition is already less than or equal to 0.", "Defenestrate yourself!!");
