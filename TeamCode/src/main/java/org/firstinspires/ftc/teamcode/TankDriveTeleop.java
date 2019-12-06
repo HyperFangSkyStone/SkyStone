@@ -99,6 +99,7 @@ public class TankDriveTeleop extends LinearOpMode {
                 RM1.setPower(0);
             }
 
+            /*
             if (gamepad2.left_stick_y > 0.2 && gamepad2.right_stick_y > 0.2) // While intaking blocks, aligns claw and lowers lift to correct height
             {
                 //tankDrive.PosClaw.setPosition(POSCLAW_NEUTRAL_POSITION);
@@ -123,7 +124,7 @@ public class TankDriveTeleop extends LinearOpMode {
                         tankDrive.Lift2.setPower(0);
                     }
                 }
-            }
+            }*/
 
             /*
             else
@@ -165,10 +166,13 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.Lift2.setPower(0);
             }
 
+            telemetry.addData("Lift 1:", tankDrive.Lift1.getCurrentPosition());
+            telemetry.addData("Lift 2:", tankDrive.Lift2.getCurrentPosition());
+
             telemetry.addData("Current Mode: ", LM0 == tankDrive.LM0 ? "FORWARD!!!!" : "REVERSE!!!!");
 
 
-            if (gamepad2.a && gamepad2.b && gamepad2.x && gamepad2.y)
+            if (gamepad1.x && gamepad1.dpad_up)
                 resetLiftEncoder();
             else if (gamepad1.b) {
                 tankDrive.LM0.setDirection(DcMotor.Direction.FORWARD);
@@ -236,7 +240,7 @@ public class TankDriveTeleop extends LinearOpMode {
             if (gamepad2.dpad_down) {
                 tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_GRIP_POS);
                 tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_GRIP_POS);
-                liftToPickUpPosition();
+                //liftToPickUpPosition();
             }
 
             telemetry.update();
@@ -392,12 +396,12 @@ public class TankDriveTeleop extends LinearOpMode {
 
     private void claw() //manipulator claws opening and closing
     {
-        if (gamepad2.b && !(gamepad2.x && gamepad2.y)) {
-            tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_RELEASE_POS);
-            tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_RELEASE_POS);
-        } else if (gamepad2.a) {
+        if (gamepad2.a && !(gamepad2.x && gamepad2.y)) {
             tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_GRIP_POS);
             tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_GRIP_POS);
+        } else if (gamepad2.b) {
+        tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_RELEASE_POS);
+        tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_RELEASE_POS);
         }
 
         if (gamepad2.x && !(gamepad2.a && gamepad2.b)) {
@@ -517,7 +521,7 @@ public class TankDriveTeleop extends LinearOpMode {
         if (tankDrive.PosClaw.getPosition() != POSCLAW_NEUTRAL_POSITION)
             tankDrive.PosClaw.setPosition(POSCLAW_NEUTRAL_POSITION);
         else {
-            double targ = LIFT_ENCODER_TICKS_PER_INCH * LIFT_HEIGHT_TO_PICK_UP_BLOCKS_INCHES;
+            double targ = 135;//LIFT_ENCODER_TICKS_PER_INCH * LIFT_HEIGHT_TO_PICK_UP_BLOCKS_INCHES;
             double error = targ - Math.max(Math.abs(tankDrive.Lift1.getCurrentPosition()), Math.abs(tankDrive.Lift2.getCurrentPosition()));
             while (Math.abs(error) > 10) {
                 double kp = 0.015;
