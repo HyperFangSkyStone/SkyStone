@@ -172,7 +172,7 @@ public class TankDriveTeleop extends LinearOpMode {
             telemetry.addData("Current Mode: ", LM0 == tankDrive.LM0 ? "FORWARD!!!!" : "REVERSE!!!!");
 
 
-            if (gamepad1.x && gamepad1.dpad_up)
+            if (gamepad2.back)
                 resetLiftEncoder();
             else if (gamepad1.b) {
                 tankDrive.LM0.setDirection(DcMotor.Direction.FORWARD);
@@ -234,13 +234,17 @@ public class TankDriveTeleop extends LinearOpMode {
             telemetry.addData("Tower Position", towerPosition);
 
             if (gamepad2.dpad_up) {
-                liftererPID(towerPosition);
+                //liftererPID(towerPosition);
             }
 
             if (gamepad2.dpad_down) {
                 tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_GRIP_POS);
                 tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_GRIP_POS);
-                //liftToPickUpPosition();
+                if (tankDrive.PosClaw.getPosition() == POSCLAW_NEUTRAL_POSITION) {
+                    liftToPickUpPosition();
+                    tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_RELEASE_POS);
+                    tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_RELEASE_POS);
+                }
             }
 
             telemetry.update();
@@ -523,7 +527,8 @@ public class TankDriveTeleop extends LinearOpMode {
         else {
             double targ = 135;//LIFT_ENCODER_TICKS_PER_INCH * LIFT_HEIGHT_TO_PICK_UP_BLOCKS_INCHES;
             double error = targ - Math.max(Math.abs(tankDrive.Lift1.getCurrentPosition()), Math.abs(tankDrive.Lift2.getCurrentPosition()));
-            while (Math.abs(error) > 10) {
+            while (Math.abs(error) > 10 && opModeIsActive()) {
+                error = targ - Math.max(Math.abs(tankDrive.Lift1.getCurrentPosition()), Math.abs(tankDrive.Lift2.getCurrentPosition()));
                 double kp = 0.015;
                 double powerFloor = 0.25;
                 double powerCeiling = 0.55;
@@ -535,6 +540,12 @@ public class TankDriveTeleop extends LinearOpMode {
                 }
                 tankDrive.Lift1.setPower(pow);
                 tankDrive.Lift2.setPower(pow);
+
+                telemetry.addData("Pow:", pow);
+                telemetry.addData("Lift 1:", tankDrive.Lift1.getCurrentPosition());
+                telemetry.addData("Lift 2:", tankDrive.Lift2.getCurrentPosition());
+                telemetry.addData("Error:", error);
+                telemetry.update();
             }
 
             tankDrive.Lift1.setPower(0);
