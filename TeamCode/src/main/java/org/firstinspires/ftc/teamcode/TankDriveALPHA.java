@@ -43,7 +43,7 @@ public class TankDriveALPHA
     public static final double LCLAW_GRIP_POS = 0.25;
     public static final double LCLAW_RELEASE_POS = 0;
     public static final double RCLAW_GRIP_POS = 0;
-    public static final double RCLAW_RELEASE_POS = 0.27;
+    public static final double RCLAW_RELEASE_POS = 0.18;
 
 
     HardwareMap hwMap =  null;
