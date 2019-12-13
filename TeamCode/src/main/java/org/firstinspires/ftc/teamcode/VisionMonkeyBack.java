@@ -128,6 +128,7 @@ public class    VisionMonkeyBack{
         avgX /= xValues.size();
         avgY /= yValues.size();
 
+        /*
         if (avgX > 300 && avgX < 450) {
             skystonePosition = "1 & 4";
             opMode.telemetry.addData("skystonePosition: ", skystonePosition);
@@ -137,7 +138,7 @@ public class    VisionMonkeyBack{
         } else {
             skystonePosition = "3 & 6";
             opMode.telemetry.addData("skystonePosition: ", skystonePosition);
-        }
+        }*/
         opMode.telemetry.update();
         opMode.sleep(1000);
         return avgX;
