@@ -48,17 +48,14 @@ public class ElMonoVisionTester extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        VisionMonkeyBack vbm = new VisionMonkeyBack(this);
+        VisionBitMapping vbm = new VisionBitMapping(this);
         while(opModeIsActive()) {
 
-            try {
-                telemetry.addData("avgX", vbm.avgX());
-            } catch (InterruptedException e) {
-                telemetry.addData("Flaming jesus with", " fiery fibroids");
-            }
+            telemetry.addData("avgX", vbm.avgX());
 
             telemetry.addData("Path", "Complete");
             telemetry.update();
+            sleep(1000);
             // }
         }
     }
