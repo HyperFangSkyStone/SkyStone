@@ -33,6 +33,9 @@ public class TankDriveAutoBlue extends LinearOpMode {
     public final double MOTOR_TO_INCHES = GEAR_RATIO * WHEEL_DIAMETER * Math.PI / MM_TO_INCHES; //For every full turn of both motors, the wheel moves forward this many inches
     public final double NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 537.6;
 
+    public final double BLUE_DIVIDER_ONE = 260;
+    public final double BLUE_DIVIDER_TWO = 440;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -58,7 +61,16 @@ public class TankDriveAutoBlue extends LinearOpMode {
 
         while (!isStarted())
         {
-            skystonePosition = vbm.skyStonePos('b');
+            // Note: SkystonePositions are numbered from edge; 1 is the
+            // closest to the edge, 2 is the middle, and 3 is near the center.
+
+            double avgx = vbm.avgX();
+            if (avgx < BLUE_DIVIDER_ONE)
+                skystonePosition = 3;
+            else if (avgx < BLUE_DIVIDER_TWO)
+                skystonePosition = 2;
+            else
+                skystonePosition = 1;
 
             telemetry.addData("Skystone Pos", skystonePosition);
             telemetry.update();
