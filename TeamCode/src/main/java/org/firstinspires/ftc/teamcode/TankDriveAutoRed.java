@@ -65,9 +65,9 @@ public class TankDriveAutoRed extends LinearOpMode {
             // closest to the edge, 2 is the middle, and 3 is near the center.
 
             double avgX = vbm.avgX();
-            if(avgX < RED_DIVIDER_ONE)
+            if(avgX < VisionBitMapping.RED_DIVIDER_ONE)
                 skystonePosition = 1;
-            else if (avgX < RED_DIVIDER_TWO)
+            else if (avgX < VisionBitMapping.RED_DIVIDER_TWO)
                 skystonePosition = 2;
             else
                 skystonePosition = 3;
