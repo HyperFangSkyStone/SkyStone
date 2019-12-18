@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.DISABLED.VisionBitMapping;
+import org.firstinspires.ftc.teamcode.VisionBitMapping;
 
 @SuppressWarnings("ALL")
 @Autonomous(name="DoubleSkyStoneTest", group="blue")
@@ -63,7 +63,7 @@ public class TankDriveAutoBlue extends LinearOpMode {
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
         while (!isStarted())
         {
-            skystonePosition = 1;//vbm.skyStonePos('b');
+            skystonePosition = 3;//vbm.skyStonePos('b');
 
             telemetry.addData("Skystone Pos", skystonePosition);
             telemetry.update();
@@ -79,7 +79,7 @@ public class TankDriveAutoBlue extends LinearOpMode {
             runIntake(1);
             sleep(750);
             runIntake(0);
-            if (skystonePosition == 1)
+            if (skystonePosition == 3)
             {
                 turnOneWheelDirection(8, 0.6, 0.4, 0.005, 1.5);
                 pidLinearMovement(20, 2.5);
