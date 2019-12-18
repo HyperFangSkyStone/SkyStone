@@ -39,6 +39,11 @@ public class VisionBitMapping {
     private final int YELGREEN_THRESHOLD = 130;
     private final int YELBLUE_THRESHOLD = 30;
 
+    public static final double RED_DIVIDER_ONE = 150;
+    public static final double RED_DIVIDER_TWO = 320;
+    public static final double BLUE_DIVIDER_ONE = 260;
+    public static final double BLUE_DIVIDER_TWO = 445;
+
     public VisionBitMapping(LinearOpMode opMode) {
 
         this.opMode = opMode;
