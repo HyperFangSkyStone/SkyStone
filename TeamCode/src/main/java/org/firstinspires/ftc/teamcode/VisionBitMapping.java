@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.DISABLED;
+package org.firstinspires.ftc.teamcode;
 import android.graphics.Bitmap;
 import static android.graphics.Color.red;
 import static android.graphics.Color.green;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
 
-public class    VisionBitMapping {
+public class VisionBitMapping {
     private LinearOpMode opMode;
 
     private VuforiaLocalizer vuforia;
@@ -48,7 +48,7 @@ public class    VisionBitMapping {
         VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         params.vuforiaLicenseKey = VUFORIA_KEY;
-        params.cameraName = opMode.hardwareMap.get(WebcamName.class, "monkey");
+        params.cameraName = opMode.hardwareMap.get(WebcamName.class, "vCard");
         //params.cameraDirection = CameraDirection.DEFAULT;
         //params.cameraDirection = ;
         //Orientation

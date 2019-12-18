@@ -11,6 +11,7 @@ import com.vuforia.PIXEL_FORMAT;
 import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.Parameters;
@@ -24,7 +25,7 @@ public class    VisionMonkeyBack{
 
     private VuforiaLocalizer vuforia;
     private Parameters parameters;
-    private CameraDirection CAMERA_CHOICE = CameraDirection.BACK; // This is the camera opposite the screen.
+    //private CameraDirection CAMERA_CHOICE = CameraDirection.BACK; // This is the camera opposite the screen.
     private static final String VUFORIA_KEY = "AcELeNr/////AAABmeg7NUNcDkPigDGNImdu5slLREdKn/q+qfajHBypycR0JUZYbfU0q2yZeSud79LJ2DS9uhr7Gu0xDM0DQZ36GRQDgMRwB8lf9TGZFQcoHq4kVAjAoEByEorXCzQ54ITCextAucpL2njKT/1IJxgREr6/axNEL2evyKSpOKoNOISKR6tkP6H3Ygd+FHm2tF/rsUCJHN5bTXrbRbwt5t65O7oJ6Wm8Foz1npbFI0bsD60cug4CpC/Ovovt2usxIRG8cpoQX49eA2jPRRLGXN8y1Nhh9Flr0poOkYoCExWo2iVunAGOwuCdB/rp/+2rkLBfWPvzQzrN9yBBP0JVJZ4biNQ41qqiuVvlc31O9xEvbKHt";
 
     public static String skystonePosition = "notFound";
@@ -42,7 +43,7 @@ public class    VisionMonkeyBack{
         VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         params.vuforiaLicenseKey = VUFORIA_KEY;
-        params.cameraDirection = CAMERA_CHOICE;
+        params.cameraName = opMode.hardwareMap.get(WebcamName.class, "vCard");
         vuforia = ClassFactory.getInstance().createVuforia(params);
 
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true); // Format returns 2 bytes per pixel in GGGBBBBB RRRRRGGG format (little-endian)
@@ -82,7 +83,7 @@ public class    VisionMonkeyBack{
         opMode.telemetry.addData("Image width", imageBitmap.getWidth());
         opMode.telemetry.addData("Image height", imageBitmap.getHeight());
         opMode.telemetry.update();
-        opMode.sleep(500);
+        opMode.sleep(100);
 
         picture.close();
 
@@ -128,6 +129,7 @@ public class    VisionMonkeyBack{
         avgX /= xValues.size();
         avgY /= yValues.size();
 
+        /*
         if (avgX > 300 && avgX < 450) {
             skystonePosition = "1 & 4";
             opMode.telemetry.addData("skystonePosition: ", skystonePosition);
@@ -137,9 +139,10 @@ public class    VisionMonkeyBack{
         } else {
             skystonePosition = "3 & 6";
             opMode.telemetry.addData("skystonePosition: ", skystonePosition);
-        }
+        }*/
         opMode.telemetry.update();
-        opMode.sleep(1000);
+        opMode.sleep(100);
+        opMode.telemetry.addData("xlen", xValues.size());
         return avgX;
     }
 }

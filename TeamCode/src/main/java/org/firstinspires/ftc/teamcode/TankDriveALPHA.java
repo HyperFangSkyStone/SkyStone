@@ -58,8 +58,8 @@ public class TankDriveALPHA
         LM1 = hwMap.get(DcMotor.class, "LM1");
         RM0 = hwMap.get(DcMotor.class, "RM0");
         RM1 = hwMap.get(DcMotor.class, "RM1");
-        Lift1 = hwMap.get(DcMotor.class, "Lift1");
-        Lift2 = hwMap.get(DcMotor.class, "Lift2");
+        //Lift1 = hwMap.get(DcMotor.class, "Lift1");
+        //Lift2 = hwMap.get(DcMotor.class, "Lift2");
 
         Intake1 = hwMap.get(DcMotor.class, "Intake1");
         Intake2 = hwMap.get(DcMotor.class, "Intake2");
@@ -78,8 +78,8 @@ public class TankDriveALPHA
         LM1.setDirection(DcMotor.Direction.REVERSE);
         RM0.setDirection(DcMotor.Direction.FORWARD);
         RM1.setDirection(DcMotor.Direction.FORWARD);
-        Lift1.setDirection(DcMotor.Direction.FORWARD);
-        Lift2.setDirection(DcMotor.Direction.REVERSE);
+        //Lift1.setDirection(DcMotor.Direction.FORWARD);
+        //Lift2.setDirection(DcMotor.Direction.REVERSE);
         Intake1.setDirection(DcMotor.Direction.REVERSE);
         Intake2.setDirection(DcMotor.Direction.FORWARD);
 
@@ -87,8 +87,8 @@ public class TankDriveALPHA
         LM1.setPower(0);
         RM0.setPower(0);
         RM1.setPower(0);
-        Lift1.setPower(0);
-        Lift2.setPower(0);
+        //Lift1.setPower(0);
+        //Lift2.setPower(0);
         Intake1.setPower(0);
         Intake2.setPower(0);
 
@@ -98,8 +98,8 @@ public class TankDriveALPHA
         RM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Intake2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //Lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //Lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         LM0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -107,15 +107,15 @@ public class TankDriveALPHA
         RM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Intake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //Lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //Lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         LM0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RM0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Lift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Lift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //Lift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //Lift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
     }

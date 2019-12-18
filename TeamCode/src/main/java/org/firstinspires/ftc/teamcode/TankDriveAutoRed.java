@@ -7,11 +7,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.DISABLED.VisionBitMapping;
 
 @SuppressWarnings("ALL")
 @Autonomous(name="Skystone Red", group="red")
-@Disabled
+//@Disabled
 public class TankDriveAutoRed extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
@@ -33,6 +32,8 @@ public class TankDriveAutoRed extends LinearOpMode {
     public final double MM_TO_INCHES =  25.4;
     public final double MOTOR_TO_INCHES = GEAR_RATIO * WHEEL_DIAMETER * Math.PI / MM_TO_INCHES; //For every full turn of both motors, the wheel moves forward this many inches
     public final double NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION = 537.6;
+    public final double RED_DIVIDER_ONE = 150;
+    public final double RED_DIVIDER_TWO = 320;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -59,7 +60,17 @@ public class TankDriveAutoRed extends LinearOpMode {
 
         while (!isStarted())
         {
-            skystonePosition = vbm.skyStonePos();
+
+            // Note: SkystonePositions are numbered from edge; 1 is the
+            // closest to the edge, 2 is the middle, and 3 is near the center.
+
+            double avgX = vbm.avgX();
+            if(avgX < RED_DIVIDER_ONE)
+                skystonePosition = 1;
+            else if (avgX < RED_DIVIDER_TWO)
+                skystonePosition = 2;
+            else
+                skystonePosition = 3;
 
             telemetry.addData("Skystone Pos", skystonePosition);
             telemetry.update();
@@ -75,9 +86,9 @@ public class TankDriveAutoRed extends LinearOpMode {
             runIntake(1);
             sleep(750);
             runIntake(0);
-            if (skystonePosition == 1)
+            if (skystonePosition == 1) //Left
             {
-                movethForward(24, 2.5, 0.001, 0.5);
+                /*movethForward(24, 2.5, 0.001, 0.5);
                 freeze();
                 turnethDirection(10,0.35, 0.2, 0.005, 3);
                 runIntake(-0.5);
@@ -93,11 +104,61 @@ public class TankDriveAutoRed extends LinearOpMode {
                 runIntake(0);
                 freeze();
                 turnethDirection(80,0.4, 0.2, 0.005, 3);
-                movethForward(-5, 0.5,0.001, 0.8, 0.4);
+                movethForward(-5, 0.5,0.001, 0.8, 0.4);*/
+
+                turnethDirection(10, 0.35, 0.2, 0.005, 3);
+                freeze();
+
+                tankDrive.RightNugget.setPosition(tankDrive.ROUT); //Collecting skystone
+                tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
+                movethForward(34, 4, 0.001,0.5);
+                tankDrive.Intake1.setPower(1.0);
+                tankDrive.Intake2.setPower(1.0);
+                tankDrive.RightNugget.setPosition(tankDrive.RIN);
+                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
+                movethForward(5, 1.2, 0.001, 0.5);
+                tankDrive.Intake1.setPower(0);
+                tankDrive.Intake2.setPower(0);
+                freeze();
+
+                /*
+                movethForward(-14, 1.5, 0.003, 0.5); //Delivering to building zone
+                turnethDirection(80, 0.5, 0.2, 0.003, 3);
+                movethForward(40, 3, 0.003, 0.5);
+                tankDrive.Intake1.setPower(-1.0);
+                tankDrive.Intake2.setPower(-1.0);
+                sleep(3000);
+                tankDrive.Intake1.setPower(0);
+                tankDrive.Intake2.setPower(0);
+                movethForward(-85, 5, 0.003, 0.7); //Slam into wall
+                turnOneWheelDirection(-80, 0.5, 0.2, 0.003, 3);
+
+                tankDrive.RightNugget.setPosition(tankDrive.ROUT); //Collecting skystone
+                tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
+                movethForward(34, 2.5, 0.001,0.5);
+                tankDrive.Intake1.setPower(1.0);
+                tankDrive.Intake2.setPower(1.0);
+                tankDrive.RightNugget.setPosition(tankDrive.RIN);
+                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
+                movethForward(5, 1.2, 0.001, 0.5);
+                tankDrive.Intake1.setPower(0);
+                tankDrive.Intake2.setPower(0);
+                freeze();
+
+                movethForward(-14, 1.5, 0.003, 0.5); //Going back
+                turnethDirection(80, 0.5, 0.2, 0.003, 3);
+                movethForward(75, 5, 0.003, 0.5); // Delivering to building zone
+                tankDrive.Intake1.setPower(-1.0);
+                tankDrive.Intake2.setPower(-1.0);
+                sleep(3000);
+                tankDrive.Intake1.setPower(0);
+                tankDrive.Intake2.setPower(0);
+                movethForward(-5, 1, 0.001, 0.4);*/
             }
             else if (skystonePosition == 2)
             {
-                movethForward(3, 0.5, 0.001, 0.3);
+                /*
+                /*movethForward(3, 0.5, 0.001, 0.3);
                 turnethDirection(-90, 0.5, 0.3, 0.003, 3);
                 turnOneWheelDirection(90, 0.5, 0.3, 0.003, 3);
                 movethForward(10, 2, 0.001, 0.8, 0.25);
@@ -109,10 +170,58 @@ public class TankDriveAutoRed extends LinearOpMode {
                 runIntake(0);
                 movethForward(-30, 2.5, 0.001, 0.4, 0.3);
                 freeze();
-                turnethDirection(82,0.35, 0.25, 0.005, 3);
+                turnethDirection(82,0.35, 0.25, 0.005, 3);*/
+
+                /*tankDrive.RightNugget.setPosition(tankDrive.ROUT); //Collecting skystone
+                tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
+                movethForward(34, 4, 0.001,0.5);
+                tankDrive.Intake1.setPower(1.0);
+                tankDrive.Intake2.setPower(1.0);
+                tankDrive.RightNugget.setPosition(tankDrive.RIN);
+                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
+                movethForward(5, 1.2, 0.001, 0.5);
+                tankDrive.Intake1.setPower(0);
+                tankDrive.Intake2.setPower(0);
+                freeze();
+
+                movethForward(-14, 1.5, 0.003, 0.5); //Delivering to building zone
+                turnethDirection(90, 0.5, 0.2, 0.003, 3);
+                movethForward(40, 3, 0.003, 0.5);
+                tankDrive.Intake1.setPower(-1.0);
+                tankDrive.Intake2.setPower(-1.0);
+                sleep(3000);
+                tankDrive.Intake1.setPower(0);
+                tankDrive.Intake2.setPower(0);
+                movethForward(-85, 5, 0.003, 0.7); //Slam into wall
+
+                movethForward(10, 1.5, 0.003, 0.7); //Collecting skystone
+                turnOneWheelDirection(-90, 0.5, 0.2, 0.003, 3);
+                tankDrive.RightNugget.setPosition(tankDrive.ROUT);
+                tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
+                movethForward(34, 2.5, 0.001,0.5);
+                tankDrive.Intake1.setPower(1.0);
+                tankDrive.Intake2.setPower(1.0);
+                tankDrive.RightNugget.setPosition(tankDrive.RIN);
+                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
+                movethForward(5, 1.2, 0.001, 0.5);
+                tankDrive.Intake1.setPower(0);
+                tankDrive.Intake2.setPower(0);
+                freeze();
+
+                movethForward(-14, 1.5, 0.003, 0.5); //Going back
+                turnethDirection(90, 0.5, 0.2, 0.003, 3);
+                movethForward(80, 5, 0.003, 0.5); // Delivering to building zone
+                tankDrive.Intake1.setPower(-1.0);
+                tankDrive.Intake2.setPower(-1.0);
+                sleep(3000);
+                tankDrive.Intake1.setPower(0);
+                tankDrive.Intake2.setPower(0);
+                movethForward(-5, 1, 0.001, 0.4);
+                */
             }
             else if (skystonePosition == 3)
             {
+                /*
                 movethForward(3, 0.5, 0.001, 0.3);
                 turnethDirection(-55, 0.5, 0.3, 0.003, 3);
                 turnOneWheelDirection(55, 0.5, 0.3, 0.003, 3);
@@ -128,7 +237,7 @@ public class TankDriveAutoRed extends LinearOpMode {
                 sleep(110);
                 runIntake(0);
                 freeze();
-                turnethDirection(105,0.35, 0.3, 0.005, 3);
+                turnethDirection(105,0.35, 0.3, 0.005, 3);*/
 
             }
             else
@@ -139,7 +248,7 @@ public class TankDriveAutoRed extends LinearOpMode {
                 break;
             }
 
-            skystonePosition = 0;
+            //skystonePosition = 0;
             runIntake(-1);
             movethForward(-40, 2, 0.001, 0.8, 0.4);
             freeze();
