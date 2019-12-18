@@ -68,11 +68,11 @@ public class TankDriveALPHA
         LeftNugget = hwMap.get(Servo.class, "LeftNugget");
         RightFang = hwMap.get(Servo.class, "RightFang");
         RightNugget = hwMap.get(Servo.class, "RightNugget");
-        LeftBall = hwMap.get(CRServo.class, "LeftBall");
+        /*LeftBall = hwMap.get(CRServo.class, "LeftBall");
         RightBall = hwMap.get(CRServo.class, "RightBall");
         LeftClaw = hwMap.get(Servo.class, "LeftClaw");
         RightClaw = hwMap.get(Servo.class, "RightClaw");
-        PosClaw = hwMap.get(Servo.class, "PosClaw");
+        PosClaw = hwMap.get(Servo.class, "PosClaw");*/
 
         LM0.setDirection(DcMotor.Direction.REVERSE);
         LM1.setDirection(DcMotor.Direction.REVERSE);
