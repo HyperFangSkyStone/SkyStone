@@ -67,7 +67,7 @@ public class TankDriveTeleop extends LinearOpMode {
         DcMotor RM0 = tankDrive.RM0;
         DcMotor RM1 = tankDrive.RM1;
 
-        tankDrive.PosClaw.setPosition(POSCLAW_NEUTRAL_POSITION);
+       // tankDrive.PosClaw.setPosition(POSCLAW_NEUTRAL_POSITION);
 
 
         waitForStart();
@@ -150,11 +150,12 @@ public class TankDriveTeleop extends LinearOpMode {
 
 
             intake();
-            claw();
-            balls();
+            //claw();
+            //balls();
             //rotateClaw();
 
             //for lift
+            /*
             if (gamepad2.right_trigger > 0.1) {
                 tankDrive.Lift1.setPower(gamepad2.right_trigger);
                 tankDrive.Lift2.setPower(gamepad2.right_trigger);
@@ -167,14 +168,14 @@ public class TankDriveTeleop extends LinearOpMode {
             }
 
             telemetry.addData("Lift 1:", tankDrive.Lift1.getCurrentPosition());
-            telemetry.addData("Lift 2:", tankDrive.Lift2.getCurrentPosition());
+            telemetry.addData("Lift 2:", tankDrive.Lift2.getCurrentPosition());*/
 
             telemetry.addData("Current Mode: ", LM0 == tankDrive.LM0 ? "FORWARD!!!!" : "REVERSE!!!!");
 
 
-            if (gamepad2.back)
-                resetLiftEncoder();
-            else if (gamepad1.b) {
+            if (gamepad2.back) {
+                //resetLiftEncoder();
+            } else if (gamepad1.b) {
                 tankDrive.LM0.setDirection(DcMotor.Direction.FORWARD);
                 tankDrive.LM1.setDirection(DcMotor.Direction.FORWARD);
                 tankDrive.RM0.setDirection(DcMotor.Direction.REVERSE);
@@ -198,9 +199,9 @@ public class TankDriveTeleop extends LinearOpMode {
             if (gamepad2.dpad_right) {
                 if (!dpadright2Ispressed) {
 
-                    if (!gamepad2.right_bumper)
-                        tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() - 0.02);
-                    else {
+                    if (!gamepad2.right_bumper) {
+                        //tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() - 0.02);
+                    } else {
                         if (towerPosition >= 7) {
                             telemetry.addData("Oi, towerPosition is already greater than or equal to 7.", "etartsenefeD yourself!!");
                         } else {
@@ -215,9 +216,9 @@ public class TankDriveTeleop extends LinearOpMode {
 
             if (gamepad2.dpad_left) {
                 if (!dpadleft2Ispressed) {
-                    if (!gamepad2.right_bumper)
-                        tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() + 0.02);
-                    else {
+                    if (!gamepad2.right_bumper) {
+                        //tankDrive.PosClaw.setPosition(tankDrive.PosClaw.getPosition() + 0.02);
+                    } else {
                         if (towerPosition <= 0) {
                             telemetry.addData("Oi, towerPosition is already less than or equal to 0.", "Defenestrate yourself!!");
                         } else {
@@ -237,6 +238,7 @@ public class TankDriveTeleop extends LinearOpMode {
                 //liftererPID(towerPosition);
             }
 
+            /*
             if (gamepad2.dpad_down) {
                 tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_GRIP_POS);
                 tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_GRIP_POS);
@@ -245,7 +247,7 @@ public class TankDriveTeleop extends LinearOpMode {
                     tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_RELEASE_POS);
                     tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_RELEASE_POS);
                 }
-            }
+            }*/
 
             telemetry.update();
 

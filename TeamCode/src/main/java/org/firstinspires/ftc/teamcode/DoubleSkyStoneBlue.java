@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.DISABLED.VisionBitMapping;
+import org.firstinspires.ftc.teamcode.VisionBitMapping;
 
 @SuppressWarnings("ALL")
 @Autonomous(name="Double Skystone Blue", group="blue")
