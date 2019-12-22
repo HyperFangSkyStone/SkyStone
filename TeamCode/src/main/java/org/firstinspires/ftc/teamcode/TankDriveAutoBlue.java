@@ -89,7 +89,7 @@ public class TankDriveAutoBlue extends LinearOpMode {
                 pidLinearMovement(4, 1);
                 sleep(400);
                 runIntake(0);
-                pidLinearMovement(-20, 2.5);
+                pidLinearMovement(-10, 2);
                 turnOneWheelDirection(87, 0.6, 0.5, 0.005, 3.5,'l');
                 pidLinearMovement(60, 4);
                 runIntake(1);
