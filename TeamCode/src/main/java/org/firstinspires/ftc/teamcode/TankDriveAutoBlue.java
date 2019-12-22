@@ -81,26 +81,27 @@ public class TankDriveAutoBlue extends LinearOpMode {
             runIntake(0);
             if (skystonePosition == 3)
             {
-                turnOneWheelDirection(8, 0.6, 0.4, 0.005, 1.5);
-                pidLinearMovement(20, 2.5);
-                freeze();
-                pidLinearMovement(5,1);
+                turnOneWheelDirection(5, 0.6, 0.4, 0.005, 0.5);
                 runIntake(-1);
+                overshootLinearMovement(39,3.5);
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
                 tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                sleep(500);
+                pidLinearMovement(4, 1);
+                sleep(400);
                 runIntake(0);
-                pidLinearMovement(-5, 1);
-                turnOneWheelDirection(82, 0.6, 0.4, 0.005, 2.5,'l');
-                pidLinearMovement(50, 3);
+                pidLinearMovement(-20, 2.5);
+                turnOneWheelDirection(87, 0.6, 0.5, 0.005, 3.5,'l');
+                pidLinearMovement(60, 4);
                 runIntake(1);
                 sleep(750);
                 runIntake(0);
-                pidLinearMovement(-60, 3.5);
+                //turnOneWheelDirection(5, 0.6, 0.5, 0.005, 4,'l');
+                pidLinearMovement(-100, 3.5);
+                pidLinearMovement(20, 2);
                 tankDrive.RightNugget.setPosition(tankDrive.ROUT);
                 tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
-                turnOneWheelDirection(115, 0.6, 0.4, 0.005, 3);
-                pidLinearMovement(10, 1.5);
+                turnOneWheelDirection(-110, 0.6, 0.4, 0.005, 3);
+                overshootLinearMovement(30, 3);
                 runIntake(-1);
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
                 tankDrive.LeftNugget.setPosition(tankDrive.LIN);
@@ -112,6 +113,7 @@ public class TankDriveAutoBlue extends LinearOpMode {
                 sleep(750);
                 runIntake(0);
                 turnOneWheelDirection(-60, 0.6, 0.4, 0.005, 2, 'l');
+
             }
             /*else if (skystonePosition == 2)
             {
@@ -234,7 +236,16 @@ public class TankDriveAutoBlue extends LinearOpMode {
             output = Math.max(output, powerFloor);
             output = Math.min(output, powerCeiling);
             if (error < 0) output *= -1;
-            runMotor(output, output);
+
+            double currentAngle = imu.getAngularOrientation().firstAngle;
+            double raw = globalAngle - currentAngle;
+            if (raw > 180)
+                raw -= 360;
+            if (raw < -180)
+                raw += 360;
+            double fudgeFactor = 1 + raw / 60;
+
+            runMotor(output, fudgeFactor * output);
 
             errorPrev = error;
 
