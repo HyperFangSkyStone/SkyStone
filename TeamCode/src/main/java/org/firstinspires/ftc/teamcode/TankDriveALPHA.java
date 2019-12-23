@@ -45,6 +45,11 @@ public class TankDriveALPHA
     public static final double RCLAW_GRIP_POS = 0;
     public static final double RCLAW_RELEASE_POS = 0.18;
 
+    public static final double RED_DIVIDER_ONE = 150;
+    public static final double RED_DIVIDER_TWO = 320;
+    public static final double BLUE_DIVIDER_ONE = 260;
+    public static final double BLUE_DIVIDER_TWO = 440;
+
 
     HardwareMap hwMap =  null;
 
