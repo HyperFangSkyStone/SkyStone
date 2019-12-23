@@ -99,7 +99,14 @@ public class DoubleSkyStoneTest extends LinearOpMode {
                 //pidLinearMovement(-5, 0.75);
                 turnOneWheelDirection(84, 0.6, 0.4, 0.008, 5,'l'); //3.5
                 runIntake(0);
+                /*
+<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/DoubleSkyStoneTest.java
                 pidLinearMovement(60, 3);
+=======
+                pidLinearMovement(-10, 2);
+                turnOneWheelDirection(87, 0.6, 0.5, 0.005, 3.5,'l');
+                pidLinearMovement(60, 4);
+>>>>>>> 814b997749fed99400a39e8ecd9a1ae8e0c826a1:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TankDriveAutoBlue.java */
                 runIntake(1);
                 sleep(750);
                 runIntake(0);
