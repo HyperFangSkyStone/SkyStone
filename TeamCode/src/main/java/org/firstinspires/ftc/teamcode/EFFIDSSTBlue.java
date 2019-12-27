@@ -55,24 +55,20 @@ public class EFFIDSSTBlue extends LinearOpMode {
         tankDrive.init(hardwareMap);
         //waitForStart();
 
-        //VisionBitMapping vbm = new VisionBitMapping(this);
+        VisionBitMapping vbm = new VisionBitMapping(this);
 
         tankDrive.RightNugget.setPosition(tankDrive.ROUT);
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
         while (!isStarted())
         {
-            skystonePosition = 1;//vbm.skyStonePos('b');
-
-            /*
             double avgx = vbm.avgX();
             if (avgx < TankDriveALPHA.BLUE_DIVIDER_ONE) {
-                skystonePosition = 3;
+                skystonePosition = 1;
             } else if (avgx < TankDriveALPHA.BLUE_DIVIDER_TWO) {
                 skystonePosition = 2;
             } else {
-                skystonePosition = 1;
+                skystonePosition = 3;
             }
-             */
 
             telemetry.addData("Skystone Pos", skystonePosition);
             telemetry.update();
@@ -166,13 +162,13 @@ public class EFFIDSSTBlue extends LinearOpMode {
             }
             else if (skystonePosition == 1)
             {
-                turnOneWheelDirection(-15, 0.6, 0.5, 0.008, 5,'l');
+                turnOneWheelDirection(-10, 0.6, 0.5, 0.008, 2,'l');
                 runIntake(-1);
                 overshootLinearMovement(47,4);
-                pidLinearMovement(3, 1);
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
                 tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                pidLinearMovement(-6, 1);
+                pidLinearMovement(3, 1);
+                pidLinearMovement(-10, 1.2);
                 sleep(400);
                 //pidLinearMovement(-5, 0.75);
                 turnOneWheelDirection(-75, 0.6, 0.4, 0.008, 5); //3.5
