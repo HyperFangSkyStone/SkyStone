@@ -63,13 +63,14 @@ public class EFFIDSSTBlue extends LinearOpMode {
         {
             double avgx = vbm.avgX();
             if (avgx < TankDriveALPHA.BLUE_DIVIDER_ONE) {
-                skystonePosition = 1;
+                skystonePosition = 3;
             } else if (avgx < TankDriveALPHA.BLUE_DIVIDER_TWO) {
                 skystonePosition = 2;
             } else {
-                skystonePosition = 3;
+                skystonePosition = 1;
             }
 
+            //skystonePosition = 4;
             telemetry.addData("Skystone Pos", skystonePosition);
             telemetry.update();
             if (skystonePosition == 0) {
@@ -122,16 +123,17 @@ public class EFFIDSSTBlue extends LinearOpMode {
             }
             else if (skystonePosition == 2)
             {
+                turnOneWheelDirection(-2, 0.6, 0.5, 0.008, 2, 'l');
                 runIntake(-1);
-                overshootLinearMovement(47,4);
-                turnOneWheelDirection(-4, 0.6, 0.5, 0.008, 5,'l');
-                pidLinearMovement(3, 1);
+                overshootLinearMovement(44,4);
+                //turnOneWheelDirection(-4, 0.6, 0.5, 0.008, 5,'l');
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
                 tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                pidLinearMovement(-6, 1);
+                //pidLinearMovement(3, 1);
+                pidLinearMovement(-12, 2);
                 sleep(400);
                 //pidLinearMovement(-5, 0.75);
-                turnOneWheelDirection(-86, 0.6, 0.4, 0.008, 5); //3.5
+                turnOneWheelDirection(-88, 0.6, 0.4, 0.007, 5); //3.5
                 runIntake(0);
                 pidLinearMovement(-33, 3);
                 runIntake(-1);
@@ -201,6 +203,9 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 runIntake(0);
                 pidLinearMovement(20, 3);
 
+            }
+            else if (skystonePosition == 4) {
+                pidLinearMovement(100, 10);
             }
             else
             {
@@ -296,9 +301,9 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 raw -= 360;
             if (raw < -180)
                 raw += 360;
-            double fudgeFactor = 1;//1 + raw / 60;
+            double fudgeFactor = 1 - raw / 15;
 
-            runMotor(output, output);
+            runMotor(output * fudgeFactor, output);
 
             errorPrev = error;
 
@@ -314,6 +319,8 @@ public class EFFIDSSTBlue extends LinearOpMode {
             telemetry.addData("RM1", tankDrive.RM1.getCurrentPosition());
             telemetry.addData("LM0", tankDrive.LM0.getCurrentPosition());
             telemetry.addData("LM1", tankDrive.LM1.getCurrentPosition());
+            telemetry.addData("FF", fudgeFactor);
+            telemetry.addData("raw", raw);
             telemetry.addData("error", error);
             telemetry.addData("kP", kP);
             telemetry.addData("output", output);
@@ -359,7 +366,16 @@ public class EFFIDSSTBlue extends LinearOpMode {
             output = Math.max(output, powerFloor);
             output = Math.min(output, powerCeiling);
             if (error < 0) output *= -1;
-            tankDrive.runMotor(output, output);
+
+            double currentAngle = imu.getAngularOrientation().firstAngle;
+            double raw = globalAngle - currentAngle;
+            if (raw > 180)
+                raw -= 360;
+            if (raw < -180)
+                raw += 360;
+            double fudgeFactor = 1 - raw / 15;
+
+            runMotor(output * fudgeFactor, output);
 
             errorPrev = error;
             error = targetTick - tankDrive.getEncoderAvg(telemetry);
@@ -373,6 +389,8 @@ public class EFFIDSSTBlue extends LinearOpMode {
             telemetry.addData("RM1", tankDrive.RM1.getCurrentPosition());
             telemetry.addData("LM0", tankDrive.LM0.getCurrentPosition());
             telemetry.addData("LM1", tankDrive.LM1.getCurrentPosition());
+            telemetry.addData("FF", fudgeFactor);
+            telemetry.addData("raw", raw);
             telemetry.addData("error", error);
             telemetry.addData("kP", kP);
             telemetry.addData("output", output);
