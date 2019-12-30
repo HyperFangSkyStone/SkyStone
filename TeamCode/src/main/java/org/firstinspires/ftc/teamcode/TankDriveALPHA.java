@@ -28,28 +28,30 @@ public class TankDriveALPHA
     public Servo LeftNugget = null;
     public Servo RightFang = null;
     public Servo RightNugget = null;
-    public CRServo LeftBall = null; // Ball servos
-    public CRServo RightBall = null;
 
-    public Servo LeftClaw = null;
-    public Servo RightClaw = null;
-    public Servo PosClaw = null;
+    public Servo LeftGate = null;
+    public Servo RightGate = null;
+    public Servo Pusher = null;
+
+    public Servo VladTheImpaler = null;
 
     public static final double LOUT = 0.0;
     public static final double LIN = 1.0;
     public static final double ROUT = 1.0;
     public static final double RIN = 0.0;
 
-    public static final double LCLAW_GRIP_POS = 0.25;
-    public static final double LCLAW_RELEASE_POS = 0;
-    public static final double RCLAW_GRIP_POS = 0;
-    public static final double RCLAW_RELEASE_POS = 0.18;
-
     public static final double RED_DIVIDER_ONE = 150;
     public static final double RED_DIVIDER_TWO = 320;
     public static final double BLUE_DIVIDER_ONE = 260;
     public static final double BLUE_DIVIDER_TWO = 440;
 
+    public static final double RIGHT_GATE_DOWN_POS = 0;
+    public static final double LEFT_GATE_DOWN_POS = 0;
+    public static final double RIGHT_GATE_UP_POS = 0;
+    public static final double LEFT_GATE_UP_POS = 0;
+    public static final double PUSHER_DOWN_POS = 0;
+    public static final double PUSHER_UP_POS = 0;
+    public static final double VLAD_OPEN_POS = 0;
 
     HardwareMap hwMap =  null;
 
@@ -63,8 +65,8 @@ public class TankDriveALPHA
         LM1 = hwMap.get(DcMotor.class, "LM1");
         RM0 = hwMap.get(DcMotor.class, "RM0");
         RM1 = hwMap.get(DcMotor.class, "RM1");
-        //Lift1 = hwMap.get(DcMotor.class, "Lift1");
-        //Lift2 = hwMap.get(DcMotor.class, "Lift2");
+        Lift1 = hwMap.get(DcMotor.class, "Lift1");
+        Lift2 = hwMap.get(DcMotor.class, "Lift2");
 
         Intake1 = hwMap.get(DcMotor.class, "Intake1");
         Intake2 = hwMap.get(DcMotor.class, "Intake2");
@@ -73,18 +75,18 @@ public class TankDriveALPHA
         LeftNugget = hwMap.get(Servo.class, "LeftNugget");
         RightFang = hwMap.get(Servo.class, "RightFang");
         RightNugget = hwMap.get(Servo.class, "RightNugget");
-        /*LeftBall = hwMap.get(CRServo.class, "LeftBall");
-        RightBall = hwMap.get(CRServo.class, "RightBall");
-        LeftClaw = hwMap.get(Servo.class, "LeftClaw");
-        RightClaw = hwMap.get(Servo.class, "RightClaw");
-        PosClaw = hwMap.get(Servo.class, "PosClaw");*/
+
+        LeftGate = hwMap.get(Servo.class, "LeftGate");
+        RightGate = hwMap.get(Servo.class, "RightGate");
+        Pusher = hwMap.get(Servo.class, "Pusher");
+        VladTheImpaler = hwMap.get(Servo.class, "VladTheImpaler");
 
         LM0.setDirection(DcMotor.Direction.REVERSE);
         LM1.setDirection(DcMotor.Direction.REVERSE);
         RM0.setDirection(DcMotor.Direction.FORWARD);
         RM1.setDirection(DcMotor.Direction.FORWARD);
-        //Lift1.setDirection(DcMotor.Direction.FORWARD);
-        //Lift2.setDirection(DcMotor.Direction.REVERSE);
+        Lift1.setDirection(DcMotor.Direction.FORWARD);
+        Lift2.setDirection(DcMotor.Direction.REVERSE);
         Intake1.setDirection(DcMotor.Direction.REVERSE);
         Intake2.setDirection(DcMotor.Direction.FORWARD);
 
@@ -92,8 +94,8 @@ public class TankDriveALPHA
         LM1.setPower(0);
         RM0.setPower(0);
         RM1.setPower(0);
-        //Lift1.setPower(0);
-        //Lift2.setPower(0);
+        Lift1.setPower(0);
+        Lift2.setPower(0);
         Intake1.setPower(0);
         Intake2.setPower(0);
 
@@ -103,8 +105,8 @@ public class TankDriveALPHA
         RM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Intake2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //Lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //Lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         LM0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -112,15 +114,15 @@ public class TankDriveALPHA
         RM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Intake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //Lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //Lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         LM0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RM0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //Lift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //Lift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Lift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Lift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
     }
