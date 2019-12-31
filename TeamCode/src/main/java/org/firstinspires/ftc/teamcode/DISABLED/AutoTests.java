@@ -1,14 +1,18 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.DISABLED;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.PIDController;
+import org.firstinspires.ftc.teamcode.TankDriveALPHA;
+
 import java.util.ArrayList;
 
 @TeleOp(name="AutoTests", group="1")
-//@Disabled
+@Disabled
 public class AutoTests extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
@@ -67,7 +71,7 @@ public class AutoTests extends LinearOpMode {
         DcMotor RM0 = tankDrive.RM0;
         DcMotor RM1 = tankDrive.RM1;
 
-        tankDrive.PosClaw.setPosition(0);
+        //tankDrive.PosClaw.setPosition(0);
 
 
         waitForStart();
@@ -358,6 +362,7 @@ public class AutoTests extends LinearOpMode {
 
     }
 
+    /*
     private void claw() //manipulator claws opening and closing
     {
         if (gamepad2.b) {
@@ -480,5 +485,5 @@ public class AutoTests extends LinearOpMode {
         }
         tankDrive.Lift1.setPower(0);
         tankDrive.Lift2.setPower(0);
-    }
+    }*/
 }
