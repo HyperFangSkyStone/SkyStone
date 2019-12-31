@@ -167,8 +167,8 @@ public class TankDriveTeleop extends LinearOpMode {
 
             telemetry.addData("Current Mode: ", LM0 == tankDrive.LM0 ? "FORWARD!!!!" : "REVERSE!!!!");
 
-            if(gamepad1.back && gamepad1.start && gamepad2.back && gamepad2.start)
-                tankDrive.VladTheImpaler.setPosition(TankDriveALPHA.VLAD_OPEN_POS);
+            //if(gamepad1.back && gamepad1.start && gamepad2.back && gamepad2.start)
+                //tankDrive.VladTheImpaler.setPosition(TankDriveALPHA.VLAD_OPEN_POS);
 
             if (gamepad2.back) {
                 //resetLiftEncoder();
