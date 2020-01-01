@@ -33,7 +33,7 @@ public class TankDriveALPHA
     public Servo RightGate = null;
     public Servo Pusher = null;
 
-    public Servo VladTheImpaler = null;
+    //public Servo VladTheImpaler = null;
 
     public static final double LOUT = 0.0;
     public static final double LIN = 1.0;
