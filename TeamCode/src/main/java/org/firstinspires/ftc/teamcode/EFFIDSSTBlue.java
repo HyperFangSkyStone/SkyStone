@@ -123,7 +123,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
             }
             else if (skystonePosition == 2)
             {
-                turnOneWheelDirection(-2, 0.6, 0.5, 0.008, 2, 'l');
+                turnOneWheelDirection(-2, 0.6, 0.5, 0.008, 2, 'l'); // Collect skystone
                 runIntake(-1);
                 overshootLinearMovement(44,4);
                 //turnOneWheelDirection(-4, 0.6, 0.5, 0.008, 5,'l');
@@ -133,7 +133,8 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 pidLinearMovement(-12, 2);
                 sleep(400);
                 //pidLinearMovement(-5, 0.75);
-                turnOneWheelDirection(-88, 0.6, 0.4, 0.007, 5); //3.5
+
+                turnOneWheelDirection(-88, 0.6, 0.4, 0.007, 5); //3.5 // Deliver skystone
                 runIntake(0);
                 pidLinearMovement(-33, 3);
                 runIntake(-1);
@@ -141,7 +142,9 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 runIntake(0);
                 //turnOneWheelDirection(5, 0.6, 0.5, 0.005, 4,'l'); //changed
                 //turnOneWheelDirection(-5, 0.6, 0.5, 0.005, 0.5,'r'); //changed
+                turnOneWheelDirection(-2, 0.6, 0.4, 0.007, 2);
                 pidLinearMovement(72, 5);
+
                 tankDrive.RightNugget.setPosition(tankDrive.ROUT);
                 tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
                 turnOneWheelDirection(90, 0.6, 0.4, 0.008, 5); //2.5
@@ -301,13 +304,13 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 raw -= 360;
             if (raw < -180)
                 raw += 360;
-            double fudgeFactor = 1 - raw / 15;
+            double fudgeFactor = 1 - raw / 30;
 
-            runMotor(output * fudgeFactor, output);
+            runMotor(output, output * fudgeFactor);
 
             errorPrev = error;
 
-            double tempAvg = targetTick > 0 ? tankDrive.getEncoderAvg(telemetry) : -tankDrive.getEncoderAvg(telemetry);
+            double tempAvg = targetTick > 0 ? tankDrive.getEncoderAvg() : -tankDrive.getEncoderAvg();
             error = targetTick - tempAvg;
 
             timePrev = time;
