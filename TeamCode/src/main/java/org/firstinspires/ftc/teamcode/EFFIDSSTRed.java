@@ -126,16 +126,17 @@ public class EFFIDSSTRed extends LinearOpMode {
             }
             else if (skystonePosition == 2)
             {
-                runIntake(-1);
-                overshootLinearMovement(47,4);
-                turnOneWheelDirection(4, 0.6, 0.5, 0.008, 5);
+                tankDrive.Intake1.setPower(-1);
+                tankDrive.Intake2.setPower(-.8);
+                overshootLinearMovement(44,4);
                 pidLinearMovement(3, 1);
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
                 tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                pidLinearMovement(-6, 1);
+                runIntake(-1);
+                pidLinearMovement(-8, 1);
                 sleep(400);
                 //pidLinearMovement(-5, 0.75);
-                turnOneWheelDirection(86, 0.6, 0.4, 0.008, 5,'l'); //3.5
+                turnOneWheelDirection(90, 0.6, 0.4, 0.008, 5,'l'); //3.5
                 runIntake(0);
                 pidLinearMovement(-33, 3);
                 runIntake(-1);
@@ -143,7 +144,7 @@ public class EFFIDSSTRed extends LinearOpMode {
                 runIntake(0);
                 //turnOneWheelDirection(5, 0.6, 0.5, 0.005, 4,'l'); //changed
                 //turnOneWheelDirection(-5, 0.6, 0.5, 0.005, 0.5,'r'); //changed
-                pidLinearMovement(72, 5);
+                pidLinearMovement(60, 5);
                 tankDrive.RightNugget.setPosition(tankDrive.ROUT);
                 tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
                 turnOneWheelDirection(-90, 0.6, 0.4, 0.008, 5,'l'); //2.5
@@ -300,7 +301,7 @@ public class EFFIDSSTRed extends LinearOpMode {
                 raw -= 360;
             if (raw < -180)
                 raw += 360;
-            double fudgeFactor = 1;//1 + raw / 60;
+            double fudgeFactor = 1 - raw / 30;//1 + raw / 60;
 
             runMotor(output, output);
 
