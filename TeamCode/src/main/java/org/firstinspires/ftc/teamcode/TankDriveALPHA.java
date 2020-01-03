@@ -33,7 +33,7 @@ public class TankDriveALPHA
     public Servo RightGate = null;
     public Servo Pusher = null;
 
-    //public Servo VladTheImpaler = null;
+    public Servo VladTheImpaler = null;
 
     public static final double LOUT = 0.0;
     public static final double LIN = 1.0;
@@ -45,13 +45,15 @@ public class TankDriveALPHA
     public static final double BLUE_DIVIDER_ONE = 260;
     public static final double BLUE_DIVIDER_TWO = 440;
 
-    public static final double RIGHT_GATE_DOWN_POS = 0;
+    public static final double RIGHT_GATE_DOWN_POS = 0.62;
     public static final double LEFT_GATE_DOWN_POS = 1;
     public static final double RIGHT_GATE_UP_POS = 1;
     public static final double LEFT_GATE_UP_POS = 0;
-    public static final double PUSHER_DOWN_POS = 0;
-    public static final double PUSHER_UP_POS = 1;
-    public static final double VLAD_OPEN_POS = 1;
+    public static final double PUSHER_DOWN_POS = 0.15;
+    public static final double PUSHER_UP_POS = 0.65;
+    public static final double VLAD_OPEN_POS = 0.5;
+    public static final double VLAD_CLOSE_POS = 1;
+
 
     HardwareMap hwMap =  null;
 
@@ -79,7 +81,7 @@ public class TankDriveALPHA
         LeftGate = hwMap.get(Servo.class, "LeftGate");
         RightGate = hwMap.get(Servo.class, "RightGate");
         Pusher = hwMap.get(Servo.class, "Pusher");
-        //VladTheImpaler = hwMap.get(Servo.class, "VladTheImpaler");
+        VladTheImpaler = hwMap.get(Servo.class, "VladTheImpaler");
 
         LM0.setDirection(DcMotor.Direction.REVERSE);
         LM1.setDirection(DcMotor.Direction.REVERSE);
@@ -124,6 +126,7 @@ public class TankDriveALPHA
         Lift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Lift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        VladTheImpaler.setPosition(VLAD_CLOSE_POS);
 
     }
 

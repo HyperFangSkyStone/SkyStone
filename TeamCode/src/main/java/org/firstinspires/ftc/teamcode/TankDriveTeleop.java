@@ -152,11 +152,11 @@ public class TankDriveTeleop extends LinearOpMode {
             //for lift
 
             if (gamepad2.right_trigger > 0.1) {
-                tankDrive.Lift1.setPower(gamepad2.right_trigger);
-                tankDrive.Lift2.setPower(gamepad2.right_trigger);
+                tankDrive.Lift1.setPower(-gamepad2.right_trigger);
+                tankDrive.Lift2.setPower(-gamepad2.right_trigger);
             } else if (gamepad2.left_trigger > 0.1) {
-                tankDrive.Lift1.setPower(-gamepad2.left_trigger);
-                tankDrive.Lift2.setPower(-gamepad2.left_trigger);
+                tankDrive.Lift1.setPower(gamepad2.left_trigger);
+                tankDrive.Lift2.setPower(gamepad2.left_trigger);
             } else {
                 tankDrive.Lift1.setPower(0);
                 tankDrive.Lift2.setPower(0);
@@ -167,8 +167,8 @@ public class TankDriveTeleop extends LinearOpMode {
 
             telemetry.addData("Current Mode: ", LM0 == tankDrive.LM0 ? "FORWARD!!!!" : "REVERSE!!!!");
 
-            //if(gamepad1.back && gamepad1.start && gamepad2.back && gamepad2.start)
-                //tankDrive.VladTheImpaler.setPosition(TankDriveALPHA.VLAD_OPEN_POS);
+            if(gamepad1.back && gamepad1.start && gamepad2.back && gamepad2.start)
+                tankDrive.VladTheImpaler.setPosition(TankDriveALPHA.VLAD_OPEN_POS);
 
             if (gamepad2.back) {
                 //resetLiftEncoder();
