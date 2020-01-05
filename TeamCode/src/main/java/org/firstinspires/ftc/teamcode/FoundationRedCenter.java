@@ -62,7 +62,7 @@ public class FoundationRedCenter extends LinearOpMode {
             tankDrive.RightNugget.setPosition(tankDrive.RIN);
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
-            overshootLinearMovement(30,2);
+            overshootLinearMovement(34,2);
             //moveOvershoot(35, 2.5, 0.001, 0.3);
             freeze();
             sleep(250);
@@ -70,7 +70,7 @@ public class FoundationRedCenter extends LinearOpMode {
             sleep(500);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(-90, 1.0, 0.8, 0.005, 2.75);
+            turnOneWheelDirection(-90, 1.0, 0.9, 0.005, 10);
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
             tankDrive.fang(true);
             freeze();
