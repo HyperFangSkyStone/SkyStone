@@ -50,7 +50,9 @@ public class TankDriveALPHA
     public static final double RIGHT_GATE_UP_POS = 1;
     public static final double LEFT_GATE_UP_POS = 0;
     public static final double PUSHER_DOWN_POS = 0.13;
-    public static final double PUSHER_UP_POS = 0.68;
+    public static final double PUSHER_UP_POS = 1;
+    public static final double PUSHER_HOLD_POS = 0.5;
+    public static final double PUSHER_UNHOLD_POS = 0;
     public static final double VLAD_OPEN_POS = 0.5;
     public static final double VLAD_CLOSE_POS = 1;
 
