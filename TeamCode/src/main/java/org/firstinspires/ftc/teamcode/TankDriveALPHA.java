@@ -126,7 +126,7 @@ public class TankDriveALPHA
         Lift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Lift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        VladTheImpaler.setPosition(VLAD_CLOSE_POS);
+        //VladTheImpaler.setPosition(VLAD_CLOSE_POS);
 
     }
 
