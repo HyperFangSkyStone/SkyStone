@@ -82,6 +82,8 @@ public class FoundationBlueCenter extends LinearOpMode {
             pidLinearMovement(-20,3);
             turnOneWheelDirection(-11, 0.8, 0.5, 0.005, 2.5, 'l');
             pidLinearMovement(-18,3);
+            tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+            tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
             freeze();
             break;
         }
