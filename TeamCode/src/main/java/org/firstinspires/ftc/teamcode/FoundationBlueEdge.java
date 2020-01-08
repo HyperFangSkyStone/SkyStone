@@ -81,6 +81,8 @@ public class FoundationBlueEdge extends LinearOpMode {
             turnOneWheelDirection(45, 0.8,0.5, 0.005, 2.5, 'l');
             sleep(200);
             pidLinearMovement(-22,3);
+            tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+            tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
             freeze();
             break;
         }
