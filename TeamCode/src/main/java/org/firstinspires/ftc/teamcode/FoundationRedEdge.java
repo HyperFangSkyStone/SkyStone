@@ -58,6 +58,7 @@ public class FoundationRedEdge extends LinearOpMode {
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
         tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
         tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
+        tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
         waitForStart();
 
         while(isStarted())
