@@ -57,6 +57,7 @@ public class FoundationBlueEdge extends LinearOpMode {
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
         tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
         tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
+        tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
         waitForStart();
 
         while(isStarted())
@@ -64,7 +65,9 @@ public class FoundationBlueEdge extends LinearOpMode {
             tankDrive.RightNugget.setPosition(tankDrive.RIN);
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
+            runIntake(-1);
             overshootLinearMovement(30,2);
+            runIntake(0);
             //moveOvershoot(35, 2.5, 0.001, 0.3);
             freeze();
             sleep(250);
