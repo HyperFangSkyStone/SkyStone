@@ -59,6 +59,9 @@ public class EFFIDSSTBlue extends LinearOpMode {
 
         tankDrive.RightNugget.setPosition(tankDrive.ROUT);
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
+        tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
+        tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
+        tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
         while (!isStarted())
         {
             double avgx = vbm.avgX();
@@ -85,8 +88,8 @@ public class EFFIDSSTBlue extends LinearOpMode {
             if (skystonePosition == 3)
             {
                 turnOneWheelDirection(6, 0.6, 0.5, 0.005, 5);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
                 runIntake(-1);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
                 overshootLinearMovement(40,3.5);
                 sleep(400);
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
@@ -132,8 +135,8 @@ public class EFFIDSSTBlue extends LinearOpMode {
             else if (skystonePosition == 2)
             {
                 turnOneWheelDirection(-2, 0.6, 0.5, 0.008, 2, 'l'); // Collect skystone
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
                 runIntake(-1);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
                 overshootLinearMovement(40,4);
                 //turnOneWheelDirection(-4, 0.6, 0.5, 0.008, 5,'l');
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
@@ -185,8 +188,8 @@ public class EFFIDSSTBlue extends LinearOpMode {
             else if (skystonePosition == 1)
             {
                 turnOneWheelDirection(-14, 0.6, 0.35, 0.03, 3,'l');
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
                 runIntake(-1);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
                 overshootLinearMovement(47,4);
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
                 tankDrive.LeftNugget.setPosition(tankDrive.LIN);
