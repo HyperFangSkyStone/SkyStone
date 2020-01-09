@@ -57,6 +57,7 @@ public class FoundationBlueCenter extends LinearOpMode {
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
         tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
         tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
+        tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
         waitForStart();
 
         while(isStarted())
@@ -64,7 +65,9 @@ public class FoundationBlueCenter extends LinearOpMode {
             tankDrive.RightNugget.setPosition(tankDrive.RIN);
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
+            runIntake(-1);
             overshootLinearMovement(34,3);
+            runIntake(0);
             //moveOvershoot(35, 2.5, 0.001, 0.3);
             freeze();
             sleep(250);
