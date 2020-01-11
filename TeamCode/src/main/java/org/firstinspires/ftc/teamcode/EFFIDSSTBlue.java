@@ -87,7 +87,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
         {
             if (skystonePosition == 3)
             {
-                turnOneWheelDirection(6, 0.6, 0.5, 0.005, 5);
+                turnOneWheelDirection(6, 0.6, 0.5, 0.005, 2);
                 runIntake(-1);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
                 overshootLinearMovement(40,3.5);
@@ -95,7 +95,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
                 tankDrive.LeftNugget.setPosition(tankDrive.LIN);
                 pidLinearMovement(-8, 1);
-                turnOneWheelDirection(-96, 0.6, 0.4, 0.008, 5); //3.5
+                turnOneWheelDirection(-96, 0.6, 0.4, 0.008, 4); //3.5
                 runIntake(0);
 
                 pidLinearMovement(-30, 3);
@@ -108,7 +108,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 pidLinearMovement(60, 3.5);
                 tankDrive.RightNugget.setPosition(tankDrive.ROUT);
                 tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
-                turnOneWheelDirection(90, 0.6, 0.4, 0.008, 5); //2.5
+                turnOneWheelDirection(90, 0.6, 0.4, 0.008, 4); //2.5
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
                 runIntake(-1);
 
@@ -120,7 +120,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 runIntake(0);
                 //pidLinearMovement(-15, 1.5);
                 pidLinearMovement(-10, 1.5);
-                turnOneWheelDirection(-90, 0.6, 0.4, 0.008, 5); //2.5
+                turnOneWheelDirection(-90, 0.6, 0.4, 0.008, 4); //2.5
                 //pidLinearMovement(-10, 1.5);
                 pidLinearMovement(-55, 3);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
@@ -146,7 +146,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 sleep(400);
                 //pidLinearMovement(-5, 0.75);
 
-                turnOneWheelDirection(-88, 0.6, 0.35, 0.008, 3.5); //3.5 // Deliver skystone
+                turnOneWheelDirection(-88, 0.6, 0.4, 0.008, 3.5); //3.5 // Deliver skystone
                 runIntake(0);
                 pidLinearMovement(-33, 3);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
@@ -160,7 +160,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
 
                 tankDrive.RightNugget.setPosition(tankDrive.ROUT);
                 tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
-                turnOneWheelDirection(85, 0.6, 0.35, 0.008, 3.5); //2.5
+                turnOneWheelDirection(85, 0.6, 0.4, 0.008, 3.5); //2.5
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
                 runIntake(-1);
                 //overshootLinearMovement(15, 2.5);
@@ -173,7 +173,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 //pidLinearMovement(-15, 1.5);
                 //pidLinearMovement(-10, 1.5)
 
-                turnOneWheelDirection(-81, 0.6, 0.3, 0.008, 4); //2.5
+                turnOneWheelDirection(-81, 0.6, 0.4, 0.008, 4); //2.5
                 //pidLinearMovement(-10, 1.5);
                 pidLinearMovement(-54, 3);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
@@ -187,7 +187,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
             }
             else if (skystonePosition == 1)
             {
-                turnOneWheelDirection(-14, 0.6, 0.35, 0.03, 3,'l');
+                turnOneWheelDirection(-14, 0.6, 0.4, 0.03, 3,'l');
                 runIntake(-1);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
                 overshootLinearMovement(47,4);
@@ -210,7 +210,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 pidLinearMovement(57, 5);
                 tankDrive.RightNugget.setPosition(tankDrive.ROUT);
                 tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
-                turnOneWheelDirection(45, 0.6, 0.35, 0.008, 4); //2.5
+                turnOneWheelDirection(45, 0.6, 0.4, 0.008, 4); //2.5
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
                 runIntake(-1);
                 //overshootLinearMovement(15, 2.5);
@@ -223,7 +223,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
 
                 //pidLinearMovement(-15, 1.5);
                 pidLinearMovement(-12, 2);
-                turnOneWheelDirection(-45, 0.6, 0.35, 0.008, 5); //2.5
+                turnOneWheelDirection(-45, 0.6, 0.4, 0.008, 5); //2.5
                 //pidLinearMovement(-10, 1.5)
                 pidLinearMovement(-55, 3);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
