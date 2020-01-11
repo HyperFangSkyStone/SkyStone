@@ -65,7 +65,6 @@ public class FoundationBlueNoPark extends LinearOpMode {
             tankDrive.RightNugget.setPosition(tankDrive.RIN);
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
-            runIntake(-1);
             overshootLinearMovement(30,2);
             //moveOvershoot(35, 2.5, 0.001, 0.3);
             runIntake(0);
@@ -75,12 +74,14 @@ public class FoundationBlueNoPark extends LinearOpMode {
             sleep(500);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(90, 1.0, 0.9, 0.005, 10, 'l');
+            turnOneWheelDirection(90, 1.0, 1, 0.005, 10, 'l');
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
             tankDrive.fang(true);
             freeze();
             pidLinearMovement(35,2);
+            runIntake(1);
             freeze();
+            sleep(500);
             break;
         }
     }
