@@ -395,7 +395,7 @@ public class TankDriveTeleop extends LinearOpMode {
         else
             tankDrive.Intake1.setPower(0);
 
-        if ((gamepad2.left_bumper && gamepad2.right_bumper) || (gamepad2.left_stick_button && gamepad2.right_stick_button)) {
+        if (gamepad2.left_stick_button && gamepad2.right_stick_button) {
             lIntakeServoPosition = 1;
             rIntakeServoPosition = 1;
             tankDrive.RightNugget.setPosition(tankDrive.ROUT);
