@@ -45,7 +45,7 @@ public class TankDriveALPHA
     public static final double BLUE_DIVIDER_ONE = 260;
     public static final double BLUE_DIVIDER_TWO = 440;
 
-    public static final double RIGHT_GATE_DOWN_POS = 0.62;
+    public static final double RIGHT_GATE_DOWN_POS = 0.57;
     public static final double LEFT_GATE_DOWN_POS = 1;
     public static final double RIGHT_GATE_UP_POS = 1;
     public static final double LEFT_GATE_UP_POS = 0;
@@ -271,6 +271,14 @@ public class TankDriveALPHA
             LeftFang.setPosition(0);
             RightFang.setPosition(1);
         }
+    }
+
+    public void antimony(double pow)
+    {
+        LM0.setPower(pow);
+        LM1.setPower(pow);
+        RM0.setPower(-pow);
+        RM1.setPower(-pow);
     }
 }
 
