@@ -65,9 +65,7 @@ public class FoundationBlueEdge extends LinearOpMode {
             tankDrive.RightNugget.setPosition(tankDrive.RIN);
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
-            runIntake(-1);
             overshootLinearMovement(30,2);
-            runIntake(0);
             //moveOvershoot(35, 2.5, 0.001, 0.3);
             freeze();
             sleep(250);
@@ -75,11 +73,12 @@ public class FoundationBlueEdge extends LinearOpMode {
             sleep(500);
             freeze();
             //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(90, 1.0, 0.9, 0.005, 10, 'l');
+            turnOneWheelDirection(90, 1.0, 1, 0.005, 8, 'l');
+            //turnOneWheelDirection(0, 1.0, 1, 0.005, 8, 'r');
             //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
             tankDrive.fang(true);
             freeze();
-            pidLinearMovement(35,2);
+            pidLinearMovement(35,4);
             freeze();
             turnOneWheelDirection(-60, 0.8, 0.5, 0.005, 2.5);
             sleep(200);
@@ -88,7 +87,9 @@ public class FoundationBlueEdge extends LinearOpMode {
             pidLinearMovement(-22,3);
             tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
             tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
+            runIntake(1);
             freeze();
+            sleep(500);
             break;
         }
     }
@@ -525,6 +526,66 @@ public class FoundationBlueEdge extends LinearOpMode {
                 tankDrive.RM0.setPower(leftPower);
                 tankDrive.RM1.setPower(leftPower);
             }
+            //tankDrive.RM0.setPower(rightPower);
+            //tankDrive.RM1.setPower(rightPower);
+        }
+
+        // turn the motors off.
+        tankDrive.LM0.setPower(0);
+        tankDrive.LM1.setPower(0);
+        tankDrive.RM0.setPower(0);
+        tankDrive.RM1.setPower(0);
+
+        // wait for rotation to stop.
+        sleep(1000);
+    }
+
+    private void antimonicTurn(int initial, double powerCeiling, double powerFloor, double kp, double t)
+    {
+        lastAngles = imu.getAngularOrientation();
+        double currentAngle = lastAngles.firstAngle;
+        ElapsedTime clock = new ElapsedTime();
+        clock.reset();
+        globalAngle += initial;
+        if(globalAngle > 180)
+            globalAngle -=360;
+        if (globalAngle < -180)
+            globalAngle += 360;
+        double  leftPower, rightPower;
+
+        // restart imu movement tracking.
+        //resetAngle();
+
+        telemetry.addData("currentAngle", currentAngle);
+        telemetry.update();
+        // getAngle() returns + when rotating counter clockwise (left) and - when rotating
+        // clockwise (right).
+
+        // set power to rotate.
+
+        // rotate until turn is completed.
+        while (clock.seconds() < t && Math.abs(globalAngle - imu.getAngularOrientation().firstAngle) > 3 && opModeIsActive())
+        {
+            lastAngles = imu.getAngularOrientation();
+            currentAngle = lastAngles.firstAngle;
+
+            telemetry.addData("CurrentAngle", currentAngle);
+            telemetry.update();
+
+            double error = globalAngle - currentAngle;
+            if (error > 180)
+                error -= 360;
+            if (error < -180)
+                error += 360;
+            double rawPower = Math.abs(error) * kp;
+            rawPower = Math.max(rawPower, powerFloor);
+            rawPower = Math.min(rawPower, powerCeiling);
+            leftPower = rawPower;
+
+            if (error < 0)
+                leftPower *= -1;
+
+            tankDrive.antimony(leftPower);
             //tankDrive.RM0.setPower(rightPower);
             //tankDrive.RM1.setPower(rightPower);
         }
