@@ -71,30 +71,35 @@ public class TankDriveTeleop extends LinearOpMode {
 
 
         while (opModeIsActive()) {
-            /*if (gamepad1.left_bumper)
-            {
-                double forwardPower = -gamepad1.left_stick_y;
-                double turnPower = gamepad1.left_stick_x;
-                tankDrive.LM0.setPower(forwardPower + turnPower);
-                tankDrive.LM1.setPower(forwardPower + turnPower);
-                tankDrive.RM0.setPower(forwardPower - turnPower);
-                tankDrive.RM1.setPower(forwardPower - turnPower);
-            }*/
-            if (Math.abs(gamepad1.left_stick_y) > 0.2) {
-                LM0.setPower(-gamepad1.left_stick_y);
-                LM1.setPower(-gamepad1.left_stick_y);
+
+            if (gamepad1.right_trigger > 0.2) {
+                LM0.setPower(gamepad1.right_trigger / 2);
+                LM1.setPower(gamepad1.right_trigger / 2);
+                RM0.setPower(gamepad1.right_trigger / 2);
+                RM1.setPower(gamepad1.right_trigger / 2);
+            } else if (gamepad1.left_trigger > 0.2) {
+                LM0.setPower(-gamepad1.left_trigger / 2);
+                LM1.setPower(-gamepad1.left_trigger / 2);
+                RM0.setPower(-gamepad1.left_trigger / 2);
+                RM1.setPower(-gamepad1.left_trigger / 2);
             } else {
-                LM0.setPower(0);
-                LM1.setPower(0);
+                if (Math.abs(gamepad1.left_stick_y) > 0.2) {
+                    LM0.setPower(-gamepad1.left_stick_y);
+                    LM1.setPower(-gamepad1.left_stick_y);
+                } else {
+                    LM0.setPower(0);
+                    LM1.setPower(0);
+                }
+
+                if (Math.abs(gamepad1.right_stick_y) > 0.2) {
+                    RM0.setPower(-gamepad1.right_stick_y);
+                    RM1.setPower(-gamepad1.right_stick_y);
+                } else {
+                    RM0.setPower(0);
+                    RM1.setPower(0);
+                }
             }
 
-            if (Math.abs(gamepad1.right_stick_y) > 0.2) {
-                RM0.setPower(-gamepad1.right_stick_y);
-                RM1.setPower(-gamepad1.right_stick_y);
-            } else {
-                RM0.setPower(0);
-                RM1.setPower(0);
-            }
 
             /*
             if (gamepad2.left_stick_y > 0.2 && gamepad2.right_stick_y > 0.2) // While intaking blocks, aligns claw and lowers lift to correct height
@@ -139,15 +144,6 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.fang(false);
             }
 
-
-            if (gamepad2.left_bumper) {
-                tankDrive.Intake1.setPower(1);
-                tankDrive.Intake2.setPower(-0.5);
-            } else if (gamepad2.right_bumper) {
-                tankDrive.Intake2.setPower(1);
-                tankDrive.Intake1.setPower(-0.5);
-            } else
-                intake();
 
             //for lift
 
