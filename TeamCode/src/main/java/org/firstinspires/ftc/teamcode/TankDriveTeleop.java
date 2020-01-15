@@ -144,6 +144,8 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.fang(false);
             }
 
+            intake();
+            
 
             //for lift
 
