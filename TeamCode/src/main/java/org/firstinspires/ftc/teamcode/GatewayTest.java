@@ -52,7 +52,7 @@ public class GatewayTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("RightGate:", tankDrive.RightGate.getPosition());
-            telemetry.addData("LeftGate:", tankDrive.LeftGate.getPosition());
+            //telemetry.addData("LeftGate:", //tankDrive.LeftGate.getPosition());
             telemetry.addData("Pusher:", tankDrive.Pusher.getPosition());
             telemetry.addData("Vlad:", tankDrive.VladTheImpaler.getPosition());
             telemetry.update();
