@@ -59,7 +59,7 @@ public class EFFIDSSTRed extends LinearOpMode {
 
         tankDrive.RightNugget.setPosition(tankDrive.ROUT);
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
-        tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
+        //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
         tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
         tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
         while (!isStarted())
@@ -132,7 +132,7 @@ public class EFFIDSSTRed extends LinearOpMode {
                 runIntake(0);
                 pidLinearMovement(21, 2.3);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
-                tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
                 tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
             }
             else if (skystonePosition == 2)
@@ -184,7 +184,7 @@ public class EFFIDSSTRed extends LinearOpMode {
                 sleep(750);
                 runIntake(0);
                 pidLinearMovement(17, 3);
-                tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
                 tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
             }
@@ -234,7 +234,7 @@ public class EFFIDSSTRed extends LinearOpMode {
                 sleep(750);
                 runIntake(0);
                 pidLinearMovement(20, 3);
-                tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
                 tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
 
