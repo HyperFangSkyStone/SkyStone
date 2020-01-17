@@ -32,6 +32,7 @@ public class TankDriveALPHA
     public Servo LeftGate = null;
     public Servo RightGate = null;
     public Servo Pusher = null;
+    public Servo Capstone = null;
 
     public Servo VladTheImpaler = null;
 
@@ -53,6 +54,9 @@ public class TankDriveALPHA
     public static final double PUSHER_UP_POS = 1;
     public static final double PUSHER_HOLD_POS = 0.5;
     public static final double PUSHER_UNHOLD_POS = 0;
+
+    public static final double CAPSTONE_HOLD_POS = 0;
+    public static final double CAPSTONE_DEPLOY_POS = 1;
     public static final double VLAD_OPEN_POS = 0.5;
     public static final double VLAD_CLOSE_POS = 1;
 
@@ -80,9 +84,10 @@ public class TankDriveALPHA
         RightFang = hwMap.get(Servo.class, "RightFang");
         RightNugget = hwMap.get(Servo.class, "RightNugget");
 
-        LeftGate = hwMap.get(Servo.class, "LeftGate");
+        //LeftGate = hwMap.get(Servo.class, "LeftGate");
         RightGate = hwMap.get(Servo.class, "RightGate");
         Pusher = hwMap.get(Servo.class, "Pusher");
+        Capstone = hwMap.get(Servo.class, "Capstone");
         VladTheImpaler = hwMap.get(Servo.class, "VladTheImpaler");
 
         LM0.setDirection(DcMotor.Direction.REVERSE);
