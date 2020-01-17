@@ -163,7 +163,7 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.Lift1.setPower(-0.7);
                 tankDrive.Lift2.setPower(-0.7);
             } else if (oohOohAhAhMode) {
-                    tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
+                    ////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
                     tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
                     tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
                     oohOohAhAhMode = false;
@@ -222,10 +222,10 @@ public class TankDriveTeleop extends LinearOpMode {
             }
 
             if (gamepad2.y) {
-                tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
+                ////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
                 tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
             } else if (gamepad2.x) {
-                tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+                ////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
                 tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
             }
 
@@ -273,6 +273,13 @@ public class TankDriveTeleop extends LinearOpMode {
                     tankDrive.LeftClaw.setPosition(TankDriveALPHA.LCLAW_RELEASE_POS);
                 }
             }*/
+
+            if (gamepad2.dpad_up) {
+                tankDrive.Capstone.setPosition(TankDriveALPHA.CAPSTONE_DEPLOY_POS);
+            } else if (gamepad2.dpad_down) {
+                tankDrive.Capstone.setPosition(TankDriveALPHA.CAPSTONE_HOLD_POS);
+            }
+
 
             telemetry.update();
 
@@ -472,6 +479,9 @@ public class TankDriveTeleop extends LinearOpMode {
 
     private void setLiftToZero() {
 
+        tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
+        //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+        tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
 
         double targ = 0;
         double kp = 0.003;
