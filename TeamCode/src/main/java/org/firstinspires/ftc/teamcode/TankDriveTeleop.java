@@ -52,6 +52,9 @@ public class TankDriveTeleop extends LinearOpMode {
     double conversionFunction = Math.pow(10, -30);
 
     ElapsedTime et = new ElapsedTime();
+    //ElapsedTime oohoohahahTimer = new ElapsedTime();
+
+    boolean oohOohAhAhMode = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -155,6 +158,15 @@ public class TankDriveTeleop extends LinearOpMode {
             } else if (gamepad2.left_trigger > 0.1) {
                 tankDrive.Lift1.setPower(gamepad2.left_trigger);
                 tankDrive.Lift2.setPower(gamepad2.left_trigger);
+            } else if (gamepad2.right_bumper) {
+                oohOohAhAhMode = true;
+                tankDrive.Lift1.setPower(-0.7);
+                tankDrive.Lift2.setPower(-0.7);
+            } else if (oohOohAhAhMode) {
+                    tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
+                    tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
+                    tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
+                    oohOohAhAhMode = false;
             } else {
                 tankDrive.Lift1.setPower(0);
                 tankDrive.Lift2.setPower(0);
@@ -247,6 +259,10 @@ public class TankDriveTeleop extends LinearOpMode {
                 //liftererPID(towerPosition);
             }
 
+
+            if (gamepad2.left_bumper) {
+                setLiftToZero();
+            }
             /*
             if (gamepad2.dpad_down) {
                 tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_GRIP_POS);

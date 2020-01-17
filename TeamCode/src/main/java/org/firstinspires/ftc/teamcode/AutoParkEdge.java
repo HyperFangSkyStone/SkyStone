@@ -119,7 +119,7 @@ public class AutoParkEdge extends LinearOpMode {
             //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
 
             p = Math.abs(error/targetTick * kP);
-            d = 0; //((error - errorPrev) / (time - timePrev)) / 1000 /targetTick * kD;
+            d = 0;//((error - errorPrev) / (time - timePrev)) / 1000 /targetTick * kD;
 
             output = p + d;
             output = Math.max(output, powerFloor);
@@ -528,4 +528,65 @@ public class AutoParkEdge extends LinearOpMode {
         tankDrive.Intake1.setPower(input);
         tankDrive.Intake2.setPower(input);
     }
+
+    public void autoPIDLinearMovement(double distance, double timeframe)
+    {
+        double conversionIndex = 537.6/((26.0/20.0)*90.0* Math.PI / 25.4); // Ticks per inch
+        double timeFrame = timeframe; //distance * distanceTimeIndex;
+        double errorMargin = 5;
+        double powerFloor = 0.25;
+        double powerCeiling = 0.8;
+
+        clock.reset();
+        tankDrive.resetEncoders();
+
+        double targetTick = distance / MOTOR_TO_INCHES * NUMBER_OF_ENCODER_TICKS_PER_REVOLUTION *50/47;
+        telemetry.addData("ticks", targetTick);
+        telemetry.update();
+        double error = targetTick;
+        double errorPrev = 0;
+        double kP = 1.5;
+        double kI = 0.48;
+        double kD = 0.019;
+        double p, i, d;
+        double output;
+        double time = clock.seconds();
+        double timePrev = 0;
+
+        while (clock.seconds() < timeFrame && Math.abs(error) > errorMargin && opModeIsActive())
+        {
+            //output = linearPID.PIDOutput(targetTick,averageEncoderTick(),clock.seconds());
+
+            p = Math.abs(error/targetTick * kP);
+            i = kI * error * (time - timePrev);
+            d = ((error - errorPrev) / (time - timePrev)) / 1000 /targetTick * kD;
+
+            output = p + i + d;
+            output = Math.max(output, powerFloor);
+            output = Math.min(output, powerCeiling);
+            if (error < 0) output *= -1;
+            runMotor(output, output);
+
+            errorPrev = error;
+
+            double tempAvg = targetTick > 0 ? tankDrive.getEncoderAvg(telemetry) : -tankDrive.getEncoderAvg(telemetry);
+            error = targetTick - tempAvg;
+
+            timePrev = time;
+            time = clock.seconds();
+
+            telemetry.addData("TargetPosition", targetTick);
+            telemetry.addData("CurrentPosition", averageEncoderTick());
+            telemetry.addData("RM0", tankDrive.RM0.getCurrentPosition());
+            telemetry.addData("RM1", tankDrive.RM1.getCurrentPosition());
+            telemetry.addData("LM0", tankDrive.LM0.getCurrentPosition());
+            telemetry.addData("LM1", tankDrive.LM1.getCurrentPosition());
+            telemetry.addData("error", error);
+            telemetry.addData("kP", kP);
+            telemetry.addData("output", output);
+            telemetry.update();
+        }
+        runMotor(0,0);
+    }
+
 }
