@@ -59,7 +59,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
 
         tankDrive.RightNugget.setPosition(tankDrive.ROUT);
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
-        tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
+        //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
         tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
         tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
         while (!isStarted())
@@ -128,7 +128,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 sleep(750);
                 runIntake(0);
                 pidLinearMovement(24, 2.3);
-                tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
                 tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
             }
@@ -181,7 +181,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 sleep(750);
                 runIntake(0);
                 pidLinearMovement(20, 3);
-                tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
                 tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
             }
@@ -231,7 +231,7 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 sleep(750);
                 runIntake(0);
                 pidLinearMovement(20, 3);
-                tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
                 tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
 
