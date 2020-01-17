@@ -56,7 +56,7 @@ public class FoundationRedEdge extends LinearOpMode {
 
         tankDrive.RightNugget.setPosition(tankDrive.ROUT);
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
-        tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
+        //////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
         tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
         tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
         waitForStart();
@@ -87,7 +87,7 @@ public class FoundationRedEdge extends LinearOpMode {
             turnOneWheelDirection(-45, 0.8,0.5, 0.005, 2.5);
             sleep(200);
             pidLinearMovement(-22,3);
-            tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+            ////////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
             tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
             runIntake(1);
             freeze();
