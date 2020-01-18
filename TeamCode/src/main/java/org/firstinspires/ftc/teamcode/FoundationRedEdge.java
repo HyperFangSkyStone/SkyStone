@@ -63,26 +63,32 @@ public class FoundationRedEdge extends LinearOpMode {
 
         while(isStarted())
         {
-            tankDrive.RightNugget.setPosition(tankDrive.RIN);
+            tankDrive.RightNugget.setPosition(tankDrive.RIN); // Movement 1
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
             turnOneWheelDirection(90, 0.6, 0.6, 0.008,5, 'l');
             turnOneWheelDirection(-90, 0.6, 0.6, 0.008,5);
             overshootLinearMovement(20,3);
-            //moveOvershoot(35, 2.5, 0.001, 0.3);
             freeze();
             sleep(250);
             tankDrive.fang(false);
             sleep(500);
             freeze();
-            //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(-90, 1.0, 1, 0.0111, 10);
-            //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
+
+
+
+            turnOneWheelDirection(-90, 1.0, 1, 0.0111, 10); // Movement 2
             tankDrive.fang(true);
             freeze();
-            pidLinearMovement(35,2);
+
+
+
+            pidLinearMovement(35,2); // Movement 3
             freeze();
-            turnOneWheelDirection(60, 0.8, 0.5, 0.005, 2.5, 'l');
+
+
+
+            turnOneWheelDirection(60, 0.8, 0.5, 0.005, 2.5, 'l'); // Movement 4
             sleep(200);
             turnOneWheelDirection(-45, 0.8,0.5, 0.005, 2.5);
             sleep(200);
