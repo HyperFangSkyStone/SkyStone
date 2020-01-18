@@ -85,188 +85,17 @@ public class EFFIDSSTBlue extends LinearOpMode {
         waitForStart();
         if(!isStopRequested())
         {
-            if (skystonePosition == 3)
-            {
-                turnOneWheelDirection(6, 0.6, 0.5, 0.005, 2);
-                runIntake(-1);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
-                overshootLinearMovement(40,3.5);
-                sleep(400);
-                tankDrive.RightNugget.setPosition(tankDrive.RIN);
-                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                pidLinearMovement(-8, 1);
-                turnOneWheelDirection(-96, 0.6, 0.4, 0.008, 4); //3.5
-                runIntake(0);
-
-                pidLinearMovement(-30, 3);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
-                runIntake(-1);
-                sleep(750);
-                runIntake(0);
-                //turnOneWheelDirection(5, 0.6, 0.5, 0.005, 4,'l'); //changed
-                //turnOneWheelDirection(-5, 0.6, 0.5, 0.005, 0.5,'r'); //changed
-                pidLinearMovement(60, 3.5);
-                tankDrive.RightNugget.setPosition(tankDrive.ROUT);
-                tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
-                turnOneWheelDirection(90, 0.6, 0.4, 0.008, 4); //2.5
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
-                runIntake(-1);
-
-                //overshootLinearMovement(15, 2.5);
-                overshootLinearMovement(15, 2);
-                tankDrive.RightNugget.setPosition(tankDrive.RIN);
-                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                sleep(750);
-                runIntake(0);
-                //pidLinearMovement(-15, 1.5);
-                pidLinearMovement(-10, 1.5);
-                turnOneWheelDirection(-90, 0.6, 0.4, 0.008, 4); //2.5
-                //pidLinearMovement(-10, 1.5);
-                pidLinearMovement(-55, 3);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
-                runIntake(-1);
-                sleep(750);
-                runIntake(0);
-                pidLinearMovement(24, 2.3);
-                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
-                tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
-            }
-            else if (skystonePosition == 2)
-            {
-                turnOneWheelDirection(-2, 0.6, 0.5, 0.008, 2, 'l'); // Collect skystone
-                runIntake(-1);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
-                overshootLinearMovement(40,4);
-                //turnOneWheelDirection(-4, 0.6, 0.5, 0.008, 5,'l');
-                tankDrive.RightNugget.setPosition(tankDrive.RIN);
-                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                //pidLinearMovement(3, 1);
-                pidLinearMovement(-5, 2);
-                sleep(400);
-                //pidLinearMovement(-5, 0.75);
-
-                turnOneWheelDirection(-88, 0.6, 0.4, 0.008, 3.5); //3.5 // Deliver skystone
-                runIntake(0);
-                pidLinearMovement(-33, 3);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
-                runIntake(-1);
-                sleep(750);
-                runIntake(0);
-                //turnOneWheelDirection(5, 0.6, 0.5, 0.005, 4,'l'); //changed
-                //turnOneWheelDirection(-5, 0.6, 0.5, 0.005, 0.5,'r'); //changed
-                //turnOneWheelDirection(-2, 0.6, 0.4, 0.007, 2);
-                pidLinearMovement(60, 5);
-
-                tankDrive.RightNugget.setPosition(tankDrive.ROUT);
-                tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
-                turnOneWheelDirection(85, 0.6, 0.4, 0.008, 3.5); //2.5
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
-                runIntake(-1);
-                //overshootLinearMovement(15, 2.5);
-                overshootLinearMovement(14, 3);
-                tankDrive.RightNugget.setPosition(tankDrive.RIN);
-                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                sleep(750);
-                runIntake(0);
-                pidLinearMovement(-4, 1.5);
-                //pidLinearMovement(-15, 1.5);
-                //pidLinearMovement(-10, 1.5)
-
-                turnOneWheelDirection(-81, 0.6, 0.4, 0.008, 4); //2.5
-                //pidLinearMovement(-10, 1.5);
-                pidLinearMovement(-54, 3);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
-                runIntake(-1);
-                sleep(750);
-                runIntake(0);
-                pidLinearMovement(20, 3);
-                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
-                tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
-            }
-            else if (skystonePosition == 1)
-            {
-                turnOneWheelDirection(-14, 0.6, 0.4, 0.03, 3,'l');
-                runIntake(-1);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
-                overshootLinearMovement(47,4);
-                tankDrive.RightNugget.setPosition(tankDrive.RIN);
-                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                pidLinearMovement(-16, 1.2);
-                sleep(400);
-                //pidLinearMovement(-5, 0.75);
-                turnOneWheelDirection(-71, 0.6, 0.4, 0.008, 5); //3.5
-                runIntake(0);
-
-                pidLinearMovement(-37, 3);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
-                runIntake(-1);
-                sleep(750);
-                runIntake(0);
-                //turnOneWheelDirection(5, 0.6, 0.5, 0.005, 4,'l'); //changed
-                //turnOneWheelDirection(-5, 0.6, 0.5, 0.005, 0.5,'r'); //changed
-
-                pidLinearMovement(57, 5);
-                tankDrive.RightNugget.setPosition(tankDrive.ROUT);
-                tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
-                turnOneWheelDirection(45, 0.6, 0.4, 0.008, 4); //2.5
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
-                runIntake(-1);
-                //overshootLinearMovement(15, 2.5);
-                pidLinearMovement(18, 1.5);
-                tankDrive.RightNugget.setPosition(tankDrive.RIN);
-                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                //pidLinearMovement(3, 1);
-                sleep(1000);
-                runIntake(0);
-
-                //pidLinearMovement(-15, 1.5);
-                pidLinearMovement(-12, 2);
-                turnOneWheelDirection(-45, 0.6, 0.4, 0.008, 5); //2.5
-                //pidLinearMovement(-10, 1.5)
-                pidLinearMovement(-55, 3);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
-                runIntake(-1);
-                sleep(750);
-                runIntake(0);
-                pidLinearMovement(20, 3);
-                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
-                tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
-                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
-
-            }
-            else if (skystonePosition == 4) {
+            if (skystonePosition == 4) {
                 pidLinearMovement(100, 10);
+            } else {
+                collection1(skystonePosition);
+
+                delivery1(skystonePosition);
+
+                collection2(skystonePosition);
+
+                delivery2(skystonePosition);
             }
-            else
-            {
-                telemetry.addData("ERROR", "SkyStone Not Found.");
-                telemetry.update();
-                freeze();
-            }
-            /*
-            skystonePosition = 0;
-            runIntake(-1);
-            movethForward(-40, 3.5, 0.001, 0.8, 0.3);
-            freeze();
-            runIntake(0);
-            movethForward(15, 2, 0.001, 0.4, 0.25);
-            claw(true);
-            movethForward(80, 2.5, 0.001, 0.6);
-            turnethDirection(-90,0.4, 0.25, 0.005, 4);
-            movethForward(30, 2.5, 0.001, 0.6);
-            sleep(500);
-            claw(false);
-            freeze();
-            sleep(2000);
-            movethForward(-13, 2.5, 0.001, 0.6);
-            turnOneWheelDirection(90, 0.5, 0.3, 0.005, 4);
-            freeze();
-            sleep(1000);
-            claw(true);
-            movethForward(-40, 2.5, 0.005, 0.6);
-            freeze();*/
         }
         freeze();
     }
@@ -594,4 +423,186 @@ public class EFFIDSSTBlue extends LinearOpMode {
         // wait for rotation to stop.
         sleep(1000);
     }
+
+
+    private void collection1(int skystonePosition) {
+        switch (skystonePosition) {
+            case 1:
+                turnOneWheelDirection(-14, 0.6, 0.4, 0.03, 3,'l');
+                runIntake(-1);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
+                overshootLinearMovement(47,4);
+                tankDrive.RightNugget.setPosition(tankDrive.RIN);
+                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
+                sleep(400);
+                break;
+
+
+
+            case 2:
+                turnOneWheelDirection(-2, 0.6, 0.5, 0.008, 2, 'l');
+                runIntake(-1);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
+                overshootLinearMovement(40,4);
+                tankDrive.RightNugget.setPosition(tankDrive.RIN);
+                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
+                sleep(400);
+                break;
+
+
+
+            case 3:
+                turnOneWheelDirection(6, 0.6, 0.5, 0.005, 2);
+                runIntake(-1);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
+                overshootLinearMovement(40,3.5);
+                sleep(200);
+                tankDrive.RightNugget.setPosition(tankDrive.RIN);
+                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
+                sleep(400);
+                break;
+        }
+    }
+
+    private void delivery1(int skystonePosition) {
+        switch (skystonePosition) {
+            case 1:
+                pidLinearMovement(-16, 1.2);
+                turnOneWheelDirection(-71, 0.6, 0.4, 0.008, 5); //3.5
+                runIntake(0);
+                pidLinearMovement(-37, 3);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
+                runIntake(-1);
+                sleep(750);
+                runIntake(0);
+                break;
+
+
+
+            case 2:
+                pidLinearMovement(-5, 2);
+                turnOneWheelDirection(-88, 0.6, 0.4, 0.008, 3.5); //3.5 // Deliver skystone
+                runIntake(0);
+                pidLinearMovement(-33, 3);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
+                runIntake(-1);
+                sleep(750);
+                runIntake(0);
+                break;
+
+
+
+            case 3:
+                pidLinearMovement(-8, 1);
+                turnOneWheelDirection(-96, 0.6, 0.4, 0.008, 4); //3.5
+                runIntake(0);
+                pidLinearMovement(-30, 3);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
+                runIntake(-1);
+                sleep(750);
+                runIntake(0);
+                break;
+        }
+    }
+
+    private void collection2(int skystonePosition) {
+        switch (skystonePosition) {
+            case 1:
+                pidLinearMovement(57, 5);
+                tankDrive.RightNugget.setPosition(tankDrive.ROUT);
+                tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
+                turnOneWheelDirection(45, 0.6, 0.4, 0.008, 4); //2.5
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
+                runIntake(-1);
+                pidLinearMovement(18, 1.5);
+                tankDrive.RightNugget.setPosition(tankDrive.RIN);
+                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
+                sleep(1000);
+                runIntake(0);
+                break;
+
+
+
+            case 2:
+                pidLinearMovement(60, 5);
+                tankDrive.RightNugget.setPosition(tankDrive.ROUT);
+                tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
+                turnOneWheelDirection(85, 0.6, 0.4, 0.008, 3.5); //2.5
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
+                runIntake(-1);
+                overshootLinearMovement(14, 3);
+                tankDrive.RightNugget.setPosition(tankDrive.RIN);
+                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
+                sleep(750);
+                runIntake(0);
+                break;
+
+
+
+            case 3:
+                pidLinearMovement(60, 3.5);
+                tankDrive.RightNugget.setPosition(tankDrive.ROUT);
+                tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
+                turnOneWheelDirection(90, 0.6, 0.4, 0.008, 4);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
+                runIntake(-1);
+                overshootLinearMovement(15, 2);
+                tankDrive.RightNugget.setPosition(tankDrive.RIN);
+                tankDrive.LeftNugget.setPosition(tankDrive.LIN);
+                sleep(750);
+                break;
+        }
+    }
+
+    private void delivery2(int skystonePosition) {
+        switch (skystonePosition) {
+            case 1:
+                pidLinearMovement(-12, 2);
+                turnOneWheelDirection(-45, 0.6, 0.4, 0.008, 5);
+                pidLinearMovement(-55, 3);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
+                runIntake(-1);
+                sleep(750);
+                runIntake(0);
+                pidLinearMovement(20, 3);
+                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+                tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
+                break;
+
+
+
+            case 2:
+                pidLinearMovement(-4, 1.5);
+                turnOneWheelDirection(-81, 0.6, 0.4, 0.008, 4);
+                pidLinearMovement(-54, 3);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
+                runIntake(-1);
+                sleep(750);
+                runIntake(0);
+                pidLinearMovement(20, 3);
+                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+                tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
+                break;
+
+
+
+            case 3:
+                runIntake(0);
+                pidLinearMovement(-10, 1.5);
+                turnOneWheelDirection(-90, 0.6, 0.4, 0.008, 4);
+                pidLinearMovement(-55, 3);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
+                runIntake(-1);
+                sleep(750);
+                runIntake(0);
+                pidLinearMovement(24, 2.3);
+                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+                tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
+                break;
+        }
+    }
+
 }
