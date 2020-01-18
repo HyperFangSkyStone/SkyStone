@@ -62,26 +62,30 @@ public class FoundationBlueCenter extends LinearOpMode {
 
         while(isStarted())
         {
-            tankDrive.RightNugget.setPosition(tankDrive.RIN);
+            tankDrive.RightNugget.setPosition(tankDrive.RIN); // Movement 1
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
             overshootLinearMovement(36,3);
-            //moveOvershoot(35, 2.5, 0.001, 0.3);
             freeze();
             sleep(250);
             tankDrive.fang(false);
             sleep(500);
             freeze();
-            //movethForward(-15, 2.5, 0.005, 0.4);
-            turnOneWheelDirection(90, 1.0, 1, 0.0111, 8, 'l');
-            //turnethDirection(-45, 0.6, 0.3, 0.005, 4);
+
+
+
+            turnOneWheelDirection(90, 1.0, 1, 0.0111, 8, 'l'); // Movement 2
             tankDrive.fang(true);
             freeze();
-            pidLinearMovement(35,2);
+
+
+
+            pidLinearMovement(35,2); // Movement 3
             freeze();
-            turnOneWheelDirection(15, 0.8, 0.5, 0.005, 2.5, 'l');
-            //turnOneWheelDirection(65, 0.8,0.5, 0.005,3,'l');
-            //sleep(200);
+
+
+
+            turnOneWheelDirection(15, 0.8, 0.5, 0.005, 2.5, 'l'); // Movement 4
             pidLinearMovement(-20,3);
             turnOneWheelDirection(-11, 0.8, 0.5, 0.005, 2.5, 'l');
             pidLinearMovement(-18,3);
