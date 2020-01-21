@@ -56,6 +56,8 @@ public class TankDriveTeleop extends LinearOpMode {
 
     boolean oohOohAhAhMode = false;
 
+    boolean liftToGroundOn = false;
+
     @Override
     public void runOpMode() throws InterruptedException {
         tankDrive.init(hardwareMap);
@@ -152,7 +154,48 @@ public class TankDriveTeleop extends LinearOpMode {
 
             //for lift
 
-            if (gamepad2.right_trigger > 0.1) {
+            if (gamepad2.left_bumper) {
+                liftToGroundOn = true;
+                et.reset();
+            }
+
+            if (liftToGroundOn) {
+                tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
+                //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
+
+                double targ = 0;
+                double kp = 0.003;
+                double powerFloor = 0.35;
+                double I = 0;
+                double prevError = 0;
+                double d = 0;
+                int errMarg = 10;
+
+                double timeout = 1.5;
+
+                if (Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && Math.abs(tankDrive.Lift1.getCurrentPosition() - targ) > errMarg && opModeIsActive() && et.seconds() < timeout) {
+                    double error = targ - Math.max(Math.abs(tankDrive.Lift1.getCurrentPosition()), Math.abs(tankDrive.Lift2.getCurrentPosition()));
+                    I += error;
+                    d = (error - prevError) * 10;
+                    double porg = Math.abs(error) * kp;
+                    porg = Math.max(porg, powerFloor);
+                    if (error > 0)
+                        porg *= -1;
+                    tankDrive.Lift1.setPower(porg);
+                    tankDrive.Lift2.setPower(porg);
+
+                    telemetry.addData("Porg:", porg);
+                    telemetry.addData("Error:", error);
+                } else {
+                    tankDrive.Lift1.setPower(0);
+                    tankDrive.Lift2.setPower(0);
+                    tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
+                    //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+                    tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
+                    liftToGroundOn = false;
+                }
+            } else if (gamepad2.right_trigger > 0.1) {
                 tankDrive.Lift1.setPower(-gamepad2.right_trigger);
                 tankDrive.Lift2.setPower(-gamepad2.right_trigger);
             } else if (gamepad2.left_trigger > 0.1) {
@@ -260,9 +303,6 @@ public class TankDriveTeleop extends LinearOpMode {
             }
 
 
-            if (gamepad2.left_bumper) {
-                setLiftToZero();
-            }
             /*
             if (gamepad2.dpad_down) {
                 tankDrive.RightClaw.setPosition(TankDriveALPHA.RCLAW_GRIP_POS);
@@ -479,9 +519,9 @@ public class TankDriveTeleop extends LinearOpMode {
 
     private void setLiftToZero() {
 
-        tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
-        //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
-        tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
+        tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
+        //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
+        tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_DOWN_POS);
 
         double targ = 0;
         double kp = 0.003;
@@ -502,7 +542,7 @@ public class TankDriveTeleop extends LinearOpMode {
             d = (error - prevError) * 10;
             double porg = Math.abs(error) * kp + I * kI + kd * d;
             porg = Math.max(porg, powerFloor);
-            if (error < 0)
+            if (error > 0)
                 porg *= -1;
             tankDrive.Lift1.setPower(porg);
             tankDrive.Lift2.setPower(porg);
@@ -515,6 +555,9 @@ public class TankDriveTeleop extends LinearOpMode {
         }
         tankDrive.Lift1.setPower(0);
         tankDrive.Lift2.setPower(0);
+        tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
+        //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+        tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
     }
 
     public void liftToPickUpPosition() {
@@ -544,6 +587,9 @@ public class TankDriveTeleop extends LinearOpMode {
 
         tankDrive.Lift1.setPower(0);
         tankDrive.Lift2.setPower(0);
+        tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
+        //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+        tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
 
     }
 
