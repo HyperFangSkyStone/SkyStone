@@ -52,6 +52,7 @@ public class FoundationRedEdge extends LinearOpMode {
 
         imu.initialize(parameters);
 
+        ElapsedTime et = new ElapsedTime();
 
         tankDrive.init(hardwareMap);
 
@@ -76,7 +77,15 @@ public class FoundationRedEdge extends LinearOpMode {
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
             telemetry.update();
-            overshootLinearMovement(20,3);
+            //overshootLinearMovement(20,3);
+
+            tankDrive.runMotor(0.3);
+            et.reset();
+            while (tankDrive.LeftRange.getDistance(DistanceUnit.INCH) > 3 && tankDrive.RightRange.getDistance(DistanceUnit.INCH) > 3 &&
+                et.seconds() < 5) {
+
+            }
+            
             freeze();
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
