@@ -85,7 +85,7 @@ public class FoundationRedEdge extends LinearOpMode {
                 et.seconds() < 5) {
 
             }
-            
+
             freeze();
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
