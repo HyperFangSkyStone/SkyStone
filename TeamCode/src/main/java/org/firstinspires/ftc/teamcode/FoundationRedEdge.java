@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
@@ -66,10 +67,20 @@ public class FoundationRedEdge extends LinearOpMode {
             tankDrive.RightNugget.setPosition(tankDrive.RIN); // Movement 1
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
-            turnOneWheelDirection(90, 0.6, 0.6, 0.008,5, 'l');
-            turnOneWheelDirection(-90, 0.6, 0.6, 0.008,5);
+            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
+            telemetry.update();
+            turnOneWheelDirection(-90, 0.7, 0.4, 0.008,5, 'l');
+            turnOneWheelDirection(90, 0.7, 0.4, 0.008,5);
+
+            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
+            telemetry.update();
             overshootLinearMovement(20,3);
             freeze();
+            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
+            telemetry.update();
             sleep(250);
             tankDrive.fang(false);
             sleep(500);

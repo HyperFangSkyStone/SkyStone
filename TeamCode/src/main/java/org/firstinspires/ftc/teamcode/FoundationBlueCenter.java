@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
@@ -65,7 +66,13 @@ public class FoundationBlueCenter extends LinearOpMode {
             tankDrive.RightNugget.setPosition(tankDrive.RIN); // Movement 1
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
+            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
+            telemetry.update();
             overshootLinearMovement(36,3);
+            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
+            telemetry.update();
             freeze();
             sleep(250);
             tankDrive.fang(false);
@@ -78,12 +85,16 @@ public class FoundationBlueCenter extends LinearOpMode {
             tankDrive.fang(true);
             freeze();
 
-
+            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
+            telemetry.update();
 
             pidLinearMovement(35,2); // Movement 3
             freeze();
 
-
+            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
+            telemetry.update();
 
             turnOneWheelDirection(15, 0.8, 0.5, 0.005, 2.5, 'l'); // Movement 4
             pidLinearMovement(-20,3);

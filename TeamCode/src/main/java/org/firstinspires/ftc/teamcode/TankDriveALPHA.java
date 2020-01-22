@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -8,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImpl;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Arrays;
 
@@ -35,6 +37,9 @@ public class TankDriveALPHA
     public Servo Capstone = null;
 
     public Servo VladTheImpaler = null;
+
+    public Rev2mDistanceSensor LeftRange = null;
+    public Rev2mDistanceSensor RightRange = null;
 
     public static final double LOUT = 0.0;
     public static final double LIN = 1.0;
@@ -89,6 +94,9 @@ public class TankDriveALPHA
         Pusher = hwMap.get(Servo.class, "Pusher");
         Capstone = hwMap.get(Servo.class, "Capstone");
         VladTheImpaler = hwMap.get(Servo.class, "VladTheImpaler");
+
+        LeftRange = hwMap.get(Rev2mDistanceSensor.class, "LeftRange");
+        RightRange = hwMap.get(Rev2mDistanceSensor.class, "RightRange");
 
         LM0.setDirection(DcMotor.Direction.REVERSE);
         LM1.setDirection(DcMotor.Direction.REVERSE);
