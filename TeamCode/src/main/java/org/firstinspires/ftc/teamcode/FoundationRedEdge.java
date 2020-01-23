@@ -71,8 +71,8 @@ public class FoundationRedEdge extends LinearOpMode {
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
             telemetry.update();
-            turnOneWheelDirection(-90, 0.7, 0.4, 0.008,5, 'l');
-            turnOneWheelDirection(90, 0.7, 0.4, 0.008,5);
+            turnOneWheelDirection(-90, 0.5, 0.3, 0.008,5, 'l');
+            turnOneWheelDirection(90, 0.5, 0.3, 0.008,5);
 
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
@@ -81,7 +81,7 @@ public class FoundationRedEdge extends LinearOpMode {
 
             tankDrive.runMotor(0.3);
             et.reset();
-            while (tankDrive.LeftRange.getDistance(DistanceUnit.INCH) > 3 && tankDrive.RightRange.getDistance(DistanceUnit.INCH) > 3 &&
+            while (tankDrive.LeftRange.getDistance(DistanceUnit.INCH) > 5 && tankDrive.RightRange.getDistance(DistanceUnit.INCH) > 5 &&
                 et.seconds() < 5) {
 
             }
@@ -97,27 +97,33 @@ public class FoundationRedEdge extends LinearOpMode {
 
 
 
-            turnOneWheelDirection(-90, 1.0, 1, 0.0111, 10); // Movement 2
+            turnOneWheelDirection(-90, 1.0, 1, 0.0111, 6); // Movement 2
             tankDrive.fang(true);
             freeze();
 
 
 
-            pidLinearMovement(35,2); // Movement 3
-            freeze();
+            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 3, 'r');
+            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 3, 'r');
 
+            pidLinearMovement(-35, 3);
+            turnOneWheelDirection(60, 0.7, 0.4, 0.002, 2, 'r');
+            turnOneWheelDirection(-60, 0.7, 0.4, 0.002, 2, 'l');
 
-
-            turnOneWheelDirection(60, 0.8, 0.5, 0.005, 2.5, 'l'); // Movement 4
-            sleep(200);
-            turnOneWheelDirection(-45, 0.8,0.5, 0.005, 2.5);
-            sleep(200);
-            pidLinearMovement(-22,3);
+            pidLinearMovement(35, 4);
             ////////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
             tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
             runIntake(1);
             freeze();
+            tankDrive.resetEncoders();
             sleep(500);
+            runIntake(0);
+            while (opModeIsActive()) {
+                if (Math.abs(tankDrive.getEncoderAvg()) > 20) {
+                    tankDrive.runMotor(tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() > 0 ? .3 : -.3);
+                }
+            }
+            freeze();
             break;
         }
     }
