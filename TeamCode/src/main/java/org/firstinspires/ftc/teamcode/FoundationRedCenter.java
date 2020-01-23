@@ -78,22 +78,27 @@ public class FoundationRedCenter extends LinearOpMode {
             tankDrive.fang(true);
             freeze();
 
+            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 3, 'r');
+            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 3, 'r');
 
+            pidLinearMovement(-35, 3);
+            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 2, 'r');
+            turnOneWheelDirection(90, 0.7, 0.4, 0.002, 2, 'l');
 
-            pidLinearMovement(35,2); // Movement 3
-            freeze();
-
-
-
-            turnOneWheelDirection(-15, 0.8, 0.5, 0.005, 2.5); // Movement 4
-            pidLinearMovement(-20,3);
-            turnOneWheelDirection(11, 0.8, 0.5, 0.005, 2.5);
-            pidLinearMovement(-18,3);
-            //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+            pidLinearMovement(35, 4);
+            ////////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
             tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
             runIntake(1);
             freeze();
+            tankDrive.resetEncoders();
             sleep(500);
+            runIntake(0);
+            while (opModeIsActive()) {
+                if (Math.abs(tankDrive.getEncoderAvg()) > 20) {
+                    tankDrive.runMotor(tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() > 0 ? .3 : -.3);
+                }
+            }
+            freeze();
             break;
         }
     }
