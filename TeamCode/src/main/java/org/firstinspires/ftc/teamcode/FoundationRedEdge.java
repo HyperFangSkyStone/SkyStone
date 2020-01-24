@@ -71,8 +71,8 @@ public class FoundationRedEdge extends LinearOpMode {
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
             telemetry.update();
-            turnOneWheelDirection(-90, 0.5, 0.3, 0.008,5, 'l');
-            turnOneWheelDirection(90, 0.5, 0.3, 0.008,5);
+            turnOneWheelDirection(-100, 0.5, 0.3, 0.008,5, 'l');
+            turnOneWheelDirection(100, 0.5, 0.3, 0.008,5);
 
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
