@@ -107,8 +107,8 @@ public class FoundationRedEdge extends LinearOpMode {
             turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 3, 'r');
 
             pidLinearMovement(-35, 3);
-            turnOneWheelDirection(60, 0.7, 0.4, 0.002, 2, 'r');
-            turnOneWheelDirection(-60, 0.7, 0.4, 0.002, 2, 'l');
+            turnOneWheelDirection(65, 0.7, 0.4, 0.002, 2, 'r');
+            turnOneWheelDirection(-65, 0.7, 0.4, 0.002, 2, 'l');
 
             pidLinearMovement(35, 4);
             ////////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
