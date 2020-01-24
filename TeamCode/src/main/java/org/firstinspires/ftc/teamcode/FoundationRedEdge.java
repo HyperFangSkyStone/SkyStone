@@ -71,8 +71,8 @@ public class FoundationRedEdge extends LinearOpMode {
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
             telemetry.update();
-            turnOneWheelDirection(-100, 0.5, 0.3, 0.008,5, 'l');
-            turnOneWheelDirection(100, 0.5, 0.3, 0.008,5);
+            turnOneWheelDirection(-90, 0.8, 0.4, 0.008,3, 'l');
+            turnOneWheelDirection(90, 0.5, 0.2, 0.008,3);
 
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
@@ -103,10 +103,10 @@ public class FoundationRedEdge extends LinearOpMode {
 
 
 
-            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 3, 'r');
-            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 3, 'r');
+            turnOneWheelDirection(-90, 0.8, 0.5, 0.002, 3, 'r');
+            turnOneWheelDirection(-90, 0.8, 0.5, 0.002, 3, 'r');
 
-            pidLinearMovement(-35, 3);
+            pidLinearMovement(-25, 2);
             turnOneWheelDirection(65, 0.7, 0.4, 0.002, 2, 'r');
             turnOneWheelDirection(-65, 0.7, 0.4, 0.002, 2, 'l');
 
