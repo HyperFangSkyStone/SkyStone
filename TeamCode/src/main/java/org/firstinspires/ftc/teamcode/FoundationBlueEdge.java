@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
@@ -51,8 +52,10 @@ public class FoundationBlueEdge extends LinearOpMode {
 
         imu.initialize(parameters);
 
+        ElapsedTime et = new ElapsedTime();
 
         tankDrive.init(hardwareMap);
+
         tankDrive.RightNugget.setPosition(tankDrive.ROUT);
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
         //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
@@ -65,8 +68,28 @@ public class FoundationBlueEdge extends LinearOpMode {
             tankDrive.RightNugget.setPosition(tankDrive.RIN); // Movement 1
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
             tankDrive.fang(true);
-            overshootLinearMovement(36,3);
+            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
+            telemetry.update();
+            turnOneWheelDirection(90, 0.5, 0.3, 0.008,5, 'r');
+            turnOneWheelDirection(-90, 0.5, 0.3, 0.008,5, 'l');
+
+            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
+            telemetry.update();
+            //overshootLinearMovement(20,3);
+
+            tankDrive.runMotor(0.3);
+            et.reset();
+            while (tankDrive.LeftRange.getDistance(DistanceUnit.INCH) > 5 && tankDrive.RightRange.getDistance(DistanceUnit.INCH) > 5 &&
+                    et.seconds() < 5) {
+
+            }
+
             freeze();
+            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
+            telemetry.update();
             sleep(250);
             tankDrive.fang(false);
             sleep(500);
@@ -74,27 +97,33 @@ public class FoundationBlueEdge extends LinearOpMode {
 
 
 
-            turnOneWheelDirection(90, 1.0, 1, 0.005, 8, 'l'); // Movement 2
+            turnOneWheelDirection(90, 1.0, 1, 0.0111, 6); // Movement 2
             tankDrive.fang(true);
             freeze();
 
 
 
-            pidLinearMovement(35,4); // Movement 3
-            freeze();
+            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 3, 'l');
+            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 3, 'l');
 
+            pidLinearMovement(-35, 3);
+            turnOneWheelDirection(65, 0.7, 0.4, 0.002, 2, 'l');
+            turnOneWheelDirection(-65, 0.7, 0.4, 0.002, 2, 'r');
 
-
-            turnOneWheelDirection(-60, 0.8, 0.5, 0.005, 2.5); // Movement 4
-            sleep(200);
-            turnOneWheelDirection(45, 0.8,0.5, 0.005, 2.5, 'l');
-            sleep(200);
-            pidLinearMovement(-22,3);
-            //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+            pidLinearMovement(35, 4);
+            ////////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
             tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
             runIntake(1);
             freeze();
+            tankDrive.resetEncoders();
             sleep(500);
+            runIntake(0);
+            while (opModeIsActive()) {
+                if (Math.abs(tankDrive.getEncoderAvg()) > 20) {
+                    tankDrive.runMotor(tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() > 0 ? .3 : -.3);
+                }
+            }
+            freeze();
             break;
         }
     }
