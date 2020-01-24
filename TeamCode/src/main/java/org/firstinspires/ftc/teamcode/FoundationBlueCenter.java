@@ -52,8 +52,10 @@ public class FoundationBlueCenter extends LinearOpMode {
 
         imu.initialize(parameters);
 
+        ElapsedTime et = new ElapsedTime();
 
         tankDrive.init(hardwareMap);
+
         tankDrive.RightNugget.setPosition(tankDrive.ROUT);
         tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
         //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
@@ -69,11 +71,25 @@ public class FoundationBlueCenter extends LinearOpMode {
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
             telemetry.update();
-            overshootLinearMovement(36,3);
+            turnOneWheelDirection(90, 0.5, 0.3, 0.008,5, 'r');
+            turnOneWheelDirection(-90, 0.5, 0.3, 0.008,5, 'l');
+
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
             telemetry.update();
+            //overshootLinearMovement(20,3);
+
+            tankDrive.runMotor(0.3);
+            et.reset();
+            while (tankDrive.LeftRange.getDistance(DistanceUnit.INCH) > 5 && tankDrive.RightRange.getDistance(DistanceUnit.INCH) > 5 &&
+                    et.seconds() < 5) {
+
+            }
+
             freeze();
+            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
+            telemetry.update();
             sleep(250);
             tankDrive.fang(false);
             sleep(500);
@@ -81,30 +97,33 @@ public class FoundationBlueCenter extends LinearOpMode {
 
 
 
-            turnOneWheelDirection(90, 1.0, 1, 0.0111, 8, 'l'); // Movement 2
+            turnOneWheelDirection(90, 1.0, 1, 0.0111, 6); // Movement 2
             tankDrive.fang(true);
             freeze();
 
-            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
-            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
-            telemetry.update();
 
-            pidLinearMovement(35,2); // Movement 3
-            freeze();
 
-            telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
-            telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
-            telemetry.update();
+            turnOneWheelDirection(90, 0.7, 0.4, 0.002, 3, 'l');
+            turnOneWheelDirection(90, 0.7, 0.4, 0.002, 3, 'l');
 
-            turnOneWheelDirection(15, 0.8, 0.5, 0.005, 2.5, 'l'); // Movement 4
-            pidLinearMovement(-20,3);
-            turnOneWheelDirection(-11, 0.8, 0.5, 0.005, 2.5, 'l');
-            pidLinearMovement(-18,3);
-            //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+            pidLinearMovement(-35, 3);
+            turnOneWheelDirection(90, 0.7, 0.4, 0.002, 2, 'r');
+            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 2, 'l');
+
+            pidLinearMovement(32, 4);
+            ////////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
             tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
             runIntake(1);
             freeze();
+            tankDrive.resetEncoders();
             sleep(500);
+            runIntake(0);
+            while (opModeIsActive()) {
+                if (Math.abs(tankDrive.getEncoderAvg()) > 20) {
+                    tankDrive.runMotor(tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() > 0 ? .3 : -.3);
+                }
+            }
+            freeze();
             break;
         }
     }
