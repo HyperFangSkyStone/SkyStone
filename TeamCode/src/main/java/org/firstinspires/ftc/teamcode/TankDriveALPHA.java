@@ -293,5 +293,11 @@ public class TankDriveALPHA
         RM0.setPower(-pow);
         RM1.setPower(-pow);
     }
+
+    public void stayInPlace() {
+        if (Math.abs(getEncoderAvg()) > 20) {
+            runMotor(LM0.getCurrentPosition() + LM1.getCurrentPosition() > 0 ? -.3 : .3);
+        }
+    }
 }
 
