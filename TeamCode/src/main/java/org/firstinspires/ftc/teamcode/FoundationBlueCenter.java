@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -71,8 +72,8 @@ public class FoundationBlueCenter extends LinearOpMode {
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
             telemetry.update();
-            turnOneWheelDirection(90, 0.4, 0.3, 0.008,5, 'r');
-            turnOneWheelDirection(-90, 0.4, 0.2, 0.008,5, 'l');
+            turnOneWheelDirection(90, 0.8, 0.4, 0.008,3, 'r');
+            turnOneWheelDirection(-90, 0.5, 0.33, 0.008,3, 'l');
 
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
@@ -95,32 +96,23 @@ public class FoundationBlueCenter extends LinearOpMode {
             sleep(500);
             freeze();
 
-
-
-            turnOneWheelDirection(90, 1.0, 1, 0.0111, 6); // Movement 2
+            turnOneWheelDirection(90, 1.0, 1, 0.0111, 6, 'l'); // Movement 2
             tankDrive.fang(true);
             freeze();
 
+            pidLinearMovement(25, 3);
+            turnOneWheelDirection(90, 0.7, 0.4, 0.002, 4, 'l');
+            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 4, 'r');
 
-
-            turnOneWheelDirection(90, 0.8, 0.5, 0.002, 3, 'l');
-            turnOneWheelDirection(90, 0.8, 0.5, 0.002, 3, 'l');
-
-            pidLinearMovement(-35, 3);
-            turnOneWheelDirection(90, 0.7, 0.4, 0.002, 2, 'r');
-            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 2, 'l');
-
-            pidLinearMovement(32, 4);
+            pidLinearMovement(-25, 4);
             ////////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
             tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
-            runIntake(1);
             freeze();
             tankDrive.resetEncoders();
             sleep(500);
-            runIntake(0);
             while (opModeIsActive()) {
                 if (Math.abs(tankDrive.getEncoderAvg()) > 20) {
-                    tankDrive.runMotor(tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() > 0 ? .3 : -.3);
+                    tankDrive.runMotor(tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() > 0 ? -.3 : .3);
                 }
             }
             freeze();
