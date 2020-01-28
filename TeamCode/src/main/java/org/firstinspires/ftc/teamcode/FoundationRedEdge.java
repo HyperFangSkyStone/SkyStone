@@ -101,6 +101,7 @@ public class FoundationRedEdge extends LinearOpMode {
             tankDrive.fang(true);
             freeze();
 
+            turnOneWheelDirection(0, 0.5, 0.333, 0.0111, 2,'r');
             pidLinearMovement(25, 2);
 
             pidLinearMovement(-35, 4);
@@ -110,9 +111,7 @@ public class FoundationRedEdge extends LinearOpMode {
             tankDrive.resetEncoders();
             sleep(500);
             while (opModeIsActive()) {
-                if (Math.abs(tankDrive.getEncoderAvg()) > 20) {
-                    tankDrive.runMotor(tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() > 0 ? .3 : -.3);
-                }
+                tankDrive.stayInPlace();
             }
             freeze();
             break;
