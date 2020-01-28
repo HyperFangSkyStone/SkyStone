@@ -72,7 +72,7 @@ public class FoundationRedEdge extends LinearOpMode {
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
             telemetry.update();
             turnOneWheelDirection(-90, 0.8, 0.4, 0.008,3, 'l');
-            turnOneWheelDirection(90, 0.5, 0.2, 0.008,3);
+            turnOneWheelDirection(90, 0.5, 0.33, 0.008,3);
 
             telemetry.addData("Left Range:", tankDrive.LeftRange.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Range:", tankDrive.RightRange.getDistance(DistanceUnit.INCH));
@@ -101,23 +101,14 @@ public class FoundationRedEdge extends LinearOpMode {
             tankDrive.fang(true);
             freeze();
 
+            pidLinearMovement(25, 2);
 
-
-            turnOneWheelDirection(-90, 0.8, 0.5, 0.002, 3, 'r');
-            turnOneWheelDirection(-90, 0.8, 0.5, 0.002, 3, 'r');
-
-            pidLinearMovement(-25, 2);
-            turnOneWheelDirection(65, 0.7, 0.4, 0.002, 2, 'r');
-            turnOneWheelDirection(-65, 0.7, 0.4, 0.002, 2, 'l');
-
-            pidLinearMovement(35, 4);
+            pidLinearMovement(-35, 4);
             ////////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
             tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
-            runIntake(1);
             freeze();
             tankDrive.resetEncoders();
             sleep(500);
-            runIntake(0);
             while (opModeIsActive()) {
                 if (Math.abs(tankDrive.getEncoderAvg()) > 20) {
                     tankDrive.runMotor(tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() > 0 ? .3 : -.3);
