@@ -102,8 +102,9 @@ public class FoundationRedCenter extends LinearOpMode {
             freeze();
 
             pidLinearMovement(25, 3);
-            turnOneWheelDirection(-90, 0.7, 0.4, 0.002, 4, 'r');
-            turnOneWheelDirection(90, 0.7, 0.4, 0.002, 4, 'l');
+            turnOneWheelDirection(-45, 0.7, 0.4, 0.002, 4, 'r');
+            pidLinearMovement(-15, 3);
+            turnOneWheelDirection(45, 0.7, 0.4, 0.002, 4, 'l');
 
             pidLinearMovement(-25, 4);
             ////////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
@@ -112,9 +113,7 @@ public class FoundationRedCenter extends LinearOpMode {
             tankDrive.resetEncoders();
             sleep(500);
             while (opModeIsActive()) {
-                if (Math.abs(tankDrive.getEncoderAvg()) > 20) {
-                    tankDrive.runMotor(tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() > 0 ? .3 : -.3);
-                }
+                tankDrive.stayInPlace();
             }
             freeze();
             break;
