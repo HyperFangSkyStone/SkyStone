@@ -103,6 +103,7 @@ public class FoundationBlueEdge extends LinearOpMode {
 
             pidLinearMovement(25, 3);
 
+            turnOneWheelDirection(0, 0.5, 0.333, 0.0111, 2,'l');
             pidLinearMovement(-35, 4);
             ////////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
             tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
@@ -110,9 +111,7 @@ public class FoundationBlueEdge extends LinearOpMode {
             tankDrive.resetEncoders();
             sleep(500);
             while (opModeIsActive()) {
-                if (Math.abs(tankDrive.getEncoderAvg()) > 20) {
-                    tankDrive.runMotor(tankDrive.LM0.getCurrentPosition() + tankDrive.LM1.getCurrentPosition() > 0 ? -.3 : .3);
-                }
+                tankDrive.stayInPlace();
             }
             freeze();
             break;
