@@ -203,13 +203,13 @@ public class TankDriveTeleop extends LinearOpMode {
                 tankDrive.Lift2.setPower(gamepad2.left_trigger);
             } else if (gamepad2.right_bumper) {
                 oohOohAhAhMode = true;
-                tankDrive.Lift1.setPower(-0.7);
-                tankDrive.Lift2.setPower(-0.7);
             } else if (oohOohAhAhMode) {
-                    ////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
-                    tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
-                    tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
-                    oohOohAhAhMode = false;
+                tankDrive.Lift1.setPower(0);
+                tankDrive.Lift2.setPower(0);
+                ////tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_UP_POS);
+                tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_UP_POS);
+                tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
+                oohOohAhAhMode = false;
             } else {
                 tankDrive.Lift1.setPower(0);
                 tankDrive.Lift2.setPower(0);
