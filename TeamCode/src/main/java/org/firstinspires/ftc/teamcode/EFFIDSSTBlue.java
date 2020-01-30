@@ -97,6 +97,12 @@ public class EFFIDSSTBlue extends LinearOpMode {
                 delivery2(skystonePosition);
             }
         }
+
+        tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
+        //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
+        tankDrive.resetEncoders();
+        while (opModeIsActive())
+            tankDrive.stayInPlace();
         freeze();
     }
 
