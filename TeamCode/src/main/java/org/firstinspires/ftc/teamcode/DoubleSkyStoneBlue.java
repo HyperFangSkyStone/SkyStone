@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.VisionBitMapping;
 
 @SuppressWarnings("ALL")
 @Autonomous(name="Double Skystone Blue", group="blue")
-//@Disabled
+@Disabled
 public class DoubleSkyStoneBlue extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
