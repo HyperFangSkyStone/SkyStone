@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
-@Autonomous(name="ParkCenter", group="park")
+@Autonomous(name="AutoParkEdge", group="park")
 //@Disabled
 public class AutoParkEdge extends LinearOpMode {
 
