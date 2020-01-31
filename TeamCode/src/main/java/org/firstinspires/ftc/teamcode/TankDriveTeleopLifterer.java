@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 // 85 ticks / inch
 
 @TeleOp(name="Tank Lifterer", group="1")
-//@Disabled
+@Disabled
 public class TankDriveTeleopLifterer extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
