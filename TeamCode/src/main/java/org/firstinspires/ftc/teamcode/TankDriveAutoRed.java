@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings("ALL")
 @Autonomous(name="Skystone Red", group="red")
-//@Disabled
+@Disabled
 public class TankDriveAutoRed extends LinearOpMode {
 
     TankDriveALPHA tankDrive = new TankDriveALPHA();
