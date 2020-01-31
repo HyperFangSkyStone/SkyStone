@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="ElMono - Testing Vision", group="Pushbot")
-//@Disabled
+@Disabled
 public class ElMonoVisionTester extends LinearOpMode {
 
 
