@@ -66,6 +66,7 @@ public class TurnRightPark extends LinearOpMode {
             tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
             //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
             freeze();
+            tankDrive.resetEncoders();
             while (opModeIsActive()) {
                 tankDrive.stayInPlace();
             }
