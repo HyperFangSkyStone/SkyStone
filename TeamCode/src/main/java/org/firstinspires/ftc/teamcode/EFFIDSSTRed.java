@@ -436,7 +436,7 @@ public class EFFIDSSTRed extends LinearOpMode {
                 overshootLinearMovement(35,4);
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
                 tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                sleep(400);
+                sleep(600);
                 break;
 
 
@@ -445,7 +445,7 @@ public class EFFIDSSTRed extends LinearOpMode {
                 turnOneWheelDirection(-6, 0.6, 0.5, 0.005, 2, 'l');
                 runIntake(-1);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_HOLD_POS);
-                overshootLinearMovement(40,3.5);
+                overshootLinearMovement(40,4);
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
                 tankDrive.LeftNugget.setPosition(tankDrive.LIN);
                 sleep(400);
@@ -462,7 +462,7 @@ public class EFFIDSSTRed extends LinearOpMode {
                 pidLinearMovement(-37, 3);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
                 runIntake(-1);
-                sleep(750);
+                sleep(1000);
                 runIntake(0);
                 break;
 
@@ -472,23 +472,23 @@ public class EFFIDSSTRed extends LinearOpMode {
                 pidLinearMovement(-3, 2);
                 runIntake(0);
                 turnOneWheelDirection(88, 0.6, 0.4, 0.008, 3.5, 'l'); //3.5 // Deliver skystone
-                pidLinearMovement(-25, 3);
+                pidLinearMovement(-35, 3);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
                 runIntake(-1);
-                sleep(750);
+                sleep(1000);
                 runIntake(0);
                 break;
 
 
 
             case 3:
-                pidLinearMovement(-8, 2);
+                pidLinearMovement(-7, 2);
                 runIntake(0);
                 turnOneWheelDirection(96, 0.6, 0.4, 0.008, 5, 'l'); //3.5
                 pidLinearMovement(-25, 3);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
                 runIntake(-1);
-                sleep(750);
+                sleep(1000);
                 runIntake(0);
                 break;
         }
@@ -497,7 +497,7 @@ public class EFFIDSSTRed extends LinearOpMode {
     private void collection2(int skystonePosition) {
         switch(skystonePosition) {
             case 1:
-                pidLinearMovement(55, 5);
+                pidLinearMovement(58, 6);
                 tankDrive.RightNugget.setPosition(tankDrive.ROUT);
                 tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
                 turnOneWheelDirection(-45, 0.6, 0.4, 0.008, 4, 'l'); //2.5
@@ -513,7 +513,7 @@ public class EFFIDSSTRed extends LinearOpMode {
 
 
             case 2:
-                pidLinearMovement(53, 5);
+                pidLinearMovement(65, 6);
                 tankDrive.RightNugget.setPosition(tankDrive.ROUT);
                 tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
                 turnOneWheelDirection(-85, 0.6, 0.4, 0.008, 3.5, 'l'); //2.5
@@ -522,14 +522,14 @@ public class EFFIDSSTRed extends LinearOpMode {
                 overshootLinearMovement(16, 3);
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
                 tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                sleep(750);
+                sleep(1000);
                 runIntake(0);
                 break;
 
 
 
             case 3:
-                pidLinearMovement(47, 4);
+                pidLinearMovement(55, 6);
                 tankDrive.RightNugget.setPosition(tankDrive.ROUT);
                 tankDrive.LeftNugget.setPosition(tankDrive.LOUT);
                 turnOneWheelDirection(-90, 0.6, 0.4, 0.008, 5, 'l'); //2.5
@@ -538,8 +538,7 @@ public class EFFIDSSTRed extends LinearOpMode {
                 overshootLinearMovement(15, 2);
                 tankDrive.RightNugget.setPosition(tankDrive.RIN);
                 tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-                sleep(750);
-                runIntake(0);
+                sleep(1000);
                 break;
         }
     }
@@ -549,10 +548,10 @@ public class EFFIDSSTRed extends LinearOpMode {
             case 1:
                 pidLinearMovement(-12, 2);
                 turnOneWheelDirection(45, 0.6, 0.4, 0.008, 4, 'l');
-                pidLinearMovement(-55, 3);
+                pidLinearMovement(-58, 3);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
                 runIntake(-1);
-                sleep(750);
+                sleep(1000);
                 runIntake(0);
                 pidLinearMovement(20, 3);
                 //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
@@ -563,12 +562,12 @@ public class EFFIDSSTRed extends LinearOpMode {
 
 
             case 2:
-                pidLinearMovement(-4, 1.5);
+                pidLinearMovement(-6, 1.5);
                 turnOneWheelDirection(81, 0.6, 0.4, 0.008, 3.5, 'l');
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
-                pidLinearMovement(-51, 4);
+                pidLinearMovement(-65, 6);
                 runIntake(-1);
-                sleep(750);
+                sleep(1000);
                 runIntake(0);
                 pidLinearMovement(17, 3);
                 //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
@@ -579,13 +578,14 @@ public class EFFIDSSTRed extends LinearOpMode {
 
 
             case 3:
-                pidLinearMovement(-4, 1.5);
+                runIntake(0);
+                pidLinearMovement(-6, 1.5);
                 turnOneWheelDirection(90, 0.6, 0.4, 0.008, 5, 'l'); //2.5
                 //pidLinearMovement(-10, 1.5);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UNHOLD_POS);
                 pidLinearMovement(-52, 3);
                 runIntake(-1);
-                sleep(750);
+                sleep(1000);
                 runIntake(0);
                 pidLinearMovement(21, 2.3);
                 tankDrive.Pusher.setPosition(TankDriveALPHA.PUSHER_UP_POS);
