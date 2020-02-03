@@ -60,12 +60,14 @@ public class AutoParkEdge extends LinearOpMode {
 
         while(isStarted())
         {
+            sleep(25000);
             tankDrive.RightNugget.setPosition(tankDrive.RIN);
             tankDrive.LeftNugget.setPosition(tankDrive.LIN);
-            pidLinearMovement(5, 2);
+            pidLinearMovement(15, 3);
             tankDrive.RightGate.setPosition(TankDriveALPHA.RIGHT_GATE_DOWN_POS);
             //tankDrive.LeftGate.setPosition(TankDriveALPHA.LEFT_GATE_DOWN_POS);
             freeze();
+            tankDrive.resetEncoders();
             while (opModeIsActive()) {
                 tankDrive.stayInPlace();
             }
