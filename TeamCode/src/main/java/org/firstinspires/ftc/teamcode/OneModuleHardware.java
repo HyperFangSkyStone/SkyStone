@@ -51,7 +51,7 @@ public class OneModuleHardware {
         RightM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
-
+    // test 2
     public void freeze() {
 
         LeftM1.setPower(0);
