@@ -295,8 +295,8 @@ public class TankDriveALPHA
     }
 
     public void stayInPlace() {
-        if (Math.abs(getEncoderAvg()) > 20) {
-            runMotor(LM0.getCurrentPosition() + LM1.getCurrentPosition() > 0 ? -.3 : .3);
+        if (Math.abs(getEncoderAvg()) > 5) {
+            runMotor(LM0.getCurrentPosition() + LM1.getCurrentPosition() - RM0.getCurrentPosition() - RM1.getCurrentPosition() > 0 ? .3 : -.3);
         } else
             freeze();
     }
