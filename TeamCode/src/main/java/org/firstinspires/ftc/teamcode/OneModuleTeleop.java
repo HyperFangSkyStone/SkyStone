@@ -21,7 +21,7 @@ public class OneModuleTeleop extends LinearOpMode {
         double prop = 0.1;
         waitForStart();
         // test
-        double holdturny = 0;
+        //double holdturny = 0;
         while (opModeIsActive()) {
 
 
@@ -30,10 +30,9 @@ public class OneModuleTeleop extends LinearOpMode {
             double turny = 0;
             if (Math.abs(gamepad1.right_stick_x) + Math.abs(gamepad1.right_stick_y) > 0.2) {
                 turny = Math.atan2(-gamepad1.right_stick_y, gamepad1.right_stick_x);
-                holdturny = turny;
             }
 
-            anglediff = omw.getAngle() - holdturny;
+            anglediff = omw.getAngle() - turny;
             if (anglediff > Math.PI)
                 anglediff -= 2 * Math.PI;
             if (anglediff < -Math.PI)
@@ -51,7 +50,7 @@ public class OneModuleTeleop extends LinearOpMode {
             telemetry.addData("Encoder Voltage: ", omw.EncoderM.getVoltage());
             telemetry.addData("Encoder Angle: ", omw.getAngle());
             telemetry.addData("Turny: ", turny);
-            telemetry.addData("HoldTurny: ", holdturny);
+            //telemetry.addData("HoldTurny: ", holdturny);
             telemetry.addData("Angle Diff: ", anglediff);
 
             telemetry.update();
