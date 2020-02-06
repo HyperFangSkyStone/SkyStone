@@ -25,7 +25,7 @@ public class OneModuleTeleop extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-            double throttle = -gamepad1.left_stick_y;
+            double throttle = gamepad1.left_trigger;
             double anglediff = 0;
             double turny = 0;
             if (Math.abs(gamepad1.right_stick_x) + Math.abs(gamepad1.right_stick_y) > 0.2) {
