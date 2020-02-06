@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.DISABLED;
+package org.firstinspires.ftc.mercury.DISABLED;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.PIDController;
-import org.firstinspires.ftc.teamcode.TankDriveALPHA;
+import org.firstinspires.ftc.mercury.PIDController;
+import org.firstinspires.ftc.mercury.TankDriveALPHA;
 
 import java.util.ArrayList;
 

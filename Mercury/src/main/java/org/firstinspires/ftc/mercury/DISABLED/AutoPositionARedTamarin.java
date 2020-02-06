@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.DISABLED;
+package org.firstinspires.ftc.mercury.DISABLED;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -10,9 +10,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.PIDController;
-import org.firstinspires.ftc.teamcode.TankDriveHardware;
-import org.firstinspires.ftc.teamcode.VisionBitMapping;
+import org.firstinspires.ftc.mercury.PIDController;
+import org.firstinspires.ftc.mercury.TankDriveHardware;
+import org.firstinspires.ftc.mercury.VisionBitMapping;
 
 import java.util.ArrayList;
 

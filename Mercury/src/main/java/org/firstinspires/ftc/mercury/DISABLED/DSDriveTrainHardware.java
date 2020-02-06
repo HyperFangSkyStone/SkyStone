@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.DISABLED;
+package org.firstinspires.ftc.mercury.DISABLED;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.DISABLED;
+package org.firstinspires.ftc.mercury.DISABLED;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.PIDController;
-import org.firstinspires.ftc.teamcode.TankDriveHardware;
+import org.firstinspires.ftc.mercury.PIDController;
+import org.firstinspires.ftc.mercury.TankDriveHardware;
 
 import java.util.ArrayList;
 
