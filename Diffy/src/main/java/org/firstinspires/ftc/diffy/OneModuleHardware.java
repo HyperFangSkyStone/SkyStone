@@ -50,6 +50,11 @@ public class OneModuleHardware {
         LeftM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RightM1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        encoderOffset = (EncoderM.getVoltage()) * .4 * Math.PI;
+        if (encoderOffset > Math.PI)
+            encoderOffset -= 2 * Math.PI;
+        if (encoderOffset < -Math.PI)
+            encoderOffset += 2 * Math.PI;
     }
     // test 2
     public void freeze() {

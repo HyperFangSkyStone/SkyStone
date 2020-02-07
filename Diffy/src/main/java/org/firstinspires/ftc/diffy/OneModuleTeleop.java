@@ -18,18 +18,18 @@ public class OneModuleTeleop extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         omw.init(hardwareMap);
 
-        double prop = 0.1;
+        double prop = 0.15;
         waitForStart();
         // test
         //double holdturny = 0;
         while (opModeIsActive()) {
 
 
-            double throttle = gamepad1.left_trigger;
+            double throttle = gamepad1.right_trigger;
             double anglediff = 0;
             double turny = 0;
             if (Math.abs(gamepad1.right_stick_x) + Math.abs(gamepad1.right_stick_y) > 0.2) {
-                turny = Math.atan2(-gamepad1.right_stick_y, gamepad1.right_stick_x);
+                turny = Math.atan2(-gamepad1.right_stick_x, -gamepad1.right_stick_y);
             }
 
             anglediff = omw.getAngle() - turny;
